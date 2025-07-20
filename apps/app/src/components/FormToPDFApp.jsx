@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-react';
 import TopNavigation from './TopNavigation';
 import Sidebar from './Sidebar';
-// import MainContent from './MainContent';
+import MainContent from './MainContent';
 // import PreviewPanel from './PreviewPanel';
 
 function FormToPDFApp() {
@@ -57,13 +57,13 @@ function FormToPDFApp() {
         />
 
         <div className="flex-1 flex">
-          {/* <MainContent 
+          <MainContent 
             activeSection={activeSection}
             formData={formData}
             handleInputChange={handleInputChange}
             showAdditional={showAdditional}
             setShowAdditional={setShowAdditional}
-          /> */}
+          />
           
           {/* <PreviewPanel 
             formData={formData}
