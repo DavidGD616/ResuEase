@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-react';
-import TopNavigation from './TopNavigation';
-import Sidebar from './Sidebar';
-import MainContent from './MainContent';
-import PreviewPanel from './PreviewPanel';
+import TopNavigation from '../components/layout/TopNavigation';
+import Sidebar from '../components/layout/Sidebar';
+import MainContent from '../components/forms/MainContent';
+import PreviewPanel from '../components/layout/PreviewPanel';
 
-function FormToPDFApp() {
+function ResumeBuilder() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -74,4 +74,4 @@ function FormToPDFApp() {
   );
 }
 
-export default FormToPDFApp;
+export default ResumeBuilder;

@@ -4,7 +4,7 @@ import EmploymentHistoryForm from './EmploymentHistoryForm';
 import PersonalDetailsForm from './PersonalDetailsForm';
 import ProfessionalSummaryForm from './ProfessionalSummaryForm';
 import SkillsForm from './SkillsForm';
-import BottomNavigation from './BottomNavigation';
+import BottomNavigation from '../layout/BottomNavigation';
 
 function MainContent({ 
   activeSection, 

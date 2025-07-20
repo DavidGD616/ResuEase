@@ -1,10 +1,9 @@
-import React from "react";
-import FormToPDFApp from "./components/FormToPDFApp";
+import ResumeBuilder from "./pages/ResumeBuilder";
 
 function App() {
   return (
     <div className="App">
-      <FormToPDFApp />
+      <ResumeBuilder />
     </div>
   );
 }
