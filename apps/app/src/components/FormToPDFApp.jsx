@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-react';
 import TopNavigation from './TopNavigation';
-// import Sidebar from './Sidebar';
+import Sidebar from './Sidebar';
 // import MainContent from './MainContent';
 // import PreviewPanel from './PreviewPanel';
 
@@ -24,16 +24,9 @@ function FormToPDFApp() {
   });
 
   const [activeSection, setActiveSection] = useState('personal');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  React.useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -53,15 +46,15 @@ function FormToPDFApp() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopNavigation formData={formData} />
+      <TopNavigation formData={formData} onMenuClick={() => setSidebarOpen(open => !open)} />
       
-      <div className="flex max-w-7xl mx-auto">
-        {/* <Sidebar 
+      <div className="flex w-full mx-auto">
+        <Sidebar 
           sidebarItems={sidebarItems}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
-          isMobile={isMobile}
-        /> */}
+          sidebarOpen={sidebarOpen}
+        />
 
         <div className="flex-1 flex">
           {/* <MainContent 

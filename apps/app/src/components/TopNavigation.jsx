@@ -1,12 +1,18 @@
+import { useState } from 'react';
 import { FileDown, Menu, Home } from 'lucide-react';
 
-function TopNavigation() {
+function TopNavigation({ onMenuClick }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         
         <div className="flex w-full items-center space-x-4">
-          <button className="p-2 hover:bg-gray-100 rounded-lg lg:hidden">
+          {/* Hamburger Menu */}
+          <button
+          onClick={onMenuClick}
+          className="p-2 hover:bg-gray-100 rounded-lg lg:hidden">
             <Menu className="w-5 h-5" />
           </button>
           <button className="p-2 hover:bg-gray-100 rounded-lg">

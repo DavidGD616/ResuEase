@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+html {
+  /* Reserve space for the scrollbar even when it's hidden */
+  scrollbar-gutter: stable both-edges;
+}
