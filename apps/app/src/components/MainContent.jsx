@@ -4,7 +4,7 @@ import EmploymentHistoryForm from './EmploymentHistoryForm';
 import PersonalDetailsForm from './PersonalDetailsForm';
 import ProfessionalSummaryForm from './ProfessionalSummaryForm';
 import SkillsForm from './SkillsForm';
-// import BottomNavigation from './BottomNavigation';
+import BottomNavigation from './BottomNavigation';
 
 function MainContent({ 
   activeSection, 
@@ -55,7 +55,7 @@ function MainContent({
         <EducationForm />
       )}
 
-      {/* <BottomNavigation /> */}
+      <BottomNavigation />
     </div>
   );
 }

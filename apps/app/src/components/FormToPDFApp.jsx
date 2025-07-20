@@ -3,7 +3,7 @@ import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-r
 import TopNavigation from './TopNavigation';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
-// import PreviewPanel from './PreviewPanel';
+import PreviewPanel from './PreviewPanel';
 
 function FormToPDFApp() {
   const [formData, setFormData] = useState({
@@ -65,10 +65,9 @@ function FormToPDFApp() {
             setShowAdditional={setShowAdditional}
           />
           
-          {/* <PreviewPanel 
+          <PreviewPanel 
             formData={formData}
-            isMobile={isMobile}
-          /> */}
+          />
         </div>
       </div>
     </div>
