@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import FormSection from './FormSection';
-import PreviewSection from './PreviewSection';
-
+import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-react';
+import TopNavigation from './TopNavigation';
+// import Sidebar from './Sidebar';
+// import MainContent from './MainContent';
+// import PreviewPanel from './PreviewPanel';
 
 function FormToPDFApp() {
-    const [formData, setFormData] = useState({
-    fullName: '',
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    jobTitle: '',
     email: '',
     phone: '',
     address: '',
@@ -14,8 +18,22 @@ function FormToPDFApp() {
     company: '',
     experience: '',
     skills: '',
-    about: ''
+    about: '',
+    website: '',
+    linkedin: ''
   });
+
+  const [activeSection, setActiveSection] = useState('personal');
+  const [showAdditional, setShowAdditional] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -24,22 +42,40 @@ function FormToPDFApp() {
     }));
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Form to PDF Generator</h1>
-          <p className="text-gray-600">Fill out the form and see live preview, then export to PDF</p>
-        </div>
+  const sidebarItems = [
+    { id: 'personal', icon: User, label: 'Personal details' },
+    { id: 'contact', icon: Phone, label: 'Contact information' },
+    { id: 'summary', icon: FileDown, label: 'Professional summary' },
+    { id: 'employment', icon: Briefcase, label: 'Employment history' },
+    { id: 'skills', icon: Award, label: 'Skills' },
+    { id: 'education', icon: GraduationCap, label: 'Education' }
+  ];
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <FormSection 
-            formData={formData} 
-            onInputChange={handleInputChange} 
-          />
-          <PreviewSection 
-            formData={formData} 
-          />
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <TopNavigation formData={formData} />
+      
+      <div className="flex max-w-7xl mx-auto">
+        {/* <Sidebar 
+          sidebarItems={sidebarItems}
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          isMobile={isMobile}
+        /> */}
+
+        <div className="flex-1 flex">
+          {/* <MainContent 
+            activeSection={activeSection}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            showAdditional={showAdditional}
+            setShowAdditional={setShowAdditional}
+          /> */}
+          
+          {/* <PreviewPanel 
+            formData={formData}
+            isMobile={isMobile}
+          /> */}
         </div>
       </div>
     </div>
