@@ -1,6 +1,6 @@
 function DocumentPreview({ formData }) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="h-full bg-white p-6 rounded-lg shadow-sm">
       {/* Document Preview Header */}
       <div className="text-right mb-6 border-b border-gray-200 pb-4">
         <div className="text-xs text-gray-500 mb-1">
