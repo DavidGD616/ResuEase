@@ -2,20 +2,9 @@ export const INITIAL_FORM_DATA = {
   firstName: '',
   lastName: '',
   jobTitle: '',
-  email: '',
-  phone: '',
-  address: '',
-  country: '',
-  city: '',
-  postalCode: '',
-  dateOfBirth: '',
-  occupation: '',
-  company: '',
-  experience: '',
-  skills: '',
-  about: '',
-  website: '',
-  linkedin: ''
+  nationality: '',
+  driversLicense: '',
+  birthDate: ''
 };
 
 export const SUGGESTED_SKILLS = [
