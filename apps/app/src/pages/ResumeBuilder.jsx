@@ -1,56 +1,27 @@
 import { useState } from 'react';
-import { User, Phone, FileDown, Briefcase, GraduationCap, Award } from 'lucide-react';
+import { useFormData } from '../hooks/useFormData';
+import { SIDEBAR_ITEMS, SECTION_TYPES } from '../data/sidebarItems';
 import TopNavigation from '../components/layout/TopNavigation';
 import Sidebar from '../components/layout/Sidebar';
 import MainContent from '../components/forms/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    jobTitle: '',
-    email: '',
-    phone: '',
-    address: '',
-    dateOfBirth: '',
-    occupation: '',
-    company: '',
-    experience: '',
-    skills: '',
-    about: '',
-    website: '',
-    linkedin: ''
-  });
-
-  const [activeSection, setActiveSection] = useState('personal');
+  const { formData, updateField } = useFormData();
+  const [activeSection, setActiveSection] = useState(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
 
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const sidebarItems = [
-    { id: 'personal', icon: User, label: 'Personal details' },
-    { id: 'contact', icon: Phone, label: 'Contact information' },
-    { id: 'summary', icon: FileDown, label: 'Professional summary' },
-    { id: 'employment', icon: Briefcase, label: 'Employment history' },
-    { id: 'skills', icon: Award, label: 'Skills' },
-    { id: 'education', icon: GraduationCap, label: 'Education' }
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopNavigation formData={formData} onMenuClick={() => setSidebarOpen(open => !open)} />
+      <TopNavigation 
+          formData={formData} 
+          onMenuClick={() => setSidebarOpen(open => !open)
+          } />
       
       <div className="flex w-full mx-auto">
         <Sidebar 
-          sidebarItems={sidebarItems}
+          sidebarItems={SIDEBAR_ITEMS}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           sidebarOpen={sidebarOpen}
@@ -60,7 +31,7 @@ function ResumeBuilder() {
           <MainContent 
             activeSection={activeSection}
             formData={formData}
-            handleInputChange={handleInputChange}
+            handleInputChange={updateField}
             showAdditional={showAdditional}
             setShowAdditional={setShowAdditional}
           />
