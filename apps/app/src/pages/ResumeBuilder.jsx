@@ -11,6 +11,11 @@ function ResumeBuilder() {
   const [activeSection, setActiveSection] = useState(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
+  const [sidebarItems, setSidebarItems] = useState(SIDEBAR_ITEMS);
+
+  const handleReorderItems = (newItems) => {
+    setSidebarItems(newItems);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,10 +26,11 @@ function ResumeBuilder() {
       
       <div className="flex w-full mx-auto">
         <Sidebar 
-          sidebarItems={SIDEBAR_ITEMS}
+          sidebarItems={sidebarItems}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           sidebarOpen={sidebarOpen}
+          onReorderItems={handleReorderItems}
         />
 
         <div className="flex-1 flex">
