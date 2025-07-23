@@ -88,7 +88,7 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
 
   return (
     <div className={`
-        ${sidebarOpen ? 'block' : 'hidden'}
+        ${sidebarOpen ? 'block fixed z-50' : 'hidden'}
         lg:block
         w-1/4 bg-white border-r border-gray-200 min-h-screen
       `}>
