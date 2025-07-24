@@ -12,9 +12,15 @@ function ResumeBuilder() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
   const [sidebarItems, setSidebarItems] = useState(SIDEBAR_ITEMS);
+  const [showAdditionalSections, setShowAdditionalSections] = useState(false);
 
   const handleReorderItems = (newItems) => {
     setSidebarItems(newItems);
+  }
+
+  const handleAdditionalSectionClick = () => {
+    setShowAdditionalSections(true);
+    setActiveSection(''); // Clear active section to show additional sections form
   }
 
   return (
@@ -31,6 +37,7 @@ function ResumeBuilder() {
           setActiveSection={setActiveSection}
           sidebarOpen={sidebarOpen}
           onReorderItems={handleReorderItems}
+          onAdditionalSectionClick={handleAdditionalSectionClick}
         />
 
         <div className="flex-1 flex">
@@ -40,6 +47,7 @@ function ResumeBuilder() {
             handleInputChange={updateField}
             showAdditional={showAdditional}
             setShowAdditional={setShowAdditional}
+            showAdditionalSections={showAdditionalSections}
           />
           
           <PreviewPanel 

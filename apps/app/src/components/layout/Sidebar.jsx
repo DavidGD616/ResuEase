@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, GripVertical } from 'lucide-react';
 
-function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, onReorderItems }) {
+function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, onReorderItems, onAdditionalSectionClick }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
 
@@ -139,7 +139,9 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
             </div>
           );
         })}
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm text-gray-500 hover:bg-gray-50">
+        <button 
+          onClick={onAdditionalSectionClick}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm text-gray-500 hover:bg-gray-50">
           <div className="w-4 h-4" />
           <Plus className="w-4 h-4" />
           Additional section
