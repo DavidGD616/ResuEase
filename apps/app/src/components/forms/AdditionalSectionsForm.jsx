@@ -1,6 +1,6 @@
 import { Briefcase, GraduationCap, MessageSquare, Globe, Link, Gamepad2, Code } from 'lucide-react';
 
-function AdditionalSectionsForm() {
+function AdditionalSectionsForm({ sidebarItems, onAddSection }) {
   const sections = [
     { id: 'internships', icon: Briefcase, label: 'Internships' },
     { id: 'courses', icon: GraduationCap, label: 'Courses' },
@@ -11,6 +11,18 @@ function AdditionalSectionsForm() {
     { id: 'custom', icon: Code, label: 'Custom section' }
   ];
 
+  // Filter out sections that are already in the sidebar (except custom sections)
+  const availableSections = sections.filter(section => {
+    if (section.id === 'custom') {
+      return true; // Always show custom section
+    }
+    return !sidebarItems.some(item => item.id === section.id);
+  });
+
+  const handleSectionClick = (section) => {
+    onAddSection(section);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Additional section</h1>
@@ -19,11 +31,12 @@ function AdditionalSectionsForm() {
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {sections.map((section) => {
+        {availableSections.map((section) => {
           const Icon = section.icon;
           return (
             <button
               key={section.id}
+              onClick={() => handleSectionClick(section)}
               className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors text-left"
             >
               <div className="flex items-center gap-3">
