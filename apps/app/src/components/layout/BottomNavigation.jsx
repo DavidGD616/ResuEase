@@ -1,6 +1,6 @@
 import { Menu, ChevronLeft, ChevronRight } from 'lucide-react';
 
-function BottomNavigation({ activeSection, onBack }) {
+function BottomNavigation({ activeSection }) {
   // Define the section order to determine if we're on the first section
   const sectionOrder = ['personal', 'contact', 'summary', 'employment', 'skills', 'education', 'additional'];
   const currentIndex = sectionOrder.indexOf(activeSection);
@@ -10,8 +10,7 @@ function BottomNavigation({ activeSection, onBack }) {
     <div className="flex justify-between items-center pt-8 mt-8 border-t border-gray-200">
       <div>
         {!isFirstSection && (
-          <button 
-            onClick={onBack}
+          <button
             className="flex px-6 bg-gray-200 py-3 rounded-lg items-center gap-2 text-gray-700 hover:bg-gray-300"
           >
             <ChevronLeft className="w-4 h-4" />

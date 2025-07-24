@@ -13,6 +13,7 @@ function ResumeBuilder() {
   const [showAdditional, setShowAdditional] = useState(false);
   const [sidebarItems, setSidebarItems] = useState(SIDEBAR_ITEMS);
   const [showAdditionalSections, setShowAdditionalSections] = useState(false);
+  const [customSectionCounter, setCustomSectionCounter] = useState(1);
 
   const handleReorderItems = (newItems) => {
     setSidebarItems(newItems);
@@ -21,6 +22,31 @@ function ResumeBuilder() {
   const handleAdditionalSectionClick = () => {
     setShowAdditionalSections(true);
     setActiveSection('additional');
+  }
+
+  const handleAddSection = (section) => {
+    if (section.id === 'custom') {
+      // For custom sections, create a unique ID and add to sidebar
+      const customSection = {
+        ...section,
+        id: `custom-${customSectionCounter}`,
+        label: `Custom section ${customSectionCounter}`,
+        order: sidebarItems.length,
+        fixed: false
+      };
+      setSidebarItems(prev => [...prev, customSection]);
+      setCustomSectionCounter(prev => prev + 1);
+      setActiveSection(customSection.id);
+    } else {
+      // For predefined sections, add to sidebar
+      const newSection = {
+        ...section,
+        order: sidebarItems.length,
+        fixed: false
+      };
+      setSidebarItems(prev => [...prev, newSection]);
+      setActiveSection(section.id);
+    }
   }
 
   return (
@@ -49,6 +75,8 @@ function ResumeBuilder() {
             showAdditional={showAdditional}
             setShowAdditional={setShowAdditional}
             showAdditionalSections={showAdditionalSections}
+            sidebarItems={sidebarItems}
+            onAddSection={handleAddSection}
           />
           
           <PreviewPanel 
