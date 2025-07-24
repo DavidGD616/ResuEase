@@ -90,7 +90,7 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
     <div className={`
         ${sidebarOpen ? 'block fixed z-50' : 'hidden'}
         lg:block
-        w-1/5 bg-white border-r border-gray-200 min-h-screen
+        w-80 lg:w-1/5 bg-white border-r border-gray-200 min-h-screen
       `}>
       <div className="p-4 space-y-1">
         {previewItems.map((item, previewIndex) => {
