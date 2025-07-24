@@ -14,7 +14,8 @@ function MainContent({
   showAdditional, 
   setShowAdditional,
   sidebarItems,
-  onAddSection
+  onAddSection,
+  onSectionChange
 }) {
   return (
     <div className="flex-1 p-6 max-w-2xl">
@@ -67,6 +68,7 @@ function MainContent({
       
        <BottomNavigation 
         activeSection={activeSection}
+        onSectionChange={onSectionChange}
       />
     </div>
   );

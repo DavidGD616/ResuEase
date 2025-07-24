@@ -49,6 +49,12 @@ function ResumeBuilder() {
     }
   }
 
+  const handleSectionChange = (sectionId) => {
+    setActiveSection(sectionId);
+    // Close mobile sidebar when navigating
+    setSidebarOpen(false);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNavigation 
@@ -77,6 +83,7 @@ function ResumeBuilder() {
             showAdditionalSections={showAdditionalSections}
             sidebarItems={sidebarItems}
             onAddSection={handleAddSection}
+            onSectionChange={handleSectionChange}
           />
           
           <PreviewPanel 
