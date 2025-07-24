@@ -13,6 +13,7 @@ function MainContent({
   handleInputChange, 
   showAdditional, 
   setShowAdditional,
+  onBack
 }) {
   return (
     <div className="flex-1 p-6 max-w-2xl">
@@ -59,8 +60,10 @@ function MainContent({
       {activeSection === 'additional' && (
         <AdditionalSectionsForm />
       )}
-
-      <BottomNavigation />
+       <BottomNavigation 
+        activeSection={activeSection}
+        onBack={onBack}
+      />
     </div>
   );
 }
