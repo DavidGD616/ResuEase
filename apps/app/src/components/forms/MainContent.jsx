@@ -13,7 +13,6 @@ function MainContent({
   handleInputChange, 
   showAdditional, 
   setShowAdditional,
-  showAdditionalSections
 }) {
   return (
     <div className="flex-1 p-6 max-w-2xl">
@@ -57,7 +56,7 @@ function MainContent({
         <EducationForm />
       )}
 
-      {showAdditionalSections && (
+      {activeSection === 'additional' && (
         <AdditionalSectionsForm />
       )}
 

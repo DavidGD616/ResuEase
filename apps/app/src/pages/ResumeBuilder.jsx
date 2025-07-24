@@ -20,7 +20,7 @@ function ResumeBuilder() {
 
   const handleAdditionalSectionClick = () => {
     setShowAdditionalSections(true);
-    setActiveSection(''); // Clear active section to show additional sections form
+    setActiveSection('additional');
   }
 
   return (
@@ -38,6 +38,7 @@ function ResumeBuilder() {
           sidebarOpen={sidebarOpen}
           onReorderItems={handleReorderItems}
           onAdditionalSectionClick={handleAdditionalSectionClick}
+          
         />
 
         <div className="flex-1 flex">
