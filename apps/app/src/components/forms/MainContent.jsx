@@ -5,13 +5,14 @@ import PersonalDetailsForm from './PersonalDetailsForm';
 import ProfessionalSummaryForm from './ProfessionalSummaryForm';
 import SkillsForm from './SkillsForm';
 import BottomNavigation from '../layout/BottomNavigation';
+import AdditionalSectionsForm from './AdditionalSectionsForm';
 
 function MainContent({ 
   activeSection, 
   formData, 
   handleInputChange, 
   showAdditional, 
-  setShowAdditional 
+  setShowAdditional,
 }) {
   return (
     <div className="flex-1 p-6 max-w-2xl">
@@ -53,6 +54,10 @@ function MainContent({
 
       {activeSection === 'education' && (
         <EducationForm />
+      )}
+
+      {activeSection === 'additional' && (
+        <AdditionalSectionsForm />
       )}
 
       <BottomNavigation />
