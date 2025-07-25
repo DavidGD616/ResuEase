@@ -69,6 +69,7 @@ function MainContent({
        <BottomNavigation 
         activeSection={activeSection}
         onSectionChange={onSectionChange}
+        sidebarItems={sidebarItems}
       />
     </div>
   );
