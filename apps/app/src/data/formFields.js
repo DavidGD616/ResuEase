@@ -18,7 +18,7 @@ export const INITIAL_FORM_DATA = {
   // Professional
   about: '',
   
-  // Dynamic sections data
+  // Sections data
   skills: [],
   education: [],
   employment: [],
@@ -29,7 +29,7 @@ export const INITIAL_FORM_DATA = {
   links: [],
   hobbies: '',
   
-  // Custom sections (dynamic)
+  // Custom sections
   customSections: {}
 };
 
