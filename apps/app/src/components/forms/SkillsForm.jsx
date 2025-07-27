@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Trash2, RefreshCw, Sparkles } from 'lucide-react';
 
-function SkillsForm({ formData, handleInputChange }) {
+function SkillsForm() {
   const [selectedSkills, setSelectedSkills] = useState([
     'Project Management',
     'Data Analysis',
