@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { FileDown, Menu, Home } from 'lucide-react';
 
 function TopNavigation({ onMenuClick }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="bg-white border-b border-gray-200 px-4 py-3">
