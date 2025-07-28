@@ -11,21 +11,8 @@ export const useFormData = (initialData = INITIAL_FORM_DATA) => {
     }));
   }, []);
 
-  const updateMultipleFields = useCallback((updates) => {
-    setFormData(prev => ({
-      ...prev,
-      ...updates
-    }));
-  }, []);
-
-  const resetForm = useCallback(() => {
-    setFormData(INITIAL_FORM_DATA);
-  }, []);
-
   return {
     formData,
     updateField,
-    updateMultipleFields,
-    resetForm
   };
 };
