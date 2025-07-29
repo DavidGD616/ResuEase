@@ -15,7 +15,8 @@ function MainContent({
   setShowAdditional,
   sidebarItems,
   onAddSection,
-  onSectionChange
+  onSectionChange,
+  onDeleteSection
 }) {
   return (
     <div className="flex-1 p-6 max-w-2xl">
@@ -45,18 +46,23 @@ function MainContent({
       )}
 
       {activeSection === 'employment' && (
-        <EmploymentHistoryForm />
+        <EmploymentHistoryForm 
+          onDeleteSection={() => onDeleteSection('employment')}
+        />
       )}
 
       {activeSection === 'skills' && (
         <SkillsForm 
           formData={formData}
           handleInputChange={handleInputChange}
+          onDeleteSection={() => onDeleteSection('skills')}
         />
       )}
 
       {activeSection === 'education' && (
-        <EducationForm />
+        <EducationForm 
+          onDeleteSection={() => onDeleteSection('education')}
+        />
       )}
 
       {activeSection === 'additional' && (

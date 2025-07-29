@@ -1,22 +1,23 @@
-import { Briefcase, GraduationCap, MessageSquare, Globe, Link, Gamepad2, Code } from 'lucide-react';
+import { SIDEBAR_ITEMS, ADDITIONAL_SECTION } from '../../../data/sidebarItems';
 
 function AdditionalSectionsForm({ sidebarItems, onAddSection }) {
-  const sections = [
-    { id: 'internships', icon: Briefcase, label: 'Internships' },
-    { id: 'courses', icon: GraduationCap, label: 'Courses' },
-    { id: 'references', icon: MessageSquare, label: 'References' },
-    { id: 'languages', icon: Globe, label: 'Languages' },
-    { id: 'links', icon: Link, label: 'Links' },
-    { id: 'hobbies', icon: Gamepad2, label: 'Hobbies' },
-    { id: 'custom', icon: Code, label: 'Custom section' }
+  // Combine core sections from SIDEBAR_ITEMS with additional section types
+  const allAvailableSections = [
+    ...SIDEBAR_ITEMS.filter(item => !item.fixed), // Non-fixed core sections that can be re-added
+    ...ADDITIONAL_SECTION
   ];
 
   // Filter out sections that are already in the sidebar (except custom sections)
-  const availableSections = sections.filter(section => {
+  const availableSections = allAvailableSections.filter(section => {
     if (section.id === 'custom') {
       return true; // Always show custom section
     }
-    return !sidebarItems.some(item => item.id === section.id);
+    
+    // Check if section is currently in sidebar
+    const isInSidebar = sidebarItems.some(item => item.id === section.id);
+    
+    // If not in sidebar, it's available to add
+    return !isInSidebar;
   });
 
   const handleSectionClick = (section) => {

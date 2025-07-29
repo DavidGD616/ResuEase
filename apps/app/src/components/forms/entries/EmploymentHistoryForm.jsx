@@ -4,7 +4,7 @@ import FormEntryHeader from '../shared/FormEntryHeader';
 import EmploymentEntryForm from '../sections/EmploymentEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 
-function EmploymentHistoryForm() {
+function EmploymentHistoryForm({ onDeleteSection }) {
   const [experiences, setExperiences] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -48,11 +48,19 @@ function EmploymentHistoryForm() {
     }));
   };
 
+  const handleDeleteSection = () => {
+   if (window.confirm('Are you sure you want to delete the entire Experience section? This action cannot be undone.')) {
+     onDeleteSection();
+   }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Employment history</h1>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
+        <button 
+          onClick={handleDeleteSection}
+          className="p-2 text-gray-400 hover:text-gray-600">
           <Trash2 className="w-5 h-5" />
         </button>
       </div>

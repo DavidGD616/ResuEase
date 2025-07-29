@@ -4,7 +4,7 @@ import FormEntryHeader from '../shared/FormEntryHeader';
 import EducationEntryForm from '../sections/EducationEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 
-function EducationForm() {
+function EducationForm({ onDeleteSection }) {
   const [educationEntries, setEducationEntries] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -47,12 +47,20 @@ function EducationForm() {
       [id]: !prev[id]
     }));
   };
+  
+   const handleDeleteSection = () => {
+    if (window.confirm('Are you sure you want to delete the entire Education section? This action cannot be undone.')) {
+      onDeleteSection();
+    }
+  };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Education</h1>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
+        <button 
+          onClick={handleDeleteSection}
+          className="p-2 text-gray-400 hover:text-gray-600">
           <Trash2 className="w-5 h-5" />
         </button>
       </div>

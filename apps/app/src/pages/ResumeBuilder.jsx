@@ -15,6 +15,7 @@ function ResumeBuilder() {
   const [showAdditionalSections, setShowAdditionalSections] = useState(false);
   const [customSectionCounter, setCustomSectionCounter] = useState(1);
 
+  // function to reorder items of any non-fixed section
   const handleReorderItems = (newItems) => {
     setSidebarItems(newItems);
   }
@@ -55,6 +56,28 @@ function ResumeBuilder() {
     setSidebarOpen(false);
   }
 
+  // Funtion to handle section deletion of any non-fixed section
+  const handleDeleteSection = (sectionId) => {
+    // Prevent deletion of fixed sections
+    const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
+    if (sectionToDelete?.fixed) {
+      return;
+    }
+
+    // Remove the section from sidebar
+    setSidebarItems(prev => prev.filter(item => item.id !== sectionId));
+
+    // If the deleted section was active, navigate to the first available section
+    if (activeSection === sectionId) {
+      const remaininSections = sidebarItems.filter(item => item.id !== sectionId);
+      if (remaininSections.length > 0) {
+        setActiveSection(remaininSections[0].id);
+      } else {
+        setActiveSection(SECTION_TYPES.PERSONAL);
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNavigation 
@@ -84,6 +107,7 @@ function ResumeBuilder() {
             sidebarItems={sidebarItems}
             onAddSection={handleAddSection}
             onSectionChange={handleSectionChange}
+            onDeleteSection={handleDeleteSection}
           />
           
           <PreviewPanel 

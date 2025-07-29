@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Trash2, RefreshCw, Sparkles } from 'lucide-react';
 
-function SkillsForm() {
+function SkillsForm({ onDeleteSection }) {
   const [selectedSkills, setSelectedSkills] = useState([
     'Project Management',
     'Data Analysis',
@@ -35,11 +35,19 @@ function SkillsForm() {
     }
   };
 
+  const handleDeleteSection = () => {
+   if (window.confirm('Are you sure you want to delete the entire Skills section? This action cannot be undone.')) {
+     onDeleteSection();
+   }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Skills</h1>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
+        <button 
+          onClick={handleDeleteSection}
+          className="p-2 text-gray-400 hover:text-gray-600">
           <Trash2 className="w-5 h-5" />
         </button>
       </div>
