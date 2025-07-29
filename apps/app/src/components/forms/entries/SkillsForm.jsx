@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Plus, Trash2, RefreshCw, Sparkles } from 'lucide-react';
+import Modal from '../../ui/Modal';
+import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
 function SkillsForm({ onDeleteSection }) {
   const [selectedSkills, setSelectedSkills] = useState([
@@ -25,6 +27,8 @@ function SkillsForm({ onDeleteSection }) {
     'Software Development'
   ];
 
+  const deleteModal = useDeleteModal(onDeleteSection);
+
   const removeSkill = (skillToRemove) => {
     setSelectedSkills(prev => prev.filter(skill => skill !== skillToRemove));
   };
@@ -35,18 +39,12 @@ function SkillsForm({ onDeleteSection }) {
     }
   };
 
-  const handleDeleteSection = () => {
-   if (window.confirm('Are you sure you want to delete the entire Skills section? This action cannot be undone.')) {
-     onDeleteSection();
-   }
-  };
-
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Skills</h1>
         <button 
-          onClick={handleDeleteSection}
+          onClick={deleteModal.openModal}
           className="p-2 text-gray-400 hover:text-gray-600">
           <Trash2 className="w-5 h-5" />
         </button>
@@ -116,6 +114,16 @@ function SkillsForm({ onDeleteSection }) {
           </button>
         </div>
       </div>
+      {/* Delete Section Modal */}
+            <Modal.Confirmation
+              isOpen={deleteModal.isOpen}
+              onClose={deleteModal.closeModal}
+              onConfirm={deleteModal.confirmDelete}
+              title="Are you sure you want to delete this section?"
+              message="You can’t undo this action."
+              confirmText="Delete Section"
+              cancelText="Cancel"
+            />
     </div>
   );
 }

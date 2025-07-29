@@ -3,10 +3,14 @@ import { Trash2 } from 'lucide-react';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import EmploymentEntryForm from '../sections/EmploymentEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
+import Modal from '../../ui/Modal';
+import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
 function EmploymentHistoryForm({ onDeleteSection }) {
   const [experiences, setExperiences] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
+
+    const deleteModal = useDeleteModal(onDeleteSection);
 
   const addExperience = () => {
     const newId = Date.now().toString();
@@ -48,18 +52,12 @@ function EmploymentHistoryForm({ onDeleteSection }) {
     }));
   };
 
-  const handleDeleteSection = () => {
-   if (window.confirm('Are you sure you want to delete the entire Experience section? This action cannot be undone.')) {
-     onDeleteSection();
-   }
-  };
-
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Employment history</h1>
         <button 
-          onClick={handleDeleteSection}
+          onClick={deleteModal.openModal}
           className="p-2 text-gray-400 hover:text-gray-600">
           <Trash2 className="w-5 h-5" />
         </button>
@@ -93,6 +91,16 @@ function EmploymentHistoryForm({ onDeleteSection }) {
           label="Add work experience"
         />
       </div>
+       {/* Delete Section Modal */}
+                  <Modal.Confirmation
+                    isOpen={deleteModal.isOpen}
+                    onClose={deleteModal.closeModal}
+                    onConfirm={deleteModal.confirmDelete}
+                    title="Are you sure you want to delete this section?"
+                    message="You can’t undo this action."
+                    confirmText="Delete Section"
+                    cancelText="Cancel"
+                  />
     </div>
   );
 }

@@ -3,10 +3,14 @@ import { Trash2 } from 'lucide-react';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import EducationEntryForm from '../sections/EducationEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
+import Modal from '../../ui/Modal';
+import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
 function EducationForm({ onDeleteSection }) {
   const [educationEntries, setEducationEntries] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
+
+  const deleteModal = useDeleteModal(onDeleteSection);
 
   const addEducation = () => {
     const newId = Date.now().toString();
@@ -47,20 +51,15 @@ function EducationForm({ onDeleteSection }) {
       [id]: !prev[id]
     }));
   };
-  
-   const handleDeleteSection = () => {
-    if (window.confirm('Are you sure you want to delete the entire Education section? This action cannot be undone.')) {
-      onDeleteSection();
-    }
-  };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl font-bold text-gray-900">Education</h1>
         <button 
-          onClick={handleDeleteSection}
-          className="p-2 text-gray-400 hover:text-gray-600">
+          onClick={deleteModal.openModal}
+          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+        >
           <Trash2 className="w-5 h-5" />
         </button>
       </div>
@@ -93,6 +92,17 @@ function EducationForm({ onDeleteSection }) {
           label="Add education"
         />
       </div>
+
+      {/* Delete Section Modal */}
+      <Modal.Confirmation
+        isOpen={deleteModal.isOpen}
+        onClose={deleteModal.closeModal}
+        onConfirm={deleteModal.confirmDelete}
+        title="Are you sure you want to delete this section?"
+        message="You can’t undo this action."
+        confirmText="Delete Section"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
