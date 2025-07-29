@@ -4,6 +4,7 @@ import EmploymentHistoryForm from './EmploymentHistoryForm';
 import PersonalDetailsForm from './PersonalDetailsForm';
 import ProfessionalSummaryForm from './ProfessionalSummaryForm';
 import SkillsForm from './SkillsForm';
+import InternshipsForm from './InternshipsForm';
 import BottomNavigation from '../../layout/BottomNavigation';
 import AdditionalSectionsForm from './AdditionalSectionsForm';
 
@@ -62,6 +63,12 @@ function MainContent({
       {activeSection === 'education' && (
         <EducationForm 
           onDeleteSection={() => onDeleteSection('education')}
+        />
+      )}
+
+      {activeSection === 'internships' && (
+        <InternshipsForm 
+          onDeleteSection={() => onDeleteSection('internships')}
         />
       )}
 
