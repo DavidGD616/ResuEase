@@ -7,6 +7,7 @@ import SkillsForm from './SkillsForm';
 import InternshipsForm from './InternshipsForm';
 import BottomNavigation from '../../layout/BottomNavigation';
 import AdditionalSectionsForm from './AdditionalSectionsForm';
+import CoursesForm from './CoursesForm';
 
 function MainContent({ 
   activeSection, 
@@ -69,6 +70,12 @@ function MainContent({
       {activeSection === 'internships' && (
         <InternshipsForm 
           onDeleteSection={() => onDeleteSection('internships')}
+        />
+      )}
+
+      {activeSection === 'courses' && (
+        <CoursesForm
+          onDeleteSection={() => onDeleteSection('courses')}
         />
       )}
 
