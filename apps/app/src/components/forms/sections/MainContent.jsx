@@ -12,6 +12,7 @@ import ReferencesForm from './ReferencesForm';
 import LanguagesForm from './LanguagesForm';
 import LinksForm from './LinksForm';
 import HobbiesForm from './HobbiesForm';
+import CustomSectionForm from './CustomSectionForm';
 
 function MainContent({ 
   activeSection, 
@@ -106,6 +107,12 @@ function MainContent({
           formData={formData}
           handleInputChange={handleInputChange}
           onDeleteSection={() => onDeleteSection('hobbies')}
+        />
+      )}
+
+      {activeSection.startsWith('custom-') && (
+        <CustomSectionForm 
+          onDeleteSection={() => onDeleteSection(activeSection)}
         />
       )}
 
