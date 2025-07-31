@@ -9,6 +9,7 @@ import BottomNavigation from '../../layout/BottomNavigation';
 import AdditionalSectionsForm from './AdditionalSectionsForm';
 import CoursesForm from './CoursesForm';
 import ReferencesForm from './ReferencesForm';
+import LanguagesForm from './LanguagesForm';
 
 function MainContent({ 
   activeSection, 
@@ -83,6 +84,12 @@ function MainContent({
       {activeSection === 'references' && (
         <ReferencesForm
           onDeleteSection={() => onDeleteSection('references')}
+        />
+      )}
+
+      {activeSection === 'languages' && (
+        <LanguagesForm
+          onDeleteSection={() => onDeleteSection('languages')}
         />
       )}
 
