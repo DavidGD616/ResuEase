@@ -11,6 +11,7 @@ import CoursesForm from './CoursesForm';
 import ReferencesForm from './ReferencesForm';
 import LanguagesForm from './LanguagesForm';
 import LinksForm from './LinksForm';
+import HobbiesForm from './HobbiesForm';
 
 function MainContent({ 
   activeSection, 
@@ -97,6 +98,14 @@ function MainContent({
       {activeSection === 'links' && (
         <LinksForm 
           onDeleteSection={() => onDeleteSection('links')}
+        />
+      )}
+
+      {activeSection === 'hobbies' && (
+        <HobbiesForm 
+          formData={formData}
+          handleInputChange={handleInputChange}
+          onDeleteSection={() => onDeleteSection('hobbies')}
         />
       )}
 
