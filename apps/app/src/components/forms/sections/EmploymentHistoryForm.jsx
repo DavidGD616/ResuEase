@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import FormEntryHeader from '../shared/FormEntryHeader';
-import EmploymentEntryForm from '../sections/EmploymentEntryForm';
+import EmploymentEntryForm from '../entries/EmploymentEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
