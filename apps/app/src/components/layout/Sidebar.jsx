@@ -10,7 +10,15 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
     handleDragEnd,
     getPreviewItems,
     isDragging,
-  } = useDragDrop(sidebarItems, onReorderItems);
+  } = useDragDrop(sidebarItems, onReorderItems, {
+    canDrag: (item) => !item.fixed,
+    canDrop: (index, items) => {
+      // Can only drop on non-fixed items
+      return !items[index]?.fixed;
+    },
+    updateOrder: true,
+    orderKey: 'order'
+  });
 
   const previewItems = getPreviewItems();
 

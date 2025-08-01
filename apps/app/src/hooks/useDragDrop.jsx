@@ -1,12 +1,19 @@
 import { useState } from 'react';
 
-export const useDragDrop = (items, onReorderItems) => {
+export const useDragDrop = (items, onReorderItems, options = {}) => {
+  const {
+    canDrag = () => true,                    // Function to determine if item can be dragged
+    canDrop = () => true,                    // Function to determine if can drop at index
+    updateOrder = true,                      // Whether to update order property
+    orderKey = 'order',                      // Property name for order (could be 'position', 'index', etc.)
+  } = options;
+
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
 
   const handleDragStart = (e, item, index) => {
-    // Only allow dragging if item is not fixed
-    if (item.fixed) {
+    // Check if item can be dragged using the provided function
+    if (!canDrag(item, index, items)) {
       e.preventDefault();
       return;
     }
@@ -17,8 +24,8 @@ export const useDragDrop = (items, onReorderItems) => {
   const handleDragOver = (e, index) => {
     e.preventDefault();
     
-    // Only allow dropping on non-fixed items (index >= 3)
-    if (index < 3) {
+    // Check if can drop at this index using the provided function
+    if (!canDrop(index, items, draggedItem)) {
       e.dataTransfer.dropEffect = 'none';
       return;
     }
@@ -34,8 +41,8 @@ export const useDragDrop = (items, onReorderItems) => {
   const handleDrop = (e, dropIndex) => {
     e.preventDefault();
     
-    // Prevent dropping on fixed items
-    if (dropIndex < 3) {
+    // Check if can drop at this index
+    if (!canDrop(dropIndex, items, draggedItem)) {
       setDraggedItem(null);
       setDragOverIndex(null);
       return;
@@ -46,11 +53,14 @@ export const useDragDrop = (items, onReorderItems) => {
       const [draggedElement] = newItems.splice(draggedItem.index, 1);
       newItems.splice(dropIndex, 0, draggedElement);
       
-      // Update order property for all items
-      const updatedItems = newItems.map((item, index) => ({
-        ...item,
-        order: index
-      }));
+      // Update order property if enabled
+      let updatedItems = newItems;
+      if (updateOrder) {
+        updatedItems = newItems.map((item, index) => ({
+          ...item,
+          [orderKey]: index
+        }));
+      }
       
       onReorderItems(updatedItems);
     }
