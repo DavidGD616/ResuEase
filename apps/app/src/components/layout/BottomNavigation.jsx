@@ -1,6 +1,6 @@
 import { Menu, ChevronLeft, ChevronRight } from 'lucide-react';
 
-function BottomNavigation({ activeSection, onSectionChange, sidebarItems }) {
+function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReorderClick }) {
   // Get dynamic section order from sidebar items, excluding 'additional'
   const sectionOrder = sidebarItems
     .sort((a, b) => a.order - b.order)
@@ -51,7 +51,10 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems }) {
         )}
       </div>
       
-      <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+      <button 
+        onClick={onReorderClick}
+        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+      >
         <Menu className="w-4 h-4" />
         Reorder sections
       </button>

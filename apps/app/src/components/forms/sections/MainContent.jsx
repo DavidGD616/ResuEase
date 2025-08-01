@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ContactInformationForm from './ContactInformationForm';
 import EducationForm from './EducationForm';
 import EmploymentHistoryForm from './EmploymentHistoryForm';
@@ -13,6 +14,7 @@ import LanguagesForm from './LanguagesForm';
 import LinksForm from './LinksForm';
 import HobbiesForm from './HobbiesForm';
 import CustomSectionForm from './CustomSectionForm';
+import ReorderSectionsForm from './ReorderSectionsForm';
 
 function MainContent({ 
   activeSection, 
@@ -23,8 +25,28 @@ function MainContent({
   sidebarItems,
   onAddSection,
   onSectionChange,
-  onDeleteSection
+  onDeleteSection,
+  onReorderItems
 }) {
+  const [showReorder, setShowReorder] = useState(false);
+
+  // If showing reorder form, render it instead of the regular content
+  if (showReorder) {
+    return (
+      <ReorderSectionsForm
+        sidebarItems={sidebarItems}
+        onReorderItems={onReorderItems}
+        onBack={() => setShowReorder(false)}
+        onDone={() => setShowReorder(false)}
+        onDeleteSection={onDeleteSection}
+        onAddSectionClick={() => {
+          setShowReorder(false);
+          onSectionChange('additional');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="flex-1 p-6 max-w-2xl">
       {activeSection === 'personal' && (
@@ -127,6 +149,7 @@ function MainContent({
         activeSection={activeSection}
         onSectionChange={onSectionChange}
         sidebarItems={sidebarItems}
+        onReorderClick={() => setShowReorder(true)}
       />
     </div>
   );

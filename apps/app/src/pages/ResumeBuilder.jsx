@@ -108,6 +108,7 @@ function ResumeBuilder() {
             onAddSection={handleAddSection}
             onSectionChange={handleSectionChange}
             onDeleteSection={handleDeleteSection}
+            onReorderItems={handleReorderItems}
           />
           
           <PreviewPanel 
