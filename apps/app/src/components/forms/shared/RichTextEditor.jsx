@@ -1,4 +1,4 @@
-import { Bold, Italic, List, MoreHorizontal, Link } from 'lucide-react';
+import { Bold, Italic, List, ListOrdered, Link } from 'lucide-react';
 
 function RichTextEditor({ value, onChange, placeholder, label = "Description" }) {
   return (
@@ -17,7 +17,7 @@ function RichTextEditor({ value, onChange, placeholder, label = "Description" })
           <List className="w-4 h-4" />
         </button>
         <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <MoreHorizontal className="w-4 h-4" />
+          <ListOrdered className="w-4 h-4" />
         </button>
         <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
           <Link className="w-4 h-4" />
