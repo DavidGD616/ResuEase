@@ -1,39 +1,105 @@
-import { Bold, Italic, List, ListOrdered, Link } from 'lucide-react';
+import { useState } from "react";
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
-function RichTextEditor({ value, onChange, placeholder, label = "Description" }) {
+function RichTextEditor({ placeholder, label = "Description" }) {
+  const [value, setValue] = useState('');
+
+  const modules = {
+    toolbar: [
+      ['bold'],
+      ['italic'],
+      [{'list': 'bullet'}, ],
+      [{'list': 'ordered'}],
+      ['link']
+    ]
+  }
+
+  const formats = [
+    'bold',
+    'italic',
+    'list',
+    'bullet',
+    'link'
+  ]
+
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
-      
-      {/* Rich Text Toolbar */}
-      <div className="border border-gray-300 rounded-t-md bg-gray-50 p-2 flex items-center gap-1">
-        <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <Bold className="w-4 h-4" />
-        </button>
-        <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <Italic className="w-4 h-4" />
-        </button>
-        <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <List className="w-4 h-4" />
-        </button>
-        <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <ListOrdered className="w-4 h-4" />
-        </button>
-        <button className="p-1.5 hover:bg-gray-200 rounded text-gray-600">
-          <Link className="w-4 h-4" />
-        </button>
+      <div className="rich-text-wrapper">
+        <ReactQuill
+          theme="snow"
+          value={value}
+          onChange={setValue}
+          placeholder={placeholder}
+          modules={modules}
+          formats={formats}
+        />
       </div>
       
-      {/* Text Area */}
-      <textarea
-        value={value}
-        onChange={onChange}
-        rows="4"
-        className="w-full px-3 py-2 border border-gray-300 border-t-0 rounded-b-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-        placeholder={placeholder}
-      />
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .rich-text-wrapper .ql-toolbar {
+            border: 1px solid rgb(209, 213, 219) !important;
+            border-bottom: none !important;
+            border-radius: 6px 6px 0 0 !important;
+            background-color: rgb(249, 250, 251) !important;
+            padding: 8px !important;
+          }
+
+        .rich-text-wrapper .ql-container {
+            border: 1px solid rgb(209, 213, 219) !important;
+            border-top: none !important;
+            border-radius: 0 0 6px 6px !important;
+            font-family: inherit !important;
+            min-height: 150px;
+          }
+
+        .rich-text-wrapper .ql-editor {
+            padding: 8px 12px !important;
+            min-height: 64px !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+          }
+
+        .rich-text-wrapper .ql-editor:focus {
+            outline: none !important;
+          }
+
+        .rich-text-wrapper:focus-within {
+            box-shadow: 0 0 0 2px rgb(59, 130, 246, 0.5) !important;
+            border-radius: 6px !important;
+          }
+
+        .rich-text-wrapper .ql-editor.ql-blank::before {
+            font-style: normal !important;
+            color: rgb(156, 163, 175) !important;
+          }
+
+        .rich-text-wrapper .ql-fill {
+            fill: rgb(75, 85, 99) !important;
+          }
+
+        /* List spacing fixes - reduce big spaces in bullet/ordered lists */
+          .rich-text-wrapper .ql-editor ul {
+            margin: 0 !important;
+            padding-left: 1.5em !important;
+          }
+          
+          .rich-text-wrapper .ql-editor ol {
+            margin: 0 !important;
+            padding-left: 1.5em !important;
+          }
+          
+          .rich-text-wrapper .ql-editor li {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.5 !important;
+          }
+        `
+      }} />
     </div>
-  );
+  )
 }
 
 export default RichTextEditor;
