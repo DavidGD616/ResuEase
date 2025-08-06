@@ -85,7 +85,7 @@ function ResumeBuilder() {
           onMenuClick={() => setSidebarOpen(open => !open)
           } />
       
-      <div className="flex w-full mx-auto">
+      <div className="flex flex-col lg:flex-row w-full mx-auto">
         <Sidebar 
           sidebarItems={sidebarItems}
           activeSection={activeSection}
@@ -96,7 +96,7 @@ function ResumeBuilder() {
           
         />
 
-        <div className="flex-1 flex">
+        <div className="flex-1 flex flex-col lg:flex-row">
           <MainContent 
             activeSection={activeSection}
             formData={formData}
@@ -111,9 +111,11 @@ function ResumeBuilder() {
             onReorderItems={handleReorderItems}
           />
           
-          <PreviewPanel 
-            formData={formData}
-          />
+         <div className="lg:w-auto order-last lg:order-none">
+            <PreviewPanel 
+              formData={formData}
+            />
+          </div>
         </div>
       </div>
     </div>
