@@ -38,39 +38,40 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
   };
 
   return (
-    <div className="flex justify-between items-center pt-8 mt-8 border-t border-gray-200">
+    <div className="flex justify-between items-center pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-gray-200">
       <div>
         {(!isFirstSection || isAdditionalSection) && (
           <button
             onClick={handleBack}
-            className="flex px-6 bg-gray-200 py-3 rounded-lg items-center gap-2 text-gray-700 hover:bg-gray-300 transition-colors"
+            className="flex px-4 sm:px-6 bg-gray-200 py-2 sm:py-3 rounded-lg items-center gap-1 sm:gap-2 text-gray-700 hover:bg-gray-300 transition-colors text-sm sm:text-base"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back
+            <span className="hidden sm:inline">Back</span>
           </button>
         )}
       </div>
       
       <button 
         onClick={onReorderClick}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+        className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-900 text-xs sm:text-base"
       >
         <Menu className="w-4 h-4" />
-        Reorder sections
+        <span className="hidden sm:inline">Reorder sections</span>
+        <span className="sm:hidden">Reorder</span>
       </button>
 
       {!isAdditionalSection && (
         <button 
           onClick={handleNext}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center gap-2 transition-colors"
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center gap-1 sm:gap-2 transition-colors text-sm sm:text-base"
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
           <ChevronRight className="w-4 h-4" />
         </button>
       )}
       
       {isAdditionalSection && (
-        <div className="px-6 py-3"></div> // Empty space to maintain layout
+        <div className="px-4 sm:px-6 py-2 sm:py-3"></div> // Empty space to maintain layout
       )}
     </div>
   );
