@@ -37,11 +37,8 @@ function TopNavigation({ onMenuClick }) {
             </div>
             <span>50%</span>
           </div>
-          <button className="px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg text-sm font-medium">
-            Share
-          </button>
           <button 
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2 ml-4"
           >
             <FileDown className="w-4 h-4" />
             Download
