@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription } from '../shared/FormComponents';
 import RichTextEditor from '../shared/RichTextEditor';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
@@ -8,19 +8,11 @@ function HobbiesForm({ formData, handleInputChange, onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Hobbies</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Hobbies" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Showcase your passion and highlight your achievements, such as special projects completed, unique skills developed, or notable experiences gained.
-      </p>
+      </FormDescription>
       
       <RichTextEditor
         value={formData.hobbies || ''}

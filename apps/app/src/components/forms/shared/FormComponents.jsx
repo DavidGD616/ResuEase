@@ -1,4 +1,6 @@
-import { Trash2 } from 'lucide-react';
+import { Camera, Plus, Trash2, ChevronDown, ChevronUp, X } from 'lucide-react';
+
+// Typography Components
 
 export function FormHeader({ title, onDelete, showDelete = false }) {
   return (
@@ -24,9 +26,19 @@ export function FormDescription({ children }) {
   );
 }
 
+// Layout Components
+
 export function FormSection({ children, className = "" }) {
   return (
     <div className={`space-y-4 sm:space-y-6 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+export function FormContainer({ children, className = "" }) {
+  return (
+    <div className={`p-3 sm:p-4 space-y-3 sm:space-y-4 ${className}`}>
       {children}
     </div>
   );
@@ -39,6 +51,8 @@ export function FormGrid({ columns = 2, children, className = "" }) {
     
   return <div className={`${gridClass} ${className}`}>{children}</div>;
 }
+
+// Form Input Components
 
 export function FormInput({ label, ...props }) {
   return (
@@ -55,6 +69,49 @@ export function FormInput({ label, ...props }) {
     </div>
   );
 }
+
+export function FormTextarea({ label, ...props }) {
+  return (
+    <div>
+      {label && (
+        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+          {label}
+        </label>
+      )}
+      <textarea
+        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base resize-none"
+        {...props}
+      />
+    </div>
+  );
+}
+
+export function FormSelect({ label, options, ...props }) {
+  return (
+    <div>
+      {label && (
+        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        <select
+          className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base appearance-none bg-white"
+          {...props}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-400 pointer-events-none" />
+      </div>
+    </div>
+  );
+}
+
+// Button Components
 
 export function FormButton({ variant = "secondary", icon: Icon, children, ...props }) {
   const baseClasses = "flex items-center gap-1 sm:gap-2 font-medium transition-colors text-sm sm:text-base";

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import CourseEntryForm from '../entries/CourseEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -52,23 +52,15 @@ function CoursesForm({ onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Courses</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Courses" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Include relevant courses, certifications, and training programs that demonstrate your commitment to professional development and skill enhancement.
-      </p>
+      </FormDescription>
       
-      <div className="space-y-4">
+      <FormSection>
         {courses.map((course) => (
-          <div key={course.id} className="border border-gray-200 rounded-lg">
+          <div key={course.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
               title={course.courseName || course.institution}
               isExpanded={expandedItems[course.id]}
@@ -89,9 +81,8 @@ function CoursesForm({ onDeleteSection }) {
           onClick={addCourse}
           label="Add course"
         />
-      </div>
+      </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}

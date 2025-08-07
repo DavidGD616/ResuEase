@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import EducationEntryForm from '../entries/EducationEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -54,23 +54,15 @@ function EducationForm({ onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Education</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Education" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Add the name of your school, where it is located, what degree you obtained, your field of study, and your graduation year.
-      </p>
+      </FormDescription>
       
-      <div className="space-y-4">
+      <FormSection>
         {educationEntries.map((education) => (
-          <div key={education.id} className="border border-gray-200 rounded-lg">
+          <div key={education.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
               title={education.institution}
               isExpanded={expandedItems[education.id]}
@@ -91,15 +83,14 @@ function EducationForm({ onDeleteSection }) {
           onClick={addEducation}
           label="Add education"
         />
-      </div>
+      </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
         title="Are you sure you want to delete this section?"
-        message="You can’t undo this action."
+        message="You can't undo this action."
         confirmText="Delete Section"
         cancelText="Cancel"
       />

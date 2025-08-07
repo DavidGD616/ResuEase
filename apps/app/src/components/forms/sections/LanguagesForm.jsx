@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import LanguageEntryForm from '../entries/LanguageEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -50,23 +50,15 @@ function LanguagesForm({ onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Languages</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Languages" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Include languages you speak and your proficiency level. This can be valuable for positions requiring multilingual communication.
-      </p>
+      </FormDescription>
       
-      <div className="space-y-4">
+      <FormSection>
         {languages.map((language) => (
-          <div key={language.id} className="border border-gray-200 rounded-lg">
+          <div key={language.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
               title={language.language || 'Untitled'}
               isExpanded={expandedItems[language.id]}
@@ -87,9 +79,8 @@ function LanguagesForm({ onDeleteSection }) {
           onClick={addLanguage}
           label="Add one more language"
         />
-      </div>
+      </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}

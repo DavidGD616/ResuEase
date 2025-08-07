@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import InternshipEntryForm from '../entries/InternshipEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -54,23 +54,15 @@ function InternshipsForm({ onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Internships</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Internships" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Include internships and temporary positions that demonstrate your skills and experience. Focus on what you learned and accomplished during these roles.
-      </p>
+      </FormDescription>
       
-      <div className="space-y-4">
+      <FormSection>
         {internships.map((internship) => (
-          <div key={internship.id} className="border border-gray-200 rounded-lg">
+          <div key={internship.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
               title={internship.jobTitle || internship.company}
               isExpanded={expandedItems[internship.id]}
@@ -91,9 +83,8 @@ function InternshipsForm({ onDeleteSection }) {
           onClick={addInternship}
           label="Add internship"
         />
-      </div>
+      </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}

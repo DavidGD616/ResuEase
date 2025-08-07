@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import LinkEntryForm from '../entries/LinkEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -50,23 +50,15 @@ function LinksForm({ onDeleteSection }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Links</h1>
-        <button 
-          onClick={deleteModal.openModal}
-          className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+      <FormHeader title="Links" onDelete={deleteModal.openModal} showDelete />
       
-      <p className="text-gray-600 mb-8">
+      <FormDescription>
         Add relevant links: personal website, socials, LinkedIn profile, etc.
-      </p>
+      </FormDescription>
       
-      <div className="space-y-4">
+      <FormSection>
         {links.map((link) => (
-          <div key={link.id} className="border border-gray-200 rounded-lg">
+          <div key={link.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
               title={link.linkTitle || 'Untitled'}
               isExpanded={expandedItems[link.id]}
@@ -87,9 +79,8 @@ function LinksForm({ onDeleteSection }) {
           onClick={addLink}
           label="Add one more link"
         />
-      </div>
+      </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
