@@ -37,9 +37,11 @@ function EmploymentEntryForm({ experience, onUpdate }) {
         <FormInput
           label="End date"
           type="text"
-          value={experience.endDate}
+          value={experience.isCurrentJob ? "Present" : experience.endDate}
           onChange={(e) => handleChange('endDate', e.target.value)}
-          placeholder="Feb 2019"
+          placeholder={experience.isCurrentJob ? "Present" : "Feb 2019"}
+          disabled={experience.isCurrentJob}
+          className={experience.isCurrentJob ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
         />
         <FormInput
           label="Location"
@@ -49,6 +51,23 @@ function EmploymentEntryForm({ experience, onUpdate }) {
           placeholder="Washington, D.C."
         />
       </FormGrid>
+
+      <div className="mb-3 sm:mb-4">
+        <label className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-gray-700 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={experience.isCurrentJob || false}
+            onChange={(e) => {
+              handleChange('isCurrentJob', e.target.checked);
+              if (e.target.checked) {
+                handleChange('endDate', '');
+              }
+            }}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+          />
+          I currently work here
+        </label>
+      </div>
 
       <RichTextEditor
         value={experience.description}
