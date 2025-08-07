@@ -146,3 +146,54 @@ export function FormToggleButton({ isOpen, icon: Icon, children, ...props }) {
     </button>
   );
 }
+
+// Entry Components
+
+export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }) {
+  return (
+    <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50" onClick={onToggleExpanded}>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          className="text-gray-400 hover:text-gray-600"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleExpanded();
+          }}
+        >
+          {isExpanded ? (
+            <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" />
+          ) : (
+            <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
+          )}
+        </button>
+        <h3 className="font-medium text-sm sm:text-base text-gray-900">
+          {title || 'Untitled'}
+        </h3>
+      </div>
+      
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove();
+        }}
+        className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+      >
+        <X className="w-4 h-4 sm:w-5 sm:h-5" />
+      </button>
+    </div>
+  );
+}
+
+export function AddEntryButton({ onClick, label }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full py-2 sm:py-3 border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg hover:border-gray-400 text-sm sm:text-base text-gray-600 hover:text-gray-700 transition-colors flex items-center justify-center gap-1 sm:gap-2"
+    >
+      <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+      {label}
+    </button>
+  );
+}
