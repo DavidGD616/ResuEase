@@ -32,6 +32,9 @@ function ReorderSectionsForm({
     handleDragLeave,
     handleDrop,
     handleDragEnd,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
     getPreviewItems,
     isDragging,
   } = useDragDrop(sidebarItems, onReorderItems, {
@@ -75,12 +78,16 @@ function ReorderSectionsForm({
             return (
               <div
                 key={item.id}
+                data-drop-index={previewIndex}
                 draggable={canDrag}
                 onDragStart={(e) => handleDragStart(e, item, originalIndex)}
                 onDragOver={(e) => handleDragOver(e, previewIndex)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, previewIndex)}
                 onDragEnd={handleDragEnd}
+                onTouchStart={canDrag ? (e) => handleTouchStart(e, item, originalIndex) : undefined}
+                onTouchMove={canDrag ? handleTouchMove : undefined}
+                onTouchEnd={canDrag ? handleTouchEnd : undefined}
                 className={`
                   flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2
                   ${item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
@@ -88,6 +95,10 @@ function ReorderSectionsForm({
                   ${canDrag ? 'cursor-move' : 'cursor-default'}
                   transition-all duration-200
                 `}
+                style={{
+                  userSelect: 'none',
+                  touchAction: canDrag ? 'none' : 'auto'
+                }}
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   {canDrag ? (

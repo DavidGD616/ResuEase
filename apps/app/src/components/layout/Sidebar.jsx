@@ -8,6 +8,9 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
     handleDragLeave,
     handleDrop,
     handleDragEnd,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
     getPreviewItems,
     isDragging,
   } = useDragDrop(sidebarItems, onReorderItems, {
@@ -38,17 +41,25 @@ function Sidebar({ sidebarItems, activeSection, setActiveSection, sidebarOpen, o
           return (
             <div
               key={item.id}
+              data-drop-index={previewIndex}
               draggable={canDrag}
               onDragStart={(e) => handleDragStart(e, item, originalIndex)}
               onDragOver={(e) => handleDragOver(e, previewIndex)}
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, previewIndex)}
               onDragEnd={handleDragEnd}
+              onTouchStart={canDrag ? (e) => handleTouchStart(e, item, originalIndex) : undefined}
+              onTouchMove={canDrag ? handleTouchMove : undefined}
+              onTouchEnd={canDrag ? handleTouchEnd : undefined}
               className={`
                 group relative ${canDrag ? 'cursor-move' : 'cursor-default'}
                 ${itemIsDragging ? 'opacity-50 scale-95' : ''}
                 ${itemIsDragging ? 'transition-all duration-200' : 'transition-all duration-300'}
               `}
+              style={{
+                userSelect: 'none',
+                touchAction: canDrag ? 'none' : 'auto'
+              }}
             >
               <button
                 onClick={() => setActiveSection(item.id)}
