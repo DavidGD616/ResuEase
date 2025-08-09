@@ -2,18 +2,24 @@ import DocumentPreview from './DocumentPreview';
 
 function PreviewPanel({ formData }) {
   return (
-    <div className="w-auto bg-gray-50 border-l border-gray-200 p-6">
+    <div className="w-sm sm:w-md bg-gray-50 border-l border-gray-200 p-6">
       <div className="w-full max-w-full flex justify-center">
         <div
           className="relative bg-gray-50 overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
           style={{
             aspectRatio: "0.7076648841354723",
-            // Use min() to ensure it doesn't exceed container width
             maxWidth: "min(100%, calc((100vh - 104px) * 0.7076648841354723))",
-            // Height will automatically adjust based on aspect ratio
           }}
         >
-          <DocumentPreview formData={formData} />
+          {/* Container that scales DocumentPreview to fit */}
+          <div 
+            className="w-full h-full flex items-center justify-center scale-[0.44] sm:scale-[0.53]"
+            style={{
+              transformOrigin: 'center center'
+            }}
+          >
+            <DocumentPreview formData={formData} />
+          </div>
         </div>
       </div>
 
