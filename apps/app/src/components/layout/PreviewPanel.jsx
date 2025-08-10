@@ -1,20 +1,48 @@
+import { useRef, useEffect, useState } from 'react';
 import DocumentPreview from './DocumentPreview';
 
 function PreviewPanel({ formData }) {
+  const containerRef = useRef(null);
+  const [scale, setScale] = useState(0.54);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (containerRef.current) {
+        const container = containerRef.current;        
+        const scaleX = container.offsetWidth;
+        const scaleY = container.offsetHeight;
+        
+        const newScale = Math.min(scale, Math.min(scaleX, scaleY));
+        setScale(newScale);
+      }
+    };
+
+    updateScale();
+    
+    const resizeObserver = new ResizeObserver(updateScale);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
-    <div className="w-sm sm:w-md bg-gray-50 border-l border-gray-200 p-6">
+    <div className="sm:w-md bg-gray-50 lg:border-l border-gray-200 p-6">
       <div className="w-full max-w-full flex justify-center">
         <div
-          className="relative bg-gray-50 overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
+          className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
           style={{
-            aspectRatio: "0.7076648841354723",
-            maxWidth: "min(100%, calc((100vh - 104px) * 0.7076648841354723))",
+            aspectRatio: "0.7727",
+            maxWidth: "min(100%, calc((100vh - 104px) * 0.7727))",
           }}
         >
           {/* Container that scales DocumentPreview to fit */}
           <div 
-            className="w-full h-full flex items-center justify-center scale-[0.44] sm:scale-[0.53]"
+            ref={containerRef}
+            className="w-full h-full flex items-center justify-center"
             style={{
+              transform: `scale(${scale})`,
               transformOrigin: 'center center'
             }}
           >
