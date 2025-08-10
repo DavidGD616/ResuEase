@@ -8,11 +8,19 @@ function PreviewPanel({ formData }) {
   useEffect(() => {
     const updateScale = () => {
       if (containerRef.current) {
-        const container = containerRef.current;        
-        const scaleX = container.offsetWidth;
-        const scaleY = container.offsetHeight;
+        const container = containerRef.current;      
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+
+        // A4 document size 96dpi
+        const documentWidth = 794;
+        const documentHeight = 1123;
+
+        const scaleX = containerWidth / documentWidth;
+        const scaleY = containerHeight / documentHeight;
         
-        const newScale = Math.min(scale, Math.min(scaleX, scaleY));
+        // Use the bigger scale to ensure document fits completely
+        const newScale = Math.max(scaleX, scaleY);
         setScale(newScale);
       }
     };
@@ -23,18 +31,22 @@ function PreviewPanel({ formData }) {
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current);
     }
-    
-    return () => resizeObserver.disconnect();
-  }, [scale]);
+    window.addEventListener('resize', updateScale);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateScale);
+    };
+  }, []);
 
   return (
-    <div className="sm:w-md bg-gray-50 lg:border-l border-gray-200 p-6">
+    <div className="w-96 sm:w-md bg-gray-50 lg:border-l border-gray-200 p-6">
       <div className="w-full max-w-full flex justify-center">
         <div
           className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
           style={{
-            aspectRatio: "0.7727",
-            maxWidth: "min(100%, calc((100vh - 104px) * 0.7727))",
+            aspectRatio: "0.76",
+            maxWidth: "min(100%, calc((100vh - 104px) * 0.707034728))",
           }}
         >
           {/* Container that scales DocumentPreview to fit */}
