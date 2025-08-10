@@ -96,7 +96,7 @@ function ResumeBuilder() {
           
         />
 
-        <div className="flex-1 flex flex-col lg:flex-row">
+        <div className="flex-1 flex flex-col lg:flex-row items-center lg:items-start">
           <MainContent 
             activeSection={activeSection}
             formData={formData}
