@@ -111,7 +111,7 @@ function ResumeBuilder() {
             onReorderItems={handleReorderItems}
           />
           
-         <div className="lg:w-auto order-last lg:order-none flex justify-center">
+         <div className="order-last lg:order-none flex justify-center">
             <PreviewPanel 
               formData={formData}
             />
