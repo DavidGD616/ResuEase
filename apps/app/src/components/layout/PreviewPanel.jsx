@@ -25,7 +25,7 @@ function PreviewPanel({ formData }) {
     }
     
     return () => resizeObserver.disconnect();
-  }, []);
+  }, [scale]);
 
   return (
     <div className="sm:w-md bg-gray-50 lg:border-l border-gray-200 p-6">
