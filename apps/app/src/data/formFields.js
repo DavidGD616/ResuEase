@@ -44,8 +44,8 @@ export const SECTION_TEMPLATES = {
     description: ''
   },
   employment: {
+    jobTitle: '',
     company: '',
-    position: '',
     startDate: '',
     endDate: '',
     location: '',

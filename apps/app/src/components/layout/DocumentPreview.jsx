@@ -124,7 +124,7 @@ function DocumentPreview({ formData }) {
                   }}>
                     <div>
                       <strong style={{ fontSize: '11pt' }}>
-                        {job.position || 'Position Title'}
+                        {job.jobTitle || 'Job Title'}
                       </strong>
                       {job.company && (
                         <span style={{ fontSize: '11pt' }}>
