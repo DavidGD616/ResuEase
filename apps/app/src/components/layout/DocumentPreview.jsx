@@ -11,7 +11,6 @@ function DocumentPreview({ formData }) {
         width: '8.5in',
         height: '11in',
         padding: '0.75in',
-        pageBreakAfter: 'always',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column'
@@ -124,7 +123,7 @@ function DocumentPreview({ formData }) {
                   }}>
                     <div>
                       <strong style={{ fontSize: '11pt' }}>
-                        {job.jobTitle || 'Job Title'}
+                        {job.jobTitle || 'Position Title'}
                       </strong>
                       {job.company && (
                         <span style={{ fontSize: '11pt' }}>
@@ -197,7 +196,7 @@ function DocumentPreview({ formData }) {
                   }}>
                     <div>
                       <strong style={{ fontSize: '11pt' }}>
-                        {job.position || 'Position Title'}
+                        {job.jobTitle || 'Position Title'}
                       </strong>
                       {job.company && (
                         <span style={{ fontSize: '11pt' }}>
@@ -253,7 +252,7 @@ function DocumentPreview({ formData }) {
                   }}>
                     <div>
                       <strong style={{ fontSize: '11pt' }}>
-                        {internship.position || 'Internship Position'}
+                        {internship.jobTitle || 'Internship Position'}
                       </strong>
                       {internship.company && (
                         <span style={{ fontSize: '11pt' }}>
@@ -358,9 +357,9 @@ function DocumentPreview({ formData }) {
               <div style={{ fontSize: '11pt', lineHeight: '1.3' }}>
                 {formData.languages.map((lang, index) => (
                   <span key={index}>
-                    {lang.name && lang.level 
-                      ? `${lang.name} (${lang.level})`
-                      : lang.name || lang}
+                    {lang.language && lang.proficiency 
+                      ? `${lang.language} (${lang.proficiency})`
+                      : lang.language || lang}
                     {index < formData.languages.length - 1 ? ' • ' : ''}
                   </span>
                 ))}
@@ -384,16 +383,16 @@ function DocumentPreview({ formData }) {
               {formData.courses.map((course, index) => (
                 <div key={index} style={{ marginBottom: '6pt' }}>
                   <strong style={{ fontSize: '11pt' }}>
-                    {course.name || 'Course Name'}
+                    {course.courseName || 'Course Name'}
                   </strong>
                   {course.institution && (
                     <span style={{ fontSize: '11pt' }}>
                       {', '}{course.institution}
                     </span>
                   )}
-                  {course.completionDate && (
+                  {course.startDate && course.endDate && (
                     <span style={{ fontSize: '10pt', color: '#333' }}>
-                      {' ('}{course.completionDate}{')'}
+                      {' ('}{course.startDate} - {course.endDate}{')'}
                     </span>
                   )}
                   {course.description && (
@@ -427,7 +426,7 @@ function DocumentPreview({ formData }) {
               {formData.links.map((link, index) => (
                 <div key={index} style={{ marginBottom: '6pt' }}>
                   <div style={{ fontSize: '11pt' }}>
-                    <strong>{link.label || 'Link'}</strong>
+                    <strong>{link.linkTitle || 'Link'}</strong>
                     {link.url && (
                       <span style={{ fontSize: '10pt', color: '#333' }}>
                         {': '}{link.url}
@@ -511,9 +510,9 @@ function DocumentPreview({ formData }) {
               {formData.references.map((ref, index) => (
                 <div key={index} style={{ marginBottom: '8pt' }}>
                   <div style={{ fontSize: '11pt' }}>
-                    <strong>{ref.name || 'Reference Name'}</strong>
-                    {ref.position && ref.company && (
-                      <span>{', '}{ref.position} at {ref.company}</span>
+                    <strong>{ref.referentName || 'Reference Name'}</strong>
+                    {ref.position && ref.referentCompany && (
+                      <span>{', '}{ref.position} at {ref.referentCompany}</span>
                     )}
                     {ref.relationship && (
                       <span style={{ fontSize: '10pt', color: '#333' }}>
@@ -522,9 +521,9 @@ function DocumentPreview({ formData }) {
                     )}
                   </div>
                   <div style={{ fontSize: '10pt', color: '#333' }}>
-                    {ref.phone && <span>{ref.phone}</span>}
-                    {ref.phone && ref.email && <span> • </span>}
-                    {ref.email && <span>{ref.email}</span>}
+                    {ref.referentPhone && <span>{ref.referentPhone}</span>}
+                    {ref.referentPhone && ref.referentEmail && <span> • </span>}
+                    {ref.referentEmail && <span>{ref.referentEmail}</span>}
                   </div>
                 </div>
               ))}
