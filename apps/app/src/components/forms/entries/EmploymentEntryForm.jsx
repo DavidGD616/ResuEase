@@ -41,7 +41,7 @@ function EmploymentEntryForm({ experience, onUpdate }) {
           onChange={(e) => handleChange('endDate', e.target.value)}
           placeholder={experience.isCurrentJob ? "Present" : "Feb 2019"}
           disabled={experience.isCurrentJob}
-          className={experience.isCurrentJob ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""}
+          
         />
         <FormInput
           label="Location"
