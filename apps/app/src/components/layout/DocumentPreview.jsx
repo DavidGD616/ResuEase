@@ -33,11 +33,25 @@ function DocumentPreview({ formData }) {
           </div>
           
           <div style={{ fontSize: '10pt', color: '#333' }}>
-            {formData.address && <span>{formData.address} • </span>}
+            {formData.address && <span>{formData.address}</span>}
+            {formData.city && <span>{formData.address ? ', ' : ''}{formData.city}</span>}
+            {formData.country && <span>{(formData.address || formData.city) ? ', ' : ''}{formData.country}</span>}
+            {formData.postalCode && <span> {formData.postalCode}</span>}
+            {(formData.address || formData.city || formData.country || formData.postalCode) && <span> • </span>}
             {formData.phone && <span>{formData.phone} • </span>}
             {formData.email && <span>{formData.email}</span>}
-            {formData.linkedin && <span> • {formData.linkedin}</span>}
           </div>
+          
+          {/* Additional personal details */}
+          {(formData.nationality || formData.driversLicense || formData.birthDate) && (
+            <div style={{ fontSize: '10pt', color: '#333', marginTop: '4pt' }}>
+              {formData.nationality && <span>Nationality: {formData.nationality}</span>}
+              {formData.nationality && formData.driversLicense && <span> • </span>}
+              {formData.driversLicense && <span>License: {formData.driversLicense}</span>}
+              {(formData.nationality || formData.driversLicense) && formData.birthDate && <span> • </span>}
+              {formData.birthDate && <span>DOB: {formData.birthDate}</span>}
+            </div>
+          )}
         </div>
 
         {/* Flexible content area for page 1 */}
@@ -150,7 +164,11 @@ function DocumentPreview({ formData }) {
        (formData.education && formData.education.length > 0) || 
        (formData.languages && formData.languages.length > 0) || 
        (formData.courses && formData.courses.length > 0) || 
-       (formData.references && formData.references.length > 0) ? (
+       (formData.references && formData.references.length > 0) ||
+       (formData.internships && formData.internships.length > 0) ||
+       (formData.links && formData.links.length > 0) ||
+       formData.hobbies ||
+       (formData.customSections && Object.keys(formData.customSections).length > 0) ? (
         <div className="bg-white" style={{
           width: '8.5in',
           height: '11in',
@@ -212,6 +230,62 @@ function DocumentPreview({ formData }) {
             </div>
           )}
 
+          {/* Internships */}
+          {formData.internships && formData.internships.length > 0 && (
+            <div className="mb-6">
+              <h2 style={{ 
+                fontSize: '12pt', 
+                fontWeight: 'bold',
+                marginBottom: '8pt',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #000',
+                paddingBottom: '2pt'
+              }}>
+                Internship Experience
+              </h2>
+              {formData.internships.map((internship, index) => (
+                <div key={index} style={{ marginBottom: '12pt' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    marginBottom: '4pt'
+                  }}>
+                    <div>
+                      <strong style={{ fontSize: '11pt' }}>
+                        {internship.position || 'Internship Position'}
+                      </strong>
+                      {internship.company && (
+                        <span style={{ fontSize: '11pt' }}>
+                          {' '}at <em>{internship.company}</em>
+                        </span>
+                      )}
+                      {internship.location && (
+                        <span style={{ fontSize: '10pt', color: '#333' }}>
+                          {', '}{internship.location}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: '10pt', color: '#333' }}>
+                      {internship.startDate && internship.endDate && 
+                        `${internship.startDate} - ${internship.endDate}`}
+                    </div>
+                  </div>
+                  {internship.description && (
+                    <div style={{ 
+                      fontSize: '11pt', 
+                      lineHeight: '1.3',
+                      marginLeft: '12pt',
+                      textAlign: 'justify'
+                    }}>
+                      {internship.description}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Education */}
           {formData.education && formData.education.length > 0 && (
             <div className="mb-6">
@@ -248,7 +322,9 @@ function DocumentPreview({ formData }) {
                       )}
                     </div>
                     <div style={{ fontSize: '10pt', color: '#333' }}>
-                      {edu.endDate || edu.startDate}
+                      {edu.startDate && edu.endDate 
+                        ? `${edu.startDate} - ${edu.endDate}`
+                        : edu.endDate || edu.startDate}
                     </div>
                   </div>
                   {edu.description && (
@@ -292,7 +368,7 @@ function DocumentPreview({ formData }) {
             </div>
           )}
 
-          {/* Additional Sections */}
+          {/* Professional Development / Courses */}
           {formData.courses && formData.courses.length > 0 && (
             <div className="mb-6">
               <h2 style={{ 
@@ -320,9 +396,103 @@ function DocumentPreview({ formData }) {
                       {' ('}{course.completionDate}{')'}
                     </span>
                   )}
+                  {course.description && (
+                    <div style={{ 
+                      fontSize: '11pt', 
+                      lineHeight: '1.3',
+                      marginLeft: '12pt',
+                      marginTop: '4pt'
+                    }}>
+                      {course.description}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+          )}
+
+          {/* Links / Portfolio */}
+          {formData.links && formData.links.length > 0 && (
+            <div className="mb-6">
+              <h2 style={{ 
+                fontSize: '12pt', 
+                fontWeight: 'bold',
+                marginBottom: '8pt',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #000',
+                paddingBottom: '2pt'
+              }}>
+                Portfolio & Links
+              </h2>
+              {formData.links.map((link, index) => (
+                <div key={index} style={{ marginBottom: '6pt' }}>
+                  <div style={{ fontSize: '11pt' }}>
+                    <strong>{link.label || 'Link'}</strong>
+                    {link.url && (
+                      <span style={{ fontSize: '10pt', color: '#333' }}>
+                        {': '}{link.url}
+                      </span>
+                    )}
+                  </div>
+                  {link.description && (
+                    <div style={{ 
+                      fontSize: '11pt', 
+                      lineHeight: '1.3',
+                      marginLeft: '12pt',
+                      marginTop: '2pt'
+                    }}>
+                      {link.description}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Hobbies & Interests */}
+          {formData.hobbies && (
+            <div className="mb-6">
+              <h2 style={{ 
+                fontSize: '12pt', 
+                fontWeight: 'bold',
+                marginBottom: '8pt',
+                textTransform: 'uppercase',
+                borderBottom: '1px solid #000',
+                paddingBottom: '2pt'
+              }}>
+                Interests & Hobbies
+              </h2>
+              <div style={{ 
+                fontSize: '11pt', 
+                lineHeight: '1.3'
+              }}>
+                {formData.hobbies}
+              </div>
+            </div>
+          )}
+
+          {/* Custom Sections */}
+          {formData.customSections && Object.keys(formData.customSections).length > 0 && (
+            Object.entries(formData.customSections).map(([sectionName, sectionContent], index) => (
+              <div key={index} className="mb-6">
+                <h2 style={{ 
+                  fontSize: '12pt', 
+                  fontWeight: 'bold',
+                  marginBottom: '8pt',
+                  textTransform: 'uppercase',
+                  borderBottom: '1px solid #000',
+                  paddingBottom: '2pt'
+                }}>
+                  {sectionName}
+                </h2>
+                <div style={{ 
+                  fontSize: '11pt', 
+                  lineHeight: '1.3'
+                }}>
+                  {sectionContent}
+                </div>
+              </div>
+            ))
           )}
 
           {/* References */}
@@ -344,6 +514,11 @@ function DocumentPreview({ formData }) {
                     <strong>{ref.name || 'Reference Name'}</strong>
                     {ref.position && ref.company && (
                       <span>{', '}{ref.position} at {ref.company}</span>
+                    )}
+                    {ref.relationship && (
+                      <span style={{ fontSize: '10pt', color: '#333' }}>
+                        {' ('}{ref.relationship}{')'}
+                      </span>
                     )}
                   </div>
                   <div style={{ fontSize: '10pt', color: '#333' }}>
