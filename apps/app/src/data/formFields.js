@@ -52,35 +52,37 @@ export const SECTION_TEMPLATES = {
     description: ''
   },
   internship: {
+    jobTitle: '',
     company: '',
-    position: '',
     startDate: '',
     endDate: '',
     location: '',
     description: ''
   },
   course: {
-    name: '',
+    courseName: '',
     institution: '',
-    completionDate: '',
-    description: ''
+    startDate: '',
+    endDate: ''
   },
   reference: {
-    name: '',
-    position: '',
-    company: '',
-    phone: '',
-    email: '',
-    relationship: ''
+    referentName: '',
+    referentCompany: '',
+    referentEmail: '',
+    referentPhone: ''
   },
   link: {
-    label: '',
-    url: '',
-    description: ''
+    linkTitle: '',
+    url: ''
   },
   language: {
-    name: '',
-    level: 'Beginner'
+    language: '',
+    proficiency: 'Not applicable'
+  },
+  customSection : {
+    header: '',
+    subheader: '',
+    description: ''
   }
 };
 
