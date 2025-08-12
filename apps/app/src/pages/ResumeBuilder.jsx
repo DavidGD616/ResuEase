@@ -7,7 +7,17 @@ import MainContent from '../components/forms/sections/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {
-  const { formData, updateField } = useFormData();
+  const { 
+    formData, 
+    updateField,
+    addSectionItem,
+    updateSectionItem,
+    removeSectionItem,
+    updateSection,
+    addCustomSection,
+    removeCustomSection
+  } = useFormData();
+  
   const [activeSection, setActiveSection] = useState(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
@@ -28,15 +38,20 @@ function ResumeBuilder() {
   const handleAddSection = (section) => {
     if (section.id === 'custom') {
       // For custom sections, create a unique ID and add to sidebar
+      const customSectionName = `Custom section ${customSectionCounter}`;
       const customSection = {
         ...section,
         id: `custom-${customSectionCounter}`,
-        label: `Custom section ${customSectionCounter}`,
+        label: customSectionName,
         order: sidebarItems.length,
         fixed: false
       };
       setSidebarItems(prev => [...prev, customSection]);
       setCustomSectionCounter(prev => prev + 1);
+      
+      // Add to form data
+      addCustomSection(customSectionName, '');
+      
       setActiveSection(customSection.id);
     } else {
       // For predefined sections, add to sidebar
@@ -56,7 +71,7 @@ function ResumeBuilder() {
     setSidebarOpen(false);
   }
 
-  // Funtion to handle section deletion of any non-fixed section
+  // Function to handle section deletion of any non-fixed section
   const handleDeleteSection = (sectionId) => {
     // Prevent deletion of fixed sections
     const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
@@ -64,14 +79,22 @@ function ResumeBuilder() {
       return;
     }
 
+    // If it's a custom section, remove from form data
+    if (sectionId.startsWith('custom-')) {
+      const customSectionName = sectionToDelete?.label;
+      if (customSectionName) {
+        removeCustomSection(customSectionName);
+      }
+    }
+
     // Remove the section from sidebar
     setSidebarItems(prev => prev.filter(item => item.id !== sectionId));
 
     // If the deleted section was active, navigate to the first available section
     if (activeSection === sectionId) {
-      const remaininSections = sidebarItems.filter(item => item.id !== sectionId);
-      if (remaininSections.length > 0) {
-        setActiveSection(remaininSections[0].id);
+      const remainingSections = sidebarItems.filter(item => item.id !== sectionId);
+      if (remainingSections.length > 0) {
+        setActiveSection(remainingSections[0].id);
       } else {
         setActiveSection(SECTION_TYPES.PERSONAL);
       }
@@ -81,9 +104,9 @@ function ResumeBuilder() {
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNavigation 
-          formData={formData} 
-          onMenuClick={() => setSidebarOpen(open => !open)
-          } />
+        formData={formData} 
+        onMenuClick={() => setSidebarOpen(open => !open)} 
+      />
       
       <div className="flex flex-col lg:flex-row w-full mx-auto">
         <Sidebar 
@@ -93,7 +116,6 @@ function ResumeBuilder() {
           sidebarOpen={sidebarOpen}
           onReorderItems={handleReorderItems}
           onAdditionalSectionClick={handleAdditionalSectionClick}
-          
         />
 
         <div className="flex-1 flex flex-col lg:flex-row items-center lg:items-start">
@@ -109,6 +131,10 @@ function ResumeBuilder() {
             onSectionChange={handleSectionChange}
             onDeleteSection={handleDeleteSection}
             onReorderItems={handleReorderItems}
+            addSectionItem={addSectionItem}
+            updateSectionItem={updateSectionItem}
+            removeSectionItem={removeSectionItem}
+            updateSection={updateSection}
           />
           
          <div className="order-last lg:order-none flex justify-center">

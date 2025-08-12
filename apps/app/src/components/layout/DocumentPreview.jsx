@@ -118,7 +118,7 @@ function DocumentPreview({ formData }) {
             Professional Experience
           </h2>
           {formData.employment.map((job, index) => (
-            <div key={index} style={{ marginBottom: '12pt' }}>
+            <div key={job.id || index} style={{ marginBottom: '12pt' }}>
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'space-between',
@@ -174,7 +174,7 @@ function DocumentPreview({ formData }) {
             Internship Experience
           </h2>
           {formData.internships.map((internship, index) => (
-            <div key={index} style={{ marginBottom: '12pt' }}>
+            <div key={internship.id || index} style={{ marginBottom: '12pt' }}>
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'space-between',
@@ -230,7 +230,7 @@ function DocumentPreview({ formData }) {
             Education
           </h2>
           {formData.education.map((edu, index) => (
-            <div key={index} style={{ marginBottom: '8pt' }}>
+            <div key={edu.id || index} style={{ marginBottom: '8pt' }}>
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'space-between',
@@ -272,7 +272,7 @@ function DocumentPreview({ formData }) {
         </div>
       )}
 
-      {/* Languages */}
+      {/* Languages - FIXED */}
       {formData.languages && formData.languages.length > 0 && (
         <div className="mb-6">
           <h2 style={{ 
@@ -286,14 +286,21 @@ function DocumentPreview({ formData }) {
             Languages
           </h2>
           <div style={{ fontSize: '11pt', lineHeight: '1.3' }}>
-            {formData.languages.map((lang, index) => (
-              <span key={index}>
-                {lang.language && lang.proficiency 
+            {formData.languages.map((lang, index) => {
+              // Handle both object format (new) and string format (legacy)
+              const languageText = typeof lang === 'object' && lang !== null
+                ? (lang.language && lang.proficiency && lang.proficiency !== 'Not applicable' 
                   ? `${lang.language} (${lang.proficiency})`
-                  : lang.language || lang}
-                {index < formData.languages.length - 1 ? ' • ' : ''}
-              </span>
-            ))}
+                  : lang.language || '')
+                : String(lang || '');
+              
+              return (
+                <span key={lang.id || index}>
+                  {languageText}
+                  {index < formData.languages.length - 1 ? ' • ' : ''}
+                </span>
+              );
+            })}
           </div>
         </div>
       )}
@@ -312,7 +319,7 @@ function DocumentPreview({ formData }) {
             Professional Development
           </h2>
           {formData.courses.map((course, index) => (
-            <div key={index} style={{ marginBottom: '6pt' }}>
+            <div key={course.id || index} style={{ marginBottom: '6pt' }}>
               <strong style={{ fontSize: '11pt' }}>
                 {course.courseName || 'Course Name'}
               </strong>
@@ -345,7 +352,7 @@ function DocumentPreview({ formData }) {
             Portfolio & Links
           </h2>
           {formData.links.map((link, index) => (
-            <div key={index} style={{ marginBottom: '6pt' }}>
+            <div key={link.id || index} style={{ marginBottom: '6pt' }}>
               <div style={{ fontSize: '11pt' }}>
                 <strong>{link.linkTitle || 'Link'}</strong>
                 {link.url && (
@@ -419,7 +426,7 @@ function DocumentPreview({ formData }) {
             References
           </h2>
           {formData.references.map((ref, index) => (
-            <div key={index} style={{ marginBottom: '8pt' }}>
+            <div key={ref.id || index} style={{ marginBottom: '8pt' }}>
               <div style={{ fontSize: '11pt' }}>
                 <strong>{ref.referentName || 'Reference Name'}</strong>
                 {ref.position && ref.referentCompany && (

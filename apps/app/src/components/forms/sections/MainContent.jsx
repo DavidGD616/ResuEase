@@ -26,7 +26,11 @@ function MainContent({
   onAddSection,
   onSectionChange,
   onDeleteSection,
-  onReorderItems
+  onReorderItems,
+  // New props for section management
+  addSectionItem,
+  updateSectionItem,
+  removeSectionItem,
 }) {
   const [showReorder, setShowReorder] = useState(false);
 
@@ -60,7 +64,7 @@ function MainContent({
 
       {activeSection === 'contact' && (
         <ContactInformationForm
-        formData={formData}
+          formData={formData}
           handleInputChange={handleInputChange}
           showAdditional={showAdditional}
           setShowAdditional={setShowAdditional}
@@ -77,6 +81,10 @@ function MainContent({
       {activeSection === 'employment' && (
         <EmploymentHistoryForm 
           onDeleteSection={() => onDeleteSection('employment')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
@@ -91,36 +99,60 @@ function MainContent({
       {activeSection === 'education' && (
         <EducationForm 
           onDeleteSection={() => onDeleteSection('education')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
       {activeSection === 'internships' && (
         <InternshipsForm 
           onDeleteSection={() => onDeleteSection('internships')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
       {activeSection === 'courses' && (
         <CoursesForm
           onDeleteSection={() => onDeleteSection('courses')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
       {activeSection === 'references' && (
         <ReferencesForm
           onDeleteSection={() => onDeleteSection('references')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
       {activeSection === 'languages' && (
         <LanguagesForm
           onDeleteSection={() => onDeleteSection('languages')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
       {activeSection === 'links' && (
         <LinksForm 
           onDeleteSection={() => onDeleteSection('links')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 

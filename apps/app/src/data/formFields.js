@@ -46,7 +46,7 @@ export const SECTION_TEMPLATES = {
     description: ''
   },
   
-  internship: {
+  internships: {
     jobTitle: '',
     company: '',
     startDate: '',
@@ -55,26 +55,26 @@ export const SECTION_TEMPLATES = {
     description: ''
   },
   
-  course: {
+  courses: {
     courseName: '',
     institution: '',
     startDate: '',
     endDate: ''
   },
   
-  reference: {
+  references: {
     referentName: '',
     referentCompany: '',
     referentEmail: '',
     referentPhone: ''
   },
   
-  link: {
+  links: {
     linkTitle: '',
     url: ''
   },
   
-  language: {
+  languages: {
     language: '',
     proficiency: 'Not applicable'
   },

@@ -5,23 +5,27 @@ import LanguageEntryForm from '../entries/LanguageEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
-import { createSectionItem } from '../../../data/formFields';
 
-function LanguagesForm({ onDeleteSection }) {
-  const [languages, setLanguages] = useState([]);
+function LanguagesForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get languages from global form data
+  const languages = formData.languages || [];
+
   const addLanguage = () => {
-    const newLanguage = createSectionItem('language');
-    
-    setLanguages(prev => [...prev, newLanguage]);
-    setExpandedItems(prev => ({ ...prev, [newLanguage.id]: true }));
+    const newItemId = addSectionItem('languages');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeLanguage = (id) => {
-    setLanguages(prev => prev.filter(language => language.id !== id));
+    removeSectionItem('languages', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -30,11 +34,7 @@ function LanguagesForm({ onDeleteSection }) {
   };
 
   const updateLanguage = (id, field, value) => {
-    setLanguages(prev => 
-      prev.map(language => 
-        language.id === id ? { ...language, [field]: value } : language
-      )
-    );
+    updateSectionItem('languages', id, field, value);
   };
 
   const toggleExpanded = (id) => {
