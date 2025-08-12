@@ -5,6 +5,7 @@ import LanguageEntryForm from '../entries/LanguageEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
+import { createSectionItem } from '../../../data/formFields';
 
 function LanguagesForm({ onDeleteSection }) {
   const [languages, setLanguages] = useState([]);
@@ -13,15 +14,10 @@ function LanguagesForm({ onDeleteSection }) {
   const deleteModal = useDeleteModal(onDeleteSection);
 
   const addLanguage = () => {
-    const newId = Date.now().toString();
-    const newLanguage = {
-      id: newId,
-      language: '',
-      proficiency: 'Not applicable'
-    };
+    const newLanguage = createSectionItem('language');
     
     setLanguages(prev => [...prev, newLanguage]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    setExpandedItems(prev => ({ ...prev, [newLanguage.id]: true }));
   };
 
   const removeLanguage = (id) => {
