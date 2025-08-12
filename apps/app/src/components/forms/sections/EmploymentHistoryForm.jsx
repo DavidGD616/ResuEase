@@ -6,30 +6,26 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function EmploymentHistoryForm({ onDeleteSection }) {
-  const [experiences, setExperiences] = useState([]);
+function EmploymentHistoryForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get experiences from global form data
+  const experiences = formData.employment || [];
+
   const addExperience = () => {
-    const newId = Date.now().toString();
-    const newExperience = {
-      id: newId,
-      jobTitle: '',
-      company: '',
-      startDate: '',
-      endDate: '',
-      location: '',
-      description: ''
-    };
-    
-    setExperiences(prev => [...prev, newExperience]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('employment');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeExperience = (id) => {
-    setExperiences(prev => prev.filter(exp => exp.id !== id));
+    removeSectionItem('employment', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -38,11 +34,7 @@ function EmploymentHistoryForm({ onDeleteSection }) {
   };
 
   const updateExperience = (id, field, value) => {
-    setExperiences(prev => 
-      prev.map(exp => 
-        exp.id === id ? { ...exp, [field]: value } : exp
-      )
-    );
+    updateSectionItem('employment', id, field, value);
   };
 
   const toggleExpanded = (id) => {
@@ -64,7 +56,7 @@ function EmploymentHistoryForm({ onDeleteSection }) {
         {experiences.map((experience) => (
           <div key={experience.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={experience.jobTitle}
+              title={experience.jobTitle || experience.company || 'Untitled'}
               isExpanded={expandedItems[experience.id]}
               onToggleExpanded={() => toggleExpanded(experience.id)}
               onRemove={() => removeExperience(experience.id)}

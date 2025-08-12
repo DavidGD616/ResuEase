@@ -6,28 +6,25 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function CoursesForm({ onDeleteSection }) {
-  const [courses, setCourses] = useState([]);
+function CoursesForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  const courses = formData.courses || [];
+
   const addCourse = () => {
-    const newId = Date.now().toString();
-    const newCourse = {
-      id: newId,
-      courseName: '',
-      institution: '',
-      startDate: '',
-      endDate: ''
-    };
-    
-    setCourses(prev => [...prev, newCourse]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('courses');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeCourse = (id) => {
-    setCourses(prev => prev.filter(course => course.id !== id));
+    removeSectionItem('courses', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -36,11 +33,7 @@ function CoursesForm({ onDeleteSection }) {
   };
 
   const updateCourse = (id, field, value) => {
-    setCourses(prev => 
-      prev.map(course => 
-        course.id === id ? { ...course, [field]: value } : course
-      )
-    );
+    updateSectionItem('courses', id, field, value);
   };
 
   const toggleExpanded = (id) => {
@@ -62,7 +55,7 @@ function CoursesForm({ onDeleteSection }) {
         {courses.map((course) => (
           <div key={course.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={course.courseName || course.institution}
+              title={course.courseName || course.institution || 'Untitled'}
               isExpanded={expandedItems[course.id]}
               onToggleExpanded={() => toggleExpanded(course.id)}
               onRemove={() => removeCourse(course.id)}

@@ -6,30 +6,26 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function InternshipsForm({ onDeleteSection }) {
-  const [internships, setInternships] = useState([]);
+function InternshipsForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get internships from global form data
+  const internships = formData.internships || [];
+
   const addInternship = () => {
-    const newId = Date.now().toString();
-    const newInternship = {
-      id: newId,
-      jobTitle: '',
-      company: '',
-      startDate: '',
-      endDate: '',
-      location: '',
-      description: ''
-    };
-    
-    setInternships(prev => [...prev, newInternship]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('internships');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeInternship = (id) => {
-    setInternships(prev => prev.filter(internship => internship.id !== id));
+    removeSectionItem('internships', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -38,11 +34,7 @@ function InternshipsForm({ onDeleteSection }) {
   };
 
   const updateInternship = (id, field, value) => {
-    setInternships(prev => 
-      prev.map(internship => 
-        internship.id === id ? { ...internship, [field]: value } : internship
-      )
-    );
+    updateSectionItem('internships', id, field, value);
   };
 
   const toggleExpanded = (id) => {
@@ -64,7 +56,7 @@ function InternshipsForm({ onDeleteSection }) {
         {internships.map((internship) => (
           <div key={internship.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={internship.jobTitle || internship.company}
+              title={internship.jobTitle || internship.company || 'Untitled'}
               isExpanded={expandedItems[internship.id]}
               onToggleExpanded={() => toggleExpanded(internship.id)}
               onRemove={() => removeInternship(internship.id)}

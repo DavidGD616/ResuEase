@@ -286,16 +286,16 @@ function DocumentPreview({ formData }) {
             Languages
           </h2>
           <div style={{ fontSize: '11pt', lineHeight: '1.3' }}>
-            {formData.languages.map((lang, index) => {
+            {formData.languages.map((language, index) => {
               // Handle both object format (new) and string format (legacy)
-              const languageText = typeof lang === 'object' && lang !== null
-                ? (lang.language && lang.proficiency && lang.proficiency !== 'Not applicable' 
-                  ? `${lang.language} (${lang.proficiency})`
-                  : lang.language || '')
-                : String(lang || '');
+              const languageText = typeof language === 'object' && language !== null
+                ? (language.language && language.proficiency && language.proficiency !== 'Not applicable' 
+                  ? `${language.language} (${language.proficiency})`
+                  : language.language || '')
+                : String(language || '');
               
               return (
-                <span key={lang.id || index}>
+                <span key={language.id || index}>
                   {languageText}
                   {index < formData.languages.length - 1 ? ' • ' : ''}
                 </span>

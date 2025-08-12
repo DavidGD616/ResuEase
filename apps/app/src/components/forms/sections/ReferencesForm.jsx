@@ -6,28 +6,26 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function ReferencesForm({ onDeleteSection }) {
-  const [references, setReferences] = useState([]);
+function ReferencesForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get references from global form data
+  const references = formData.references || [];
+
   const addReference = () => {
-    const newId = Date.now().toString();
-    const newReference = {
-      id: newId,
-      referentName: '',
-      referentCompany: '',
-      referentEmail: '',
-      referentPhone: ''
-    };
-    
-    setReferences(prev => [...prev, newReference]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('references');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeReference = (id) => {
-    setReferences(prev => prev.filter(reference => reference.id !== id));
+    removeSectionItem('references', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -36,11 +34,7 @@ function ReferencesForm({ onDeleteSection }) {
   };
 
   const updateReference = (id, field, value) => {
-    setReferences(prev => 
-      prev.map(reference => 
-        reference.id === id ? { ...reference, [field]: value } : reference
-      )
-    );
+    updateSectionItem('references', id, field, value);
   };
 
   const toggleExpanded = (id) => {
@@ -62,7 +56,7 @@ function ReferencesForm({ onDeleteSection }) {
         {references.map((reference) => (
           <div key={reference.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={reference.referentName || reference.referentCompany}
+              title={reference.referentName || reference.referentCompany || 'Untitled'}
               isExpanded={expandedItems[reference.id]}
               onToggleExpanded={() => toggleExpanded(reference.id)}
               onRemove={() => removeReference(reference.id)}

@@ -6,26 +6,26 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function LinksForm({ onDeleteSection }) {
-  const [links, setLinks] = useState([]);
+function LinksForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get links from global form data
+  const links = formData.links || [];
+
   const addLink = () => {
-    const newId = Date.now().toString();
-    const newLink = {
-      id: newId,
-      linkTitle: '',
-      url: ''
-    };
-    
-    setLinks(prev => [...prev, newLink]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('links');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeLink = (id) => {
-    setLinks(prev => prev.filter(link => link.id !== id));
+    removeSectionItem('links', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -34,11 +34,7 @@ function LinksForm({ onDeleteSection }) {
   };
 
   const updateLink = (id, field, value) => {
-    setLinks(prev => 
-      prev.map(link => 
-        link.id === id ? { ...link, [field]: value } : link
-      )
-    );
+    updateSectionItem('links', id, field, value);
   };
 
   const toggleExpanded = (id) => {

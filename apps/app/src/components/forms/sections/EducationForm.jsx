@@ -6,30 +6,26 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function EducationForm({ onDeleteSection }) {
-  const [educationEntries, setEducationEntries] = useState([]);
+function EducationForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Get education entries from global form data
+  const educationEntries = formData.education || [];
+
   const addEducation = () => {
-    const newId = Date.now().toString();
-    const newEducation = {
-      id: newId,
-      institution: '',
-      degree: '',
-      startDate: '',
-      endDate: '',
-      location: '',
-      description: ''
-    };
-    
-    setEducationEntries(prev => [...prev, newEducation]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem('education');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeEducation = (id) => {
-    setEducationEntries(prev => prev.filter(edu => edu.id !== id));
+    removeSectionItem('education', id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -38,11 +34,7 @@ function EducationForm({ onDeleteSection }) {
   };
 
   const updateEducation = (id, field, value) => {
-    setEducationEntries(prev => 
-      prev.map(edu => 
-        edu.id === id ? { ...edu, [field]: value } : edu
-      )
-    );
+    updateSectionItem('education', id, field, value);
   };
 
   const toggleExpanded = (id) => {
@@ -64,7 +56,7 @@ function EducationForm({ onDeleteSection }) {
         {educationEntries.map((education) => (
           <div key={education.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={education.institution}
+              title={education.institution || education.degree || 'Untitled'}
               isExpanded={expandedItems[education.id]}
               onToggleExpanded={() => toggleExpanded(education.id)}
               onRemove={() => removeEducation(education.id)}
