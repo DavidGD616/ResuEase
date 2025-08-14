@@ -76,6 +76,8 @@ function EmploymentEntryForm({ experience, onUpdate }) {
             onChange={(e) => {
               handleChange('isCurrentJob', e.target.checked);
               if (e.target.checked) {
+                handleChange('endDate', 'Present'); // <-- send "Present" when checked
+              } else {
                 handleChange('endDate', '');
               }
             }}
