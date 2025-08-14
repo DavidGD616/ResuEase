@@ -1,4 +1,3 @@
-import RichTextEditor from '../shared/RichTextEditor';
 import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
 
