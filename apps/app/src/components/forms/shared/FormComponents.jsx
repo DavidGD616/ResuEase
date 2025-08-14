@@ -1,4 +1,4 @@
-import { Camera, Plus, Trash2, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { Plus, Trash2, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 // Typography Components
 
@@ -182,6 +182,28 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
       >
         <X className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
+    </div>
+  );
+}
+
+export function FormEntryBullet({ title, onRemove }) {
+  return (
+    <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
+      <div className="flex items-center gap-2 sm:gap-3">
+        <h3 className="font-medium text-sm sm:text-base text-gray-900">
+          {title || 'Untitled'}
+        </h3>
+      </div>
+      
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onRemove}
+          className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+        >
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      </div>
     </div>
   );
 }
