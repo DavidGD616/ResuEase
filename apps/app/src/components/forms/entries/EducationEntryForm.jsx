@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryHeader, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
+import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
 
 function EducationEntryForm({ education, onUpdate }) {
   const [bulletPoints, setBulletPoints] = useState(education.bulletPoints || []);
