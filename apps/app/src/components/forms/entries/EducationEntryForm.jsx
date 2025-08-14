@@ -1,30 +1,26 @@
-import { useState } from 'react';
+import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
 
 function EducationEntryForm({ education, onUpdate }) {
-  const [bulletPoints, setBulletPoints] = useState(education.bulletPoints || []);
+  const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(education.bulletPoints || []);
 
   const handleChange = (field, value) => {
     onUpdate(education.id, field, value);
   };
 
-  const addBulletPoint = () => {
-    const newBulletPoints = [...bulletPoints, ''];
-    setBulletPoints(newBulletPoints);
-    handleChange('bulletPoints', newBulletPoints);
+  const handleAddBulletPoint = () => {
+    const newPoints = addBulletPoint();
+    handleChange('bulletPoints', newPoints);
   };
 
-  const updateBulletPoint = (index, value) => {
-    const newBulletPoints = [...bulletPoints];
-    newBulletPoints[index] = value;
-    setBulletPoints(newBulletPoints);
-    handleChange('bulletPoints', newBulletPoints);
+  const handleUpdateBulletPoint = (index, value) => {
+    const newPoints = updateBulletPoint(index, value);
+    handleChange('bulletPoints', newPoints);
   };
 
-  const removeBulletPoint = (index) => {
-    const newBulletPoints = bulletPoints.filter((_, i) => i !== index);
-    setBulletPoints(newBulletPoints);
-    handleChange('bulletPoints', newBulletPoints);
+  const handleRemoveBulletPoint = (index) => {
+    const newPoints = removeBulletPoint(index);
+    handleChange('bulletPoints', newPoints);
   };
 
   return (
@@ -80,12 +76,12 @@ function EducationEntryForm({ education, onUpdate }) {
         <div key={index} className="border border-gray-300 rounded-lg">
           <FormEntryBullet
             title="Education Details"
-            onRemove={() => removeBulletPoint(index)}
+            onRemove={() => handleRemoveBulletPoint(index)}
           />
           <div className="p-3 sm:p-4">
             <FormTextarea
               value={bullet}
-              onChange={(e) => updateBulletPoint(index, e.target.value)}
+              onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
               placeholder="• Graduated with honors, recognized for outstanding achievement in Product Design."
               rows={3}
             />
@@ -94,7 +90,7 @@ function EducationEntryForm({ education, onUpdate }) {
       ))}
       
       <AddEntryButton
-        onClick={addBulletPoint}
+        onClick={handleAddBulletPoint}
         label="Add Bullet Point"
       />
     </FormContainer>
