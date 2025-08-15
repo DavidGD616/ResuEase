@@ -155,6 +155,20 @@ function DocumentPreview({ formData }) {
                   {job.description}
                 </div>
               )}
+              {job.bulletPoints && job.bulletPoints.length > 0 && (
+                <div style={{ 
+                  fontSize: '11pt', 
+                  lineHeight: '1.3',
+                  marginLeft: '12pt',
+                  marginTop: '4pt'
+                }}>
+                  {job.bulletPoints.map((bullet, bulletIndex) => (
+                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
+                      • {bullet}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -211,6 +225,20 @@ function DocumentPreview({ formData }) {
                   {internship.description}
                 </div>
               )}
+              {internship.bulletPoints && internship.bulletPoints.length > 0 && (
+                <div style={{ 
+                  fontSize: '11pt', 
+                  lineHeight: '1.3',
+                  marginLeft: '12pt',
+                  marginTop: '4pt'
+                }}>
+                  {internship.bulletPoints.map((bullet, bulletIndex) => (
+                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
+                      • {bullet}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -265,6 +293,20 @@ function DocumentPreview({ formData }) {
                   marginTop: '4pt'
                 }}>
                   {edu.description}
+                </div>
+              )}
+              {edu.bulletPoints && edu.bulletPoints.length > 0 && (
+                <div style={{ 
+                  fontSize: '11pt', 
+                  lineHeight: '1.3',
+                  marginLeft: '12pt',
+                  marginTop: '4pt'
+                }}>
+                  {edu.bulletPoints.map((bullet, bulletIndex) => (
+                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
+                      • {bullet}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
