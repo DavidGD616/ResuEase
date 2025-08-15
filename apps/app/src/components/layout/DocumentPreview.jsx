@@ -340,9 +340,7 @@ function DocumentPreview({ formData }) {
                   )}
                 </div>
                 <div style={{ fontSize: "10pt", color: "#333" }}>
-                  {edu.startDate && edu.endDate
-                    ? `${edu.startDate} - ${edu.endDate}`
-                    : edu.endDate || edu.startDate}
+                  {edu.dateRange || "Date"}
                 </div>
               </div>
               {edu.description && (
