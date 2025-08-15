@@ -24,37 +24,62 @@ function DocumentPreview({ formData }) {
     <div ref={contentRef}>
       {/* Header Section */}
       <div className="text-center mb-6 pb-4 border-b border-black">
-        <h1 style={{ 
-          fontSize: '16pt', 
-          fontWeight: 'bold',
-          marginBottom: '8pt',
-          textTransform: 'uppercase',
-          letterSpacing: '1px'
-        }}>
-          {(formData.firstName + ' ' + formData.lastName).toUpperCase() || 'DAVID GUERRERO DIAZ'}
+        <h1
+          style={{
+            fontSize: "16pt",
+            fontWeight: "bold",
+            marginBottom: "8pt",
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+          }}
+        >
+          {(formData.firstName + " " + formData.lastName).toUpperCase() ||
+            "DAVID GUERRERO DIAZ"}
         </h1>
-        
-        <div style={{ fontSize: '11pt', marginBottom: '4pt' }}>
-          {formData.jobTitle || 'Your Professional Title'}
+
+        <div style={{ fontSize: "11pt", marginBottom: "4pt" }}>
+          {formData.jobTitle || "Your Professional Title"}
         </div>
-        
-        <div style={{ fontSize: '10pt', color: '#333' }}>
+
+        <div style={{ fontSize: "10pt", color: "#333" }}>
           {formData.address && <span>{formData.address}</span>}
-          {formData.city && <span>{formData.address ? ', ' : ''}{formData.city}</span>}
-          {formData.country && <span>{(formData.address || formData.city) ? ', ' : ''}{formData.country}</span>}
+          {formData.city && (
+            <span>
+              {formData.address ? ", " : ""}
+              {formData.city}
+            </span>
+          )}
+          {formData.country && (
+            <span>
+              {formData.address || formData.city ? ", " : ""}
+              {formData.country}
+            </span>
+          )}
           {formData.postalCode && <span> {formData.postalCode}</span>}
-          {(formData.address || formData.city || formData.country || formData.postalCode) && <span> • </span>}
+          {(formData.address ||
+            formData.city ||
+            formData.country ||
+            formData.postalCode) && <span> • </span>}
           {formData.phone && <span>{formData.phone} • </span>}
           {formData.email && <span>{formData.email}</span>}
         </div>
-        
+
         {/* Additional personal details */}
-        {(formData.nationality || formData.driversLicense || formData.birthDate) && (
-          <div style={{ fontSize: '10pt', color: '#333', marginTop: '4pt' }}>
-            {formData.nationality && <span>Nationality: {formData.nationality}</span>}
-            {formData.nationality && formData.driversLicense && <span> • </span>}
-            {formData.driversLicense && <span>License: {formData.driversLicense}</span>}
-            {(formData.nationality || formData.driversLicense) && formData.birthDate && <span> • </span>}
+        {(formData.nationality ||
+          formData.driversLicense ||
+          formData.birthDate) && (
+          <div style={{ fontSize: "10pt", color: "#333", marginTop: "4pt" }}>
+            {formData.nationality && (
+              <span>Nationality: {formData.nationality}</span>
+            )}
+            {formData.nationality && formData.driversLicense && (
+              <span> • </span>
+            )}
+            {formData.driversLicense && (
+              <span>License: {formData.driversLicense}</span>
+            )}
+            {(formData.nationality || formData.driversLicense) &&
+              formData.birthDate && <span> • </span>}
             {formData.birthDate && <span>DOB: {formData.birthDate}</span>}
           </div>
         )}
@@ -63,21 +88,25 @@ function DocumentPreview({ formData }) {
       {/* Professional Summary */}
       {formData.about && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Professional Summary
           </h2>
-          <p style={{ 
-            fontSize: '11pt', 
-            lineHeight: '1.3',
-            textAlign: 'justify'
-          }}>
+          <p
+            style={{
+              fontSize: "11pt",
+              lineHeight: "1.3",
+              textAlign: "justify",
+            }}
+          >
             {formData.about}
           </p>
         </div>
@@ -86,19 +115,21 @@ function DocumentPreview({ formData }) {
       {/* Skills */}
       {formData.skills && formData.skills.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Core Competencies
           </h2>
-          <div style={{ fontSize: '11pt', lineHeight: '1.3' }}>
-            {Array.isArray(formData.skills) 
-              ? formData.skills.join(' • ')
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
+            {Array.isArray(formData.skills)
+              ? formData.skills.join(" • ")
               : formData.skills}
           </div>
         </div>
@@ -107,63 +138,74 @@ function DocumentPreview({ formData }) {
       {/* Professional Experience */}
       {formData.employment && formData.employment.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Professional Experience
           </h2>
           {formData.employment.map((job, index) => (
-            <div key={job.id || index} style={{ marginBottom: '12pt' }}>
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                marginBottom: '4pt'
-              }}>
+            <div key={job.id || index} style={{ marginBottom: "12pt" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  marginBottom: "4pt",
+                }}
+              >
                 <div>
-                  <strong style={{ fontSize: '11pt' }}>
-                    {job.jobTitle || 'Position Title'}
+                  <strong style={{ fontSize: "11pt" }}>
+                    {job.jobTitle || "Position Title"}
                   </strong>
                   {job.company && (
-                    <span style={{ fontSize: '11pt' }}>
-                      {' '}at <em>{job.company}</em>
+                    <span style={{ fontSize: "11pt" }}>
+                      {" "}
+                      at <em>{job.company}</em>
                     </span>
                   )}
                   {job.location && (
-                    <span style={{ fontSize: '10pt', color: '#333' }}>
-                      {', '}{job.location}
+                    <span style={{ fontSize: "10pt", color: "#333" }}>
+                      {", "}
+                      {job.location}
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: '10pt', color: '#333' }}>
-                  {job.startDate && job.endDate && 
+                <div style={{ fontSize: "10pt", color: "#333" }}>
+                  {job.startDate &&
+                    job.endDate &&
                     `${job.startDate} - ${job.endDate}`}
                 </div>
               </div>
               {job.description && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  textAlign: 'justify'
-                }}>
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    textAlign: "justify",
+                  }}
+                >
                   {job.description}
                 </div>
               )}
               {job.bulletPoints && job.bulletPoints.length > 0 && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  marginTop: '4pt'
-                }}>
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    marginTop: "4pt",
+                  }}
+                >
                   {job.bulletPoints.map((bullet, bulletIndex) => (
-                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
+                    <div key={bulletIndex} style={{ marginBottom: "2pt" }}>
                       • {bullet}
                     </div>
                   ))}
@@ -177,68 +219,80 @@ function DocumentPreview({ formData }) {
       {/* Internships */}
       {formData.internships && formData.internships.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Internship Experience
           </h2>
           {formData.internships.map((internship, index) => (
-            <div key={internship.id || index} style={{ marginBottom: '12pt' }}>
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                marginBottom: '4pt'
-              }}>
+            <div key={internship.id || index} style={{ marginBottom: "12pt" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  marginBottom: "4pt",
+                }}
+              >
                 <div>
-                  <strong style={{ fontSize: '11pt' }}>
-                    {internship.jobTitle || 'Internship Position'}
+                  <strong style={{ fontSize: "11pt" }}>
+                    {internship.jobTitle || "Internship Position"}
                   </strong>
                   {internship.company && (
-                    <span style={{ fontSize: '11pt' }}>
-                      {' '}at <em>{internship.company}</em>
+                    <span style={{ fontSize: "11pt" }}>
+                      {" "}
+                      at <em>{internship.company}</em>
                     </span>
                   )}
                   {internship.location && (
-                    <span style={{ fontSize: '10pt', color: '#333' }}>
-                      {', '}{internship.location}
+                    <span style={{ fontSize: "10pt", color: "#333" }}>
+                      {", "}
+                      {internship.location}
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: '10pt', color: '#333' }}>
-                  {internship.startDate && internship.endDate && 
+                <div style={{ fontSize: "10pt", color: "#333" }}>
+                  {internship.startDate &&
+                    internship.endDate &&
                     `${internship.startDate} - ${internship.endDate}`}
                 </div>
               </div>
               {internship.description && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  textAlign: 'justify'
-                }}>
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    textAlign: "justify",
+                  }}
+                >
                   {internship.description}
                 </div>
               )}
-              {internship.bulletPoints && internship.bulletPoints.length > 0 && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  marginTop: '4pt'
-                }}>
-                  {internship.bulletPoints.map((bullet, bulletIndex) => (
-                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
-                      • {bullet}
-                    </div>
-                  ))}
-                </div>
-              )}
+              {internship.bulletPoints &&
+                internship.bulletPoints.length > 0 && (
+                  <div
+                    style={{
+                      fontSize: "11pt",
+                      lineHeight: "1.3",
+                      marginLeft: "12pt",
+                      marginTop: "4pt",
+                    }}
+                  >
+                    {internship.bulletPoints.map((bullet, bulletIndex) => (
+                      <div key={bulletIndex} style={{ marginBottom: "2pt" }}>
+                        • {bullet}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           ))}
         </div>
@@ -247,63 +301,73 @@ function DocumentPreview({ formData }) {
       {/* Education */}
       {formData.education && formData.education.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Education
           </h2>
           {formData.education.map((edu, index) => (
-            <div key={edu.id || index} style={{ marginBottom: '8pt' }}>
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                alignItems: 'baseline'
-              }}>
+            <div key={edu.id || index} style={{ marginBottom: "8pt" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                }}
+              >
                 <div>
-                  <strong style={{ fontSize: '11pt' }}>
-                    {edu.degree || 'Degree'}
+                  <strong style={{ fontSize: "11pt" }}>
+                    {edu.degree || "Degree"}
                   </strong>
                   {edu.institution && (
-                    <span style={{ fontSize: '11pt' }}>
-                      {', '}{edu.institution}
+                    <span style={{ fontSize: "11pt" }}>
+                      {", "}
+                      {edu.institution}
                     </span>
                   )}
                   {edu.location && (
-                    <span style={{ fontSize: '10pt', color: '#333' }}>
-                      {', '}{edu.location}
+                    <span style={{ fontSize: "10pt", color: "#333" }}>
+                      {", "}
+                      {edu.location}
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: '10pt', color: '#333' }}>
-                  {edu.startDate && edu.endDate 
+                <div style={{ fontSize: "10pt", color: "#333" }}>
+                  {edu.startDate && edu.endDate
                     ? `${edu.startDate} - ${edu.endDate}`
                     : edu.endDate || edu.startDate}
                 </div>
               </div>
               {edu.description && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  marginTop: '4pt'
-                }}>
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    marginTop: "4pt",
+                  }}
+                >
                   {edu.description}
                 </div>
               )}
               {edu.bulletPoints && edu.bulletPoints.length > 0 && (
-                <div style={{ 
-                  fontSize: '11pt', 
-                  lineHeight: '1.3',
-                  marginLeft: '12pt',
-                  marginTop: '4pt'
-                }}>
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    marginTop: "4pt",
+                  }}
+                >
                   {edu.bulletPoints.map((bullet, bulletIndex) => (
-                    <div key={bulletIndex} style={{ marginBottom: '2pt' }}>
+                    <div key={bulletIndex} style={{ marginBottom: "2pt" }}>
                       • {bullet}
                     </div>
                   ))}
@@ -317,29 +381,34 @@ function DocumentPreview({ formData }) {
       {/* Languages - FIXED */}
       {formData.languages && formData.languages.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Languages
           </h2>
-          <div style={{ fontSize: '11pt', lineHeight: '1.3' }}>
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
             {formData.languages.map((language, index) => {
               // Handle both object format (new) and string format (legacy)
-              const languageText = typeof language === 'object' && language !== null
-                ? (language.language && language.proficiency && language.proficiency !== 'Not applicable' 
-                  ? `${language.language} (${language.proficiency})`
-                  : language.language || '')
-                : String(language || '');
-              
+              const languageText =
+                typeof language === "object" && language !== null
+                  ? language.language &&
+                    language.proficiency &&
+                    language.proficiency !== "Not applicable"
+                    ? `${language.language} (${language.proficiency})`
+                    : language.language || ""
+                  : String(language || "");
+
               return (
                 <span key={language.id || index}>
                   {languageText}
-                  {index < formData.languages.length - 1 ? ' • ' : ''}
+                  {index < formData.languages.length - 1 ? " • " : ""}
                 </span>
               );
             })}
@@ -350,29 +419,34 @@ function DocumentPreview({ formData }) {
       {/* Professional Development / Courses */}
       {formData.courses && formData.courses.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Professional Development
           </h2>
           {formData.courses.map((course, index) => (
-            <div key={course.id || index} style={{ marginBottom: '6pt' }}>
-              <strong style={{ fontSize: '11pt' }}>
-                {course.courseName || 'Course Name'}
+            <div key={course.id || index} style={{ marginBottom: "6pt" }}>
+              <strong style={{ fontSize: "11pt" }}>
+                {course.courseName || "Course Name"}
               </strong>
               {course.institution && (
-                <span style={{ fontSize: '11pt' }}>
-                  {', '}{course.institution}
+                <span style={{ fontSize: "11pt" }}>
+                  {", "}
+                  {course.institution}
                 </span>
               )}
               {course.startDate && course.endDate && (
-                <span style={{ fontSize: '10pt', color: '#333' }}>
-                  {' ('}{course.startDate} - {course.endDate}{')'}
+                <span style={{ fontSize: "10pt", color: "#333" }}>
+                  {" ("}
+                  {course.startDate} - {course.endDate}
+                  {")"}
                 </span>
               )}
             </div>
@@ -383,23 +457,26 @@ function DocumentPreview({ formData }) {
       {/* Links / Portfolio */}
       {formData.links && formData.links.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Portfolio & Links
           </h2>
           {formData.links.map((link, index) => (
-            <div key={link.id || index} style={{ marginBottom: '6pt' }}>
-              <div style={{ fontSize: '11pt' }}>
-                <strong>{link.linkTitle || 'Link'}</strong>
+            <div key={link.id || index} style={{ marginBottom: "6pt" }}>
+              <div style={{ fontSize: "11pt" }}>
+                <strong>{link.linkTitle || "Link"}</strong>
                 {link.url && (
-                  <span style={{ fontSize: '10pt', color: '#333' }}>
-                    {': '}{link.url}
+                  <span style={{ fontSize: "10pt", color: "#333" }}>
+                    {": "}
+                    {link.url}
                   </span>
                 )}
               </div>
@@ -411,71 +488,87 @@ function DocumentPreview({ formData }) {
       {/* Hobbies & Interests */}
       {formData.hobbies && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             Interests & Hobbies
           </h2>
-          <div style={{ 
-            fontSize: '11pt', 
-            lineHeight: '1.3'
-          }}>
+          <div
+            style={{
+              fontSize: "11pt",
+              lineHeight: "1.3",
+            }}
+          >
             {formData.hobbies}
           </div>
         </div>
       )}
 
       {/* Custom Sections */}
-      {formData.customSections && Object.keys(formData.customSections).length > 0 && (
-        Object.entries(formData.customSections).map(([sectionName, sectionContent], index) => (
-          <div key={index} className="mb-6">
-            <h2 style={{ 
-              fontSize: '12pt', 
-              fontWeight: 'bold',
-              marginBottom: '8pt',
-              textTransform: 'uppercase',
-              borderBottom: '1px solid #000',
-              paddingBottom: '2pt'
-            }}>
-              {sectionName}
-            </h2>
-            <div style={{ 
-              fontSize: '11pt', 
-              lineHeight: '1.3'
-            }}>
-              {sectionContent}
+      {formData.customSections &&
+        Object.keys(formData.customSections).length > 0 &&
+        Object.entries(formData.customSections).map(
+          ([sectionName, sectionContent], index) => (
+            <div key={index} className="mb-6">
+              <h2
+                style={{
+                  fontSize: "12pt",
+                  fontWeight: "bold",
+                  marginBottom: "8pt",
+                  textTransform: "uppercase",
+                  borderBottom: "1px solid #000",
+                  paddingBottom: "2pt",
+                }}
+              >
+                {sectionName}
+              </h2>
+              <div
+                style={{
+                  fontSize: "11pt",
+                  lineHeight: "1.3",
+                }}
+              >
+                {sectionContent}
+              </div>
             </div>
-          </div>
-        ))
-      )}
+          )
+        )}
 
       {/* References */}
       {formData.references && formData.references.length > 0 && (
         <div className="mb-6">
-          <h2 style={{ 
-            fontSize: '12pt', 
-            fontWeight: 'bold',
-            marginBottom: '8pt',
-            textTransform: 'uppercase',
-            borderBottom: '1px solid #000',
-            paddingBottom: '2pt'
-          }}>
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
             References
           </h2>
           {formData.references.map((ref, index) => (
-            <div key={ref.id || index} style={{ marginBottom: '8pt' }}>
-              <div style={{ fontSize: '11pt' }}>
-                <strong>{ref.referentName || 'Reference Name'}</strong>
-                {ref.position && ref.referentCompany && (
-                  <span>{', '}{ref.position} at {ref.referentCompany}</span>
+            <div key={ref.id || index} style={{ marginBottom: "8pt" }}>
+              <div style={{ fontSize: "11pt" }}>
+                <strong>{ref.referentName || "Reference Name"}</strong>
+                {ref.referentCompany && (
+                  <span>
+                    {", "}
+                    {ref.position ? `${ref.position} at ` : ""}
+                    {ref.referentCompany}
+                  </span>
                 )}
               </div>
-              <div style={{ fontSize: '10pt', color: '#333' }}>
+              <div style={{ fontSize: "10pt", color: "#333" }}>
                 {ref.referentPhone && <span>{ref.referentPhone}</span>}
                 {ref.referentPhone && ref.referentEmail && <span> • </span>}
                 {ref.referentEmail && <span>{ref.referentEmail}</span>}
