@@ -167,6 +167,11 @@ function MainContent({
       {activeSection.startsWith('custom-') && (
         <CustomSectionForm 
           onDeleteSection={() => onDeleteSection(activeSection)}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
+          sectionId={activeSection}
         />
       )}
 

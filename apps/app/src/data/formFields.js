@@ -31,10 +31,10 @@ export const SECTION_TEMPLATES = {
   education: {
     institution: '',
     degree: '',
-    startDate: '',
-    endDate: '',
+    dateRange: '',
     location: '',
-    description: ''
+    description: '',
+    bulletPoints: []
   },
   
   employment: {
@@ -43,7 +43,9 @@ export const SECTION_TEMPLATES = {
     startDate: '',
     endDate: '',
     location: '',
-    description: ''
+    description: '',
+    bulletPoints: [],
+    isCurrentJob: false
   },
   
   internships: {
@@ -52,7 +54,8 @@ export const SECTION_TEMPLATES = {
     startDate: '',
     endDate: '',
     location: '',
-    description: ''
+    description: '',
+    bulletPoints: []
   },
   
   courses: {
@@ -79,7 +82,8 @@ export const SECTION_TEMPLATES = {
     proficiency: 'Not applicable'
   },
   
-  customSection: {
+  // Template for custom section entries
+  customEntry: {
     header: '',
     subheader: '',
     description: ''
@@ -121,8 +125,8 @@ export const INITIAL_FORM_DATA = {
   references: [],
   links: [],
   
-  // Custom Sections
-  customSections: {}
+  // Custom Sections - will be added dynamically
+  // Format: customEntries_custom-1: [], customEntries_custom-2: [], etc.
 };
 
 // =============================================================================
@@ -135,6 +139,15 @@ export const INITIAL_FORM_DATA = {
  * @returns {Object} New section item with unique ID
  */
 export const createSectionItem = (sectionType) => {
+  // Handle custom section entries
+  if (sectionType.startsWith('customEntries_')) {
+    const template = SECTION_TEMPLATES.customEntry;
+    return {
+      ...template,
+      id: generateUniqueId()
+    };
+  }
+  
   const template = SECTION_TEMPLATES[sectionType];
   
   if (!template) {
@@ -161,6 +174,9 @@ const generateUniqueId = () => {
  * @returns {Object} Template object
  */
 export const getSectionTemplate = (sectionType) => {
+  if (sectionType.startsWith('customEntries_')) {
+    return SECTION_TEMPLATES.customEntry;
+  }
   return SECTION_TEMPLATES[sectionType] || null;
 };
 
@@ -170,6 +186,9 @@ export const getSectionTemplate = (sectionType) => {
  * @returns {boolean} True if section type exists
  */
 export const isValidSectionType = (sectionType) => {
+  if (sectionType.startsWith('customEntries_')) {
+    return true;
+  }
   return Object.prototype.hasOwnProperty.call(SECTION_TEMPLATES, sectionType);
 };
 

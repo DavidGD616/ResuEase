@@ -14,8 +14,6 @@ function ResumeBuilder() {
     updateSectionItem,
     removeSectionItem,
     updateSection,
-    addCustomSection,
-    removeCustomSection
   } = useFormData();
   
   const [activeSection, setActiveSection] = useState(SECTION_TYPES.PERSONAL);
@@ -39,9 +37,10 @@ function ResumeBuilder() {
     if (section.id === 'custom') {
       // For custom sections, create a unique ID and add to sidebar
       const customSectionName = `Custom section ${customSectionCounter}`;
+      const customSectionId = `custom-${customSectionCounter}`;
       const customSection = {
         ...section,
-        id: `custom-${customSectionCounter}`,
+        id: customSectionId,
         label: customSectionName,
         order: sidebarItems.length,
         fixed: false
@@ -49,8 +48,10 @@ function ResumeBuilder() {
       setSidebarItems(prev => [...prev, customSection]);
       setCustomSectionCounter(prev => prev + 1);
       
-      // Add to form data
-      addCustomSection(customSectionName, '');
+      // Initialize empty array for this custom section's entries in form data
+      // This creates a field like 'customEntries_custom-1': []
+      const customSectionKey = `customEntries_${customSectionId}`;
+      updateField(customSectionKey, []);
       
       setActiveSection(customSection.id);
     } else {
@@ -81,10 +82,8 @@ function ResumeBuilder() {
 
     // If it's a custom section, remove from form data
     if (sectionId.startsWith('custom-')) {
-      const customSectionName = sectionToDelete?.label;
-      if (customSectionName) {
-        removeCustomSection(customSectionName);
-      }
+      const customSectionKey = `customEntries_${sectionId}`;
+      updateField(customSectionKey, undefined); // Remove the field entirely
     }
 
     // Remove the section from sidebar

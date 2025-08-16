@@ -1,31 +1,35 @@
 import { useState } from 'react';
-import { FormHeader, FormDescription, FormSection, FormEntryHeader } from '../shared/FormComponents';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
+import FormEntryHeader from '../shared/FormEntryHeader';
 import CustomSectionEntryForm from '../entries/CustomSectionEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 
-function CustomSectionForm({ onDeleteSection }) {
-  const [customEntries, setCustomEntries] = useState([]);
+function CustomSectionForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem,
+  sectionId 
+}) {
   const [expandedItems, setExpandedItems] = useState({});
-
   const deleteModal = useDeleteModal(onDeleteSection);
 
+  // Extract the section name from the sectionId (e.g., "custom-1" -> "Custom section 1")
+  const sectionKey = `customEntries_${sectionId}`;
+  
+  // Get custom entries from global form data using the section-specific key
+  const customEntries = formData[sectionKey] || [];
+
   const addCustomEntry = () => {
-    const newId = Date.now().toString();
-    const newEntry = {
-      id: newId,
-      header: '',
-      subheader: '',
-      description: ''
-    };
-    
-    setCustomEntries(prev => [...prev, newEntry]);
-    setExpandedItems(prev => ({ ...prev, [newId]: true }));
+    const newItemId = addSectionItem(sectionKey);
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
   };
 
   const removeCustomEntry = (id) => {
-    setCustomEntries(prev => prev.filter(entry => entry.id !== id));
+    removeSectionItem(sectionKey, id);
     setExpandedItems(prev => {
       const newExpanded = { ...prev };
       delete newExpanded[id];
@@ -34,11 +38,7 @@ function CustomSectionForm({ onDeleteSection }) {
   };
 
   const updateCustomEntry = (id, field, value) => {
-    setCustomEntries(prev => 
-      prev.map(entry => 
-        entry.id === id ? { ...entry, [field]: value } : entry
-      )
-    );
+    updateSectionItem(sectionKey, id, field, value);
   };
 
   const toggleExpanded = (id) => {
