@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
-import FormEntryHeader from '../shared/FormEntryHeader';
+import { FormHeader, FormDescription, FormSection, FormEntryHeader } from '../shared/FormComponents';
 import CustomSectionEntryForm from '../entries/CustomSectionEntryForm';
 import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
