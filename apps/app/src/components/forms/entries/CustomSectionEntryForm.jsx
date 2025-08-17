@@ -4,8 +4,6 @@ import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddE
 function CustomSectionEntryForm({ entry, onUpdate }) {
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(entry.bulletPoints || []);
 
-  console.log(entry)
-
   const handleChange = (field, value) => {
     onUpdate(entry.id, field, value);
   };
