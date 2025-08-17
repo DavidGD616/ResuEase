@@ -100,9 +100,6 @@ export const INITIAL_FORM_DATA = {
   firstName: '',
   lastName: '',
   jobTitle: '',
-  nationality: '',
-  driversLicense: '',
-  birthDate: '',
   
   // Contact Information
   email: '',

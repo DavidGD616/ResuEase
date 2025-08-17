@@ -8,7 +8,9 @@ import {
   FormButton, 
   FormToggleButton  } from '../shared/FormComponents';
 
-function PersonalDetailsForm({ formData, handleInputChange, showAdditional, setShowAdditional }) {
+function PersonalDetailsForm({ formData, handleInputChange }) {
+
+  console.log(formData)
   return (
     <div>
       <FormHeader title="Personal details" />
@@ -37,7 +39,7 @@ function PersonalDetailsForm({ formData, handleInputChange, showAdditional, setS
         </FormGrid>
 
         <FormInput
-          label="Job title"
+          label="Job title (optional)"
           type="text"
           value={formData.jobTitle}
           onChange={(e) => handleInputChange("jobTitle", e.target.value)}
@@ -52,15 +54,15 @@ function PersonalDetailsForm({ formData, handleInputChange, showAdditional, setS
           Add photo
         </FormButton>
 
-        <FormToggleButton
+        {/* <FormToggleButton
           isOpen={showAdditional}
           icon={Plus}
           onClick={() => setShowAdditional(!showAdditional)}
         >
           {showAdditional ? "Hide additional details" : "Show additional details"}
-        </FormToggleButton>
+        </FormToggleButton> */}
 
-        {showAdditional && (
+        {/* {showAdditional && (
           <div className="pt-3 sm:pt-4 border-t border-gray-200">
             <FormSection>
               <FormGrid columns={2}>
@@ -88,7 +90,7 @@ function PersonalDetailsForm({ formData, handleInputChange, showAdditional, setS
               />
             </FormSection>
           </div>
-        )}
+        )} */}
       </FormSection>
     </div>
   );
