@@ -5,8 +5,8 @@ import {
   FormSection, 
   FormGrid, 
   FormInput, 
-  FormButton, 
-  FormToggleButton  } from '../shared/FormComponents';
+  FormButton,
+  } from '../shared/FormComponents';
 
 function PersonalDetailsForm({ formData, handleInputChange }) {
 
