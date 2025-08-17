@@ -86,7 +86,8 @@ export const SECTION_TEMPLATES = {
   customEntry: {
     header: '',
     subheader: '',
-    description: ''
+    description: '',
+    bulletPoints: [],
   }
 };
 
