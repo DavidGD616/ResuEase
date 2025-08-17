@@ -84,7 +84,6 @@ function DocumentPreview({ formData }) {
           </div>
         )}
       </div>
-
       {/* Professional Summary */}
       {formData.about && (
         <div className="mb-6">
@@ -111,7 +110,6 @@ function DocumentPreview({ formData }) {
           </p>
         </div>
       )}
-
       {/* Skills */}
       {formData.skills && formData.skills.length > 0 && (
         <div className="mb-6">
@@ -134,7 +132,6 @@ function DocumentPreview({ formData }) {
           </div>
         </div>
       )}
-
       {/* Professional Experience */}
       {formData.employment && formData.employment.length > 0 && (
         <div className="mb-6">
@@ -215,7 +212,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-
       {/* Internships */}
       {formData.internships && formData.internships.length > 0 && (
         <div className="mb-6">
@@ -297,7 +293,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-
       {/* Education */}
       {formData.education && formData.education.length > 0 && (
         <div className="mb-6">
@@ -375,7 +370,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-
       {/* Languages - FIXED */}
       {formData.languages && formData.languages.length > 0 && (
         <div className="mb-6">
@@ -413,7 +407,6 @@ function DocumentPreview({ formData }) {
           </div>
         </div>
       )}
-
       {/* Professional Development / Courses */}
       {formData.courses && formData.courses.length > 0 && (
         <div className="mb-6">
@@ -451,7 +444,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-
       {/* Links / Portfolio */}
       {formData.links && formData.links.length > 0 && (
         <div className="mb-6">
@@ -482,7 +474,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-
       {/* Hobbies & Interests */}
       {formData.hobbies && (
         <div className="mb-6">
@@ -509,36 +500,92 @@ function DocumentPreview({ formData }) {
         </div>
       )}
 
+      
       {/* Custom Sections */}
-      {formData.customSections &&
-        Object.keys(formData.customSections).length > 0 &&
-        Object.entries(formData.customSections).map(
-          ([sectionName, sectionContent], index) => (
-            <div key={index} className="mb-6">
-              <h2
-                style={{
-                  fontSize: "12pt",
-                  fontWeight: "bold",
-                  marginBottom: "8pt",
-                  textTransform: "uppercase",
-                  borderBottom: "1px solid #000",
-                  paddingBottom: "2pt",
-                }}
-              >
-                {sectionName}
-              </h2>
-              <div
-                style={{
-                  fontSize: "11pt",
-                  lineHeight: "1.3",
-                }}
-              >
-                {sectionContent}
-              </div>
-            </div>
-          )
-        )}
+      {
+        Object.entries(formData)
+          .filter(([key]) => key.startsWith("customEntries_"))
+          .map(([key, entries]) => {
+            // Only render if there are entries in this custom section
+            if (!Array.isArray(entries) || entries.length === 0) return null;
 
+            return (
+              <div key={key} className="mb-6">
+                <h2
+                  style={{
+                    fontSize: "12pt",
+                    fontWeight: "bold",
+                    marginBottom: "8pt",
+                    textTransform: "uppercase",
+                    borderBottom: "1px solid #000",
+                    paddingBottom: "2pt",
+                  }}
+                >
+                  Custom Section
+                </h2>
+                {entries.map((entry, index) => (
+                  <div key={entry.id || index} style={{ marginBottom: "12pt" }}>
+                    {/* Entry Header and Subheader */}
+                    {(entry.header || entry.subheader) && (
+                      <div style={{ marginBottom: "4pt" }}>
+                        {entry.header && (
+                          <strong style={{ fontSize: "11pt" }}>
+                            {entry.header}
+                          </strong>
+                        )}
+                        {entry.subheader && (
+                          <span
+                            style={{ fontSize: "11pt", fontStyle: "italic" }}
+                          >
+                            {entry.header ? " - " : ""}
+                            {entry.subheader}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Entry Description */}
+                    {entry.description && (
+                      <div
+                        style={{
+                          fontSize: "11pt",
+                          lineHeight: "1.3",
+                          marginLeft: "12pt",
+                          marginBottom: "4pt",
+                          textAlign: "justify",
+                        }}
+                      >
+                        {entry.description}
+                      </div>
+                    )}
+
+                    {/* Entry Bullet Points */}
+                    {entry.bulletPoints && entry.bulletPoints.length > 0 && (
+                      <div
+                        style={{
+                          fontSize: "11pt",
+                          lineHeight: "1.3",
+                          marginLeft: "12pt",
+                          marginTop: "4pt",
+                        }}
+                      >
+                        {entry.bulletPoints.map((bullet, bulletIndex) => (
+                          <div
+                            key={bulletIndex}
+                            style={{ marginBottom: "2pt" }}
+                          >
+                            • {bullet}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            );
+          })
+          .filter(Boolean) // Remove null entries
+      }
       {/* References */}
       {formData.references && formData.references.length > 0 && (
         <div className="mb-6">
