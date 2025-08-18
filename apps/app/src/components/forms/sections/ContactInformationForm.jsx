@@ -3,7 +3,7 @@ import {
   FormDescription, 
   FormSection, 
   FormGrid, 
-  FormInput 
+  FormInput,
 } from '../shared/FormComponents';
 
 function ContactInformationForm({ formData, handleInputChange }) {
@@ -36,6 +36,10 @@ function ContactInformationForm({ formData, handleInputChange }) {
         <FormGrid columns={1}>
           <FormInput
             label="Location"
+            hint={{
+              title: "Location (City, State)",
+              description: "We recommend putting the closest big city vs smaller towns that people likely won't recognize."
+            }}
             type="text"
             value={formData.location}
             onChange={(e) => handleInputChange('location', e.target.value)}
