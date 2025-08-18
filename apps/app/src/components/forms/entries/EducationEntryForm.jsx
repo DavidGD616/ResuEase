@@ -49,6 +49,19 @@ function EducationEntryForm({ education, onUpdate }) {
       <FormGrid columns={2}>
         <FormInput
           label="Date Start - Date End"
+          hint={{
+            title: "Note",
+            description: (
+              <div>
+                <p className='mb-4'>
+                  List your graduation or completion date here. If it’s recent, include the month and year (for example, May 2023). If it’s something you finished more than a few years ago, just the year is enough (like 2018).
+                </p>
+                <p className='mb-4'>
+                  If you didn’t finish the program but still want to show the education, you can just list the years you attended (for example, 2016–2018). That way it still adds value without drawing attention to the fact that you didn’t graduate.
+                </p>
+              </div>
+            )
+          }}
           type="text"
           value={education.dateRange}
           onChange={(e) => handleChange('dateRange', e.target.value)}
@@ -63,22 +76,26 @@ function EducationEntryForm({ education, onUpdate }) {
         />
       </FormGrid>
 
-      <div>
-        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-          Institution Description
-        </label>
-        <FormTextarea
-          value={education.description}
-          onChange={(e) => handleChange('description', e.target.value)}
-          placeholder="Harvard University, a global leader in technology and innovation, ranked #2 on the Fortune 500 in 2023, with a revenue of $198.3 billion."
-          rows={3}
-        />
-      </div>
-
       {/* Responsibility/Achievement Sections */}
       {bulletPoints.map((bullet, index) => (
         <div key={index} className="border border-gray-300 rounded-lg">
           <FormEntryBullet
+            hint={{
+              title: "About this field",
+              description: (
+                <div>
+                  <p className='mb-4'>
+                    This section is a good place to point out any coursework, projects, or achievements from your education that are worth showing off.
+                  </p>
+                  <p className='mb-4'>
+                    Example: Relevant Coursework: Data Structures, Algorithms, Machine Learning, Database Systems
+                  </p>
+                  <p className='mb-4'>
+                    If you want to add extra detail under one of these points, you can use a sub-bullet by clicking the three dots on the right.
+                  </p>
+                </div>
+              )
+            }}
             title="Education Details"
             onRemove={() => handleRemoveBulletPoint(index)}
           />

@@ -33,7 +33,6 @@ export const SECTION_TEMPLATES = {
     degree: '',
     dateRange: '',
     location: '',
-    description: '',
     bulletPoints: []
   },
   
