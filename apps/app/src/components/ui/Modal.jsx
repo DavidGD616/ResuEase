@@ -177,7 +177,7 @@ const HintModal = ({
     size="sm"
     title={title}
   >
-    <Modal.Body>
+    <Modal.Body className='text-left'>
       {description}
     </Modal.Body>
     <Modal.Footer>

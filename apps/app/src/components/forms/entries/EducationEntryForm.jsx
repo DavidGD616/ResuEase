@@ -35,6 +35,10 @@ function EducationEntryForm({ education, onUpdate }) {
         />
         <FormInput
           label="Degree"
+          hint={{
+            title: "Note",
+            description: "If you graduated, list your degree here. If not, list your major."
+          }}
           type="text"
           value={education.degree}
           onChange={(e) => handleChange('degree', e.target.value)}
