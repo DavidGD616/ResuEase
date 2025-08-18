@@ -10,8 +10,6 @@ import {
 } from '../shared/FormComponents';
 
 function PersonalDetailsForm({ formData, handleInputChange }) {
-
-  console.log(formData)
   return (
     <div>
       <FormHeader title="Personal details" />
