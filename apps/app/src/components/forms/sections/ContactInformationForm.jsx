@@ -7,7 +7,6 @@ import {
 } from '../shared/FormComponents';
 
 function ContactInformationForm({ formData, handleInputChange }) {
-  console.log(formData)
   return (
     <div>
       <FormHeader title="Contact information" />
