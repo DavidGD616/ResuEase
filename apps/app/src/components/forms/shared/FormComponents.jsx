@@ -1,4 +1,32 @@
-import { Plus, Trash2, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2, ChevronDown, ChevronUp, X, HelpCircle } from 'lucide-react';
+import Modal from '../../ui/Modal';
+
+// Hint Icon Component - This creates the small ? button
+export function HintIcon({ title, description, className = "" }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(true)}
+        className={`inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 hover:text-gray-700 transition-colors ${className}`}
+        aria-label="Show hint"
+      >
+        <HelpCircle className="w-4 h-4" />
+      </button>
+      
+      <Modal.Hint
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={title}
+        description={description}
+      />
+    </>
+  );
+}
+
 
 // Typography Components
 
@@ -54,13 +82,17 @@ export function FormGrid({ columns = 2, children, className = "" }) {
 
 // Form Input Components
 
-export function FormInput({ label, ...props }) {
+export function FormInput({ label, hint, ...props }) {
   return (
     <div>
       {label && (
-        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-          {label}
-        </label>
+        <div className="flex items-center gap-2 mb-1 sm:mb-2">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+            {label}
+          </label>
+          {/* This line adds the hint icon if hint prop is provided */}
+          {hint && <HintIcon title={hint.title} description={hint.description} />}
+        </div>
       )}
       <input
         className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
@@ -70,13 +102,16 @@ export function FormInput({ label, ...props }) {
   );
 }
 
-export function FormTextarea({ label, ...props }) {
+export function FormTextarea({ label, hint, ...props }) {
   return (
     <div>
       {label && (
-        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-          {label}
-        </label>
+        <div className="flex items-center gap-2 mb-1 sm:mb-2">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+            {label}
+          </label>
+          {hint && <HintIcon title={hint.title} description={hint.description} />}
+        </div>
       )}
       <textarea
         className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base resize-none"
@@ -86,13 +121,16 @@ export function FormTextarea({ label, ...props }) {
   );
 }
 
-export function FormSelect({ label, options, ...props }) {
+export function FormSelect({ label, options, hint, ...props }) {
   return (
     <div>
       {label && (
-        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-          {label}
-        </label>
+        <div className="flex items-center gap-2 mb-1 sm:mb-2">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+            {label}
+          </label>
+          {hint && <HintIcon title={hint.title} description={hint.description} />}
+        </div>
       )}
       <div className="relative">
         <select

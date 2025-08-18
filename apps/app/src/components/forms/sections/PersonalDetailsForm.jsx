@@ -6,7 +6,8 @@ import {
   FormGrid, 
   FormInput, 
   FormButton,
-  } from '../shared/FormComponents';
+  HintIcon
+} from '../shared/FormComponents';
 
 function PersonalDetailsForm({ formData, handleInputChange }) {
 
@@ -46,51 +47,39 @@ function PersonalDetailsForm({ formData, handleInputChange }) {
           placeholder="Frontend developer"
         />
 
-        <FormButton 
-          variant="panel" 
-          icon={Camera}
-          onClick={() => {/* handle photo upload */}}
-        >
-          Add photo
-        </FormButton>
-
-        {/* <FormToggleButton
-          isOpen={showAdditional}
-          icon={Plus}
-          onClick={() => setShowAdditional(!showAdditional)}
-        >
-          {showAdditional ? "Hide additional details" : "Show additional details"}
-        </FormToggleButton> */}
-
-        {/* {showAdditional && (
-          <div className="pt-3 sm:pt-4 border-t border-gray-200">
-            <FormSection>
-              <FormGrid columns={2}>
-                <FormInput
-                  label="Nationality"
-                  type="text"
-                  value={formData.nationality}
-                  onChange={(e) => handleInputChange("nationality", e.target.value)}
-                  placeholder="American"
-                />
-                <FormInput
-                  label="Driver's License"
-                  type="text"
-                  value={formData.driversLicense}
-                  onChange={(e) => handleInputChange("driversLicense", e.target.value)}
-                  placeholder="D74837465"
-                />
-              </FormGrid>
-              
-              <FormInput
-                label="Birth date"
-                type="date"
-                value={formData.birthDate}
-                onChange={(e) => handleInputChange("birthDate", e.target.value)}
-              />
-            </FormSection>
+        <div>
+          <div className="flex items-center gap-2 mb-1 sm:mb-2">
+            <p className='text-xs sm:text-sm font-medium text-gray-700'>
+              Include photo (generally NOT recommended!)
+            </p>
+            <HintIcon 
+              title="Including Photos on Resumes"
+              description={
+                <div>
+                  <p className="text-red-600 font-medium mb-4">
+                    ⚠️ ONLY include a photo if photos are standard practice in your country
+                  </p>
+                  <p className="mb-4">
+                    <strong>When photos are common:</strong> Some countries (like Germany, parts of Europe) expect photos on resumes.
+                  </p>
+                  <p className="mb-4">
+                    <strong>When photos are NOT recommended:</strong> In the US, Canada, UK, and most countries, photos can lead to discrimination and are generally discouraged or even illegal for employers to require.
+                  </p>
+                  <p>
+                    If you're unsure whether photos are normal in your country, DO NOT include one. When in doubt, leave it out.
+                  </p>
+                </div>
+              }
+            />
           </div>
-        )} */}
+          <FormButton
+            variant="panel" 
+            icon={Camera}
+            onClick={() => {/* handle photo upload */}}
+          >
+            Add photo
+          </FormButton>
+        </div>
       </FormSection>
     </div>
   );

@@ -164,9 +164,38 @@ const ConfirmationModal = ({
   </Modal>
 );
 
+// Hint modal for displaying help information
+const HintModal = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  description 
+}) => (
+  <Modal 
+    isOpen={isOpen} 
+    onClose={onClose} 
+    size="sm"
+    title={title}
+  >
+    <Modal.Body>
+      {description}
+    </Modal.Body>
+    <Modal.Footer>
+      <button
+        onClick={onClose}
+        className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+      >
+        Got it
+      </button>
+    </Modal.Footer>
+  </Modal>
+);
+
+
 Modal.Header = ModalHeader;
 Modal.Body = ModalBody;
 Modal.Footer = ModalFooter;
 Modal.Confirmation = ConfirmationModal;
+Modal.Hint = HintModal;
 
 export default Modal;
