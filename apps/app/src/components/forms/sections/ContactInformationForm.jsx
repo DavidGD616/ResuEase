@@ -7,6 +7,7 @@ import {
 } from '../shared/FormComponents';
 
 function ContactInformationForm({ formData, handleInputChange }) {
+  console.log(formData)
   return (
     <div>
       <FormHeader title="Contact information" />
@@ -33,37 +34,13 @@ function ContactInformationForm({ formData, handleInputChange }) {
           />
         </FormGrid>
 
-        <FormGrid columns={2}>
+        <FormGrid columns={1}>
           <FormInput
-            label="Country"
+            label="Location"
             type="text"
-            value={formData.country}
-            onChange={(e) => handleInputChange('country', e.target.value)}
-            placeholder="USA"
-          />
-          <FormInput
-            label="City"
-            type="text"
-            value={formData.city}
-            onChange={(e) => handleInputChange('city', e.target.value)}
-            placeholder="Austin"
-          />
-        </FormGrid>
-
-        <FormGrid columns={2}>
-          <FormInput
-            label="Address"
-            type="text"
-            value={formData.address}
-            onChange={(e) => handleInputChange('address', e.target.value)}
-            placeholder="500 W 2nd St"
-          />
-          <FormInput
-            label="Postal code"
-            type="text"
-            value={formData.postalCode}
-            onChange={(e) => handleInputChange('postalCode', e.target.value)}
-            placeholder="55912"
+            value={formData.location}
+            onChange={(e) => handleInputChange('location', e.target.value)}
+            placeholder="San Diego, CA"
           />
         </FormGrid>
       </FormSection>

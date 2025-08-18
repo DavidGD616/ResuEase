@@ -42,25 +42,10 @@ function DocumentPreview({ formData }) {
         </div>
 
         <div style={{ fontSize: "10pt", color: "#333" }}>
-          {formData.address && <span>{formData.address}</span>}
-          {formData.city && (
-            <span>
-              {formData.address ? ", " : ""}
-              {formData.city}
-            </span>
-          )}
-          {formData.country && (
-            <span>
-              {formData.address || formData.city ? ", " : ""}
-              {formData.country}
-            </span>
-          )}
-          {formData.postalCode && <span> {formData.postalCode}</span>}
-          {(formData.address ||
-            formData.city ||
-            formData.country ||
-            formData.postalCode) && <span> • </span>}
-          {formData.phone && <span>{formData.phone} • </span>}
+          {formData.location && <span>{formData.location}</span>}
+          {formData.location && (formData.phone || formData.email) && <span> • </span>}
+          {formData.phone && <span>{formData.phone}</span>}
+          {formData.phone && formData.email && <span> • </span>}
           {formData.email && <span>{formData.email}</span>}
         </div>
 

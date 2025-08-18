@@ -104,10 +104,7 @@ export const INITIAL_FORM_DATA = {
   // Contact Information
   email: '',
   phone: '',
-  country: '',
-  city: '',
-  address: '',
-  postalCode: '',
+  location: '',
   
   // Professional Summary
   about: '',
