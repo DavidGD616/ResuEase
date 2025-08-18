@@ -224,13 +224,14 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
   );
 }
 
-export function FormEntryBullet({ title, onRemove }) {
+export function FormEntryBullet({ title, onRemove, hint }) {
   return (
     <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
       <div className="flex items-center gap-2 sm:gap-3">
         <h3 className="font-medium text-sm sm:text-base text-gray-900">
           {title || 'Untitled'}
         </h3>
+        {hint && <HintIcon title={hint.title} description={hint.description} />}
       </div>
       
       <div className="flex items-center gap-2">
