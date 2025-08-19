@@ -6,8 +6,8 @@ export const SIDEBAR_ITEMS = [
   { id: 'contact', icon: Phone, label: 'Contact information', order: 1, fixed: true },
   { id: 'employment', icon: Briefcase, label: 'Employment history', order: 2, fixed: false },
   { id: 'education', icon: GraduationCap, label: 'Education', order: 3, fixed: false },
-  { id: 'skills', icon: Award, label: 'Skills', order: 4, fixed: false },
-  { id: 'projects', icon: FolderKanban,  label: 'Projects', order: 5, fixed: false }
+  { id: 'projects', icon: FolderKanban,  label: 'Projects', order: 4, fixed: false },
+  { id: 'skills', icon: Award, label: 'Skills', order: 5, fixed: false },
 ];
 
 // Additional section types that can be added via "Additional section"
@@ -25,8 +25,8 @@ export const ADDITIONAL_SECTION = [
 export const SECTION_TYPES = {
   PERSONAL: 'personal',
   CONTACT: 'contact',
-  SUMMARY: 'summary',
   EMPLOYMENT: 'employment',
   SKILLS: 'skills',
-  EDUCATION: 'education'
+  PROJECTS: 'projects',
+  EDUCATION: 'education',
 };

@@ -35,6 +35,13 @@ export const SECTION_TEMPLATES = {
     location: '',
     bulletPoints: []
   },
+
+  projects: {
+    name: '',
+    url: '',
+    dateRange: '',
+    bulletPoints: []
+  },
   
   employment: {
     jobTitle: '',
@@ -110,6 +117,7 @@ export const INITIAL_FORM_DATA = {
   hobbies: '',
   
   // Dynamic Sections (arrays of objects based on templates)
+  projects: [],
   skills: [],
   education: [],
   employment: [],

@@ -15,6 +15,7 @@ import LinksForm from './LinksForm';
 import HobbiesForm from './HobbiesForm';
 import CustomSectionForm from './CustomSectionForm';
 import ReorderSectionsForm from './ReorderSectionsForm';
+import ProjectsForm from './ProjectsForm';
 
 function MainContent({ 
   activeSection, 
@@ -99,6 +100,16 @@ function MainContent({
       {activeSection === 'education' && (
         <EducationForm 
           onDeleteSection={() => onDeleteSection('education')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
+        />
+      )}
+
+      {activeSection === 'projects' && (
+        <ProjectsForm 
+          onDeleteSection={() => onDeleteSection('projects')}
           formData={formData}
           addSectionItem={addSectionItem}
           updateSectionItem={updateSectionItem}
