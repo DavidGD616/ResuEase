@@ -91,9 +91,11 @@ function MainContent({
 
       {activeSection === 'skills' && (
         <SkillsForm 
-          formData={formData}
-          handleInputChange={handleInputChange}
           onDeleteSection={() => onDeleteSection('skills')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 

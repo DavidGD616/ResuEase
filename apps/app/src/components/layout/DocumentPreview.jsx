@@ -96,27 +96,22 @@ function DocumentPreview({ formData }) {
         </div>
       )}
       {/* Skills */}
-      {formData.skills && formData.skills.length > 0 && (
+      {formData.skills && Array.isArray(formData.skills) && formData.skills.length > 0 && (
         <div className="mb-6">
-          <h2
-            style={{
-              fontSize: "12pt",
-              fontWeight: "bold",
-              marginBottom: "8pt",
-              textTransform: "uppercase",
-              borderBottom: "1px solid #000",
-              paddingBottom: "2pt",
-            }}
-          >
-            Core Competencies
-          </h2>
           <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
-            {Array.isArray(formData.skills)
-              ? formData.skills.join(" • ")
-              : formData.skills}
+            <strong>Skills:</strong>{" "}
+            {formData.skills
+              .filter(skill => skill && skill.skillName) // Filter out invalid entries
+              .map((skill, index, filteredArray) => (
+                <span key={skill.id || index}>
+                  {skill.skillName}
+                  {index < filteredArray.length - 1 ? "; " : ""}
+                </span>
+              ))}
           </div>
         </div>
       )}
+      
       {/* Professional Experience */}
       {formData.employment && formData.employment.length > 0 && (
         <div className="mb-6">

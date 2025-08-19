@@ -10,19 +10,6 @@ export const PROFICIENCY_LEVELS = [
   'Native'
 ];
 
-export const SUGGESTED_SKILLS = [
-  'Project Management',
-  'Data Analysis',
-  'Problem Solving',
-  'Team Leadership',
-  'Customer Service',
-  'Digital Marketing',
-  'Time Management',
-  'Communication',
-  'Strategic Planning',
-  'Software Development'
-];
-
 // =============================================================================
 // SECTION TEMPLATES
 // =============================================================================
@@ -90,6 +77,10 @@ export const SECTION_TEMPLATES = {
 
   hobbies: {
     hobbyName: ''
+  },
+
+  skills: {
+    skillName: ''
   },
   
   // Template for custom section entries
