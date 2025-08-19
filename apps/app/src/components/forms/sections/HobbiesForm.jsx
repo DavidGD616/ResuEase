@@ -1,25 +1,80 @@
-import { FormHeader, FormDescription } from '../shared/FormComponents';
-import RichTextEditor from '../shared/RichTextEditor';
+import { useState } from 'react';
+import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
+import FormEntryHeader from '../shared/FormEntryHeader';
+import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
+import HobbyEntryForm from '../entries/HobbyEntryForm';
 
-function HobbiesForm({ formData, handleInputChange, onDeleteSection }) {
+function HobbiesForm({ 
+  onDeleteSection, 
+  formData, 
+  addSectionItem, 
+  updateSectionItem, 
+  removeSectionItem 
+}) {
+  const [expandedItems, setExpandedItems] = useState({});
   const deleteModal = useDeleteModal(onDeleteSection);
+
+  const hobbies = formData.hobbies || [];
+
+  const addHobby = () => {
+    const newItemId = addSectionItem('hobbies');
+    setExpandedItems(prev => ({ ...prev, [newItemId]: true }));
+  };
+
+  const removeHobby = (id) => {
+    removeSectionItem('hobbies', id);
+    setExpandedItems(prev => {
+      const newExpanded = { ...prev };
+      delete newExpanded[id];
+      return newExpanded;
+    });
+  };
+
+  const updateHobby = (id, field, value) => {
+    updateSectionItem('hobbies', id, field, value);
+  };
+
+  const toggleExpanded = (id) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   return (
     <div>
       <FormHeader title="Hobbies" onDelete={deleteModal.openModal} showDelete />
       
       <FormDescription>
-        Showcase your passion and highlight your achievements, such as special projects completed, unique skills developed, or notable experiences gained.
+        This small section is a chance to add some personality to your resume. Share a few hobbies or interests that give employers a glimpse of who you are outside of work.
       </FormDescription>
       
-      <RichTextEditor
-        value={formData.hobbies || ''}
-        onChange={(e) => handleInputChange('hobbies', e.target.value)}
-        placeholder="I love landscape and nature photography, and my work has been featured in a local gallery."
-        label=""
-      />
+      <FormSection>
+        {hobbies.map((hobby) => (
+          <div key={hobby.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+            <FormEntryHeader
+              title={hobby.hobbyName || 'Untitled'}
+              isExpanded={expandedItems[hobby.id]}
+              onToggleExpanded={() => toggleExpanded(hobby.id)}
+              onRemove={() => removeHobby(hobby.id)}
+            />
+
+            {expandedItems[hobby.id] && (
+              <HobbyEntryForm
+                hobby={hobby}
+                onUpdate={updateHobby}
+              />
+            )}
+          </div>
+        ))}
+
+        <AddEntryButton
+          onClick={addHobby}
+          label="Add hobby"
+        />
+      </FormSection>
 
       {/* Delete Section Modal */}
       <Modal.Confirmation

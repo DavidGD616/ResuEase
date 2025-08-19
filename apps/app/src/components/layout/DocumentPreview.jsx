@@ -460,27 +460,18 @@ function DocumentPreview({ formData }) {
         </div>
       )}
       {/* Hobbies & Interests */}
-      {formData.hobbies && (
+      {formData.hobbies && Array.isArray(formData.hobbies) && formData.hobbies.length > 0 && (
         <div className="mb-6">
-          <h2
-            style={{
-              fontSize: "12pt",
-              fontWeight: "bold",
-              marginBottom: "8pt",
-              textTransform: "uppercase",
-              borderBottom: "1px solid #000",
-              paddingBottom: "2pt",
-            }}
-          >
-            Interests & Hobbies
-          </h2>
-          <div
-            style={{
-              fontSize: "11pt",
-              lineHeight: "1.3",
-            }}
-          >
-            {formData.hobbies}
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
+            <strong>Interests:</strong>{" "}
+            {formData.hobbies
+              .filter(hobby => hobby && hobby.hobbyName) // Filter out invalid entries
+              .map((hobby, index, filteredArray) => (
+                <span key={hobby.id || index}>
+                  {hobby.hobbyName}
+                  {index < filteredArray.length - 1 ? "; " : ""}
+                </span>
+              ))}
           </div>
         </div>
       )}

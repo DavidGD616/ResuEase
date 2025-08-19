@@ -89,7 +89,7 @@ export const SECTION_TEMPLATES = {
   },
 
   hobbies: {
-    hobbyName: '',
+    hobbyName: ''
   },
   
   // Template for custom section entries

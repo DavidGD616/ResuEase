@@ -169,9 +169,8 @@ function MainContent({
 
       {activeSection === 'hobbies' && (
         <HobbiesForm 
-          formData={formData}
-          handleInputChange={handleInputChange}
           onDeleteSection={() => onDeleteSection('hobbies')}
+          formData={formData}
           addSectionItem={addSectionItem}
           updateSectionItem={updateSectionItem}
           removeSectionItem={removeSectionItem}
