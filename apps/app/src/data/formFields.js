@@ -87,6 +87,10 @@ export const SECTION_TEMPLATES = {
     language: '',
     proficiency: 'Not applicable'
   },
+
+  hobbies: {
+    hobbyName: '',
+  },
   
   // Template for custom section entries
   customEntry: {
@@ -114,7 +118,6 @@ export const INITIAL_FORM_DATA = {
   
   // Professional Summary
   about: '',
-  hobbies: '',
   
   // Dynamic Sections (arrays of objects based on templates)
   projects: [],
@@ -126,6 +129,7 @@ export const INITIAL_FORM_DATA = {
   courses: [],
   references: [],
   links: [],
+  hobbies: [],
   
   // Custom Sections - will be added dynamically
   // Format: customEntries_custom-1: [], customEntries_custom-2: [], etc.

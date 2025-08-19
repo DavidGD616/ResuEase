@@ -7,18 +7,18 @@ export const SIDEBAR_ITEMS = [
   { id: 'employment', icon: Briefcase, label: 'Employment history', order: 2, fixed: false },
   { id: 'education', icon: GraduationCap, label: 'Education', order: 3, fixed: false },
   { id: 'projects', icon: FolderKanban,  label: 'Projects', order: 4, fixed: false },
-  { id: 'skills', icon: Award, label: 'Skills', order: 5, fixed: false },
+  { id: 'courses', icon: GraduationCap, label: 'Courses', order: 5, fixed: false },
+  { id: 'skills', icon: Award, label: 'Skills', order: 6, fixed: false },
+  { id: 'hobbies', icon: Gamepad2, label: 'Hobbies', order: 7, fixed: false },
 ];
 
 // Additional section types that can be added via "Additional section"
 export const ADDITIONAL_SECTION = [
   { id: 'summary', icon: FileDown, label: 'Professional summary' },
   { id: 'internships', icon: Briefcase, label: 'Internships' },
-  { id: 'courses', icon: GraduationCap, label: 'Courses' },
   { id: 'references', icon: MessageSquare, label: 'References' },
   { id: 'languages', icon: Globe, label: 'Languages' },
   { id: 'links', icon: Link, label: 'Links' },
-  { id: 'hobbies', icon: Gamepad2, label: 'Hobbies' },
   { id: 'custom', icon: Code, label: 'Custom section' }
 ];
 

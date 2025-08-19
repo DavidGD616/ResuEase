@@ -172,6 +172,9 @@ function MainContent({
           formData={formData}
           handleInputChange={handleInputChange}
           onDeleteSection={() => onDeleteSection('hobbies')}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
         />
       )}
 
