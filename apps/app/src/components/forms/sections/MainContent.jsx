@@ -74,6 +74,7 @@ function MainContent({
 
       {activeSection === 'summary' && (
         <ProfessionalSummaryForm 
+          onDeleteSection={() => onDeleteSection('summary')}
           formData={formData}
           handleInputChange={handleInputChange}
         />
