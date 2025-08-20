@@ -3,7 +3,7 @@ import { useFormData } from '../hooks/useFormData';
 import { SIDEBAR_ITEMS, SECTION_TYPES } from '../data/sidebarItems';
 import TopNavigation from '../components/layout/TopNavigation';
 import Sidebar from '../components/layout/Sidebar';
-import MainContent from '../components/forms/sections/MainContent';
+import MainContent from '../components/layout/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {

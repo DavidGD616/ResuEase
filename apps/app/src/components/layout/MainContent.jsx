@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import ContactInformationForm from './ContactInformationForm';
-import EducationForm from './EducationForm';
-import EmploymentHistoryForm from './EmploymentHistoryForm';
-import PersonalDetailsForm from './PersonalDetailsForm';
-import ProfessionalSummaryForm from './ProfessionalSummaryForm';
-import SkillsForm from './SkillsForm';
-import InternshipsForm from './InternshipsForm';
-import BottomNavigation from '../../layout/BottomNavigation';
-import AdditionalSectionsForm from './AdditionalSectionsForm';
-import CoursesForm from './CoursesForm';
-import ReferencesForm from './ReferencesForm';
-import LanguagesForm from './LanguagesForm';
-import LinksForm from './LinksForm';
-import HobbiesForm from './HobbiesForm';
-import CustomSectionForm from './CustomSectionForm';
-import ReorderSectionsForm from './ReorderSectionsForm';
-import ProjectsForm from './ProjectsForm';
+import BottomNavigation from '../../components/layout/BottomNavigation';
+import ContactInformationForm from '../forms/sections/ContactInformationForm';
+import EducationForm from '../forms/sections/EducationForm';
+import EmploymentHistoryForm from '../forms/sections/EmploymentHistoryForm';
+import PersonalDetailsForm from '../forms/sections/PersonalDetailsForm';
+import ProfessionalSummaryForm from '../forms/sections/ProfessionalSummaryForm';
+import SkillsForm from '../forms/sections/SkillsForm';
+import InternshipsForm from '../forms/sections/InternshipsForm';
+import AdditionalSectionsForm from '../forms/sections/AdditionalSectionsForm';
+import CoursesForm from '../forms/sections/CoursesForm';
+import ReferencesForm from '../forms/sections/ReferencesForm';
+import LanguagesForm from '../forms/sections/LanguagesForm';
+import LinksForm from '../forms/sections/LinksForm';
+import HobbiesForm from '../forms/sections/HobbiesForm';
+import CustomSectionForm from '../forms/sections/CustomSectionForm';
+import ReorderSectionsForm from '../forms/sections/ReorderSectionsForm';
+import ProjectsForm from '../forms/sections/ProjectsForm';
 
 function MainContent({ 
   activeSection, 
