@@ -48,7 +48,7 @@ function SkillsForm({
       <FormHeader title="Skills" onDelete={deleteModal.openModal} showDelete />
       
       <FormDescription>
-        Highlight your most important and applicable professional skills.
+        This section is for summarizing your key abilities. Include both hard skills (like technical knowledge) and soft skills (like communication or problem-solving). It gives employers a quick overview of your strengths and how they fit with the job.
       </FormDescription>
       
       <FormSection>
