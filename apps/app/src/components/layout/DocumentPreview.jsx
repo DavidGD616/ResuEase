@@ -38,7 +38,7 @@ function DocumentPreview({ formData }) {
         </h1>
 
         <div style={{ fontSize: "11pt", marginBottom: "4pt" }}>
-          {formData.jobTitle || "Your Professional Title"}
+          {formData.jobTitle || ""}
         </div>
 
         <div style={{ fontSize: "10pt", color: "#333" }}>
