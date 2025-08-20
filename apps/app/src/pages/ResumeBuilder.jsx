@@ -74,31 +74,44 @@ function ResumeBuilder() {
 
   // Function to handle section deletion of any non-fixed section
   const handleDeleteSection = (sectionId) => {
-    // Prevent deletion of fixed sections
-    const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
-    if (sectionToDelete?.fixed) {
-      return;
+  // Prevent deletion of fixed sections
+  const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
+  if (sectionToDelete?.fixed) {
+    return;
+  }
+
+  // Clean up form data based on section type
+  if (sectionId.startsWith('custom-')) {
+    // For custom sections, remove the custom entries
+    const customSectionKey = `customEntries_${sectionId}`;
+    updateField(customSectionKey, undefined);
+  } else {
+    // For regular sections, clear the section data
+    // This handles: skills, education, employment, internships, courses, 
+    // references, links, languages, hobbies, projects
+    if (formData[sectionId]) {
+      updateField(sectionId, []);
     }
-
-    // If it's a custom section, remove from form data
-    if (sectionId.startsWith('custom-')) {
-      const customSectionKey = `customEntries_${sectionId}`;
-      updateField(customSectionKey, undefined); // Remove the field entirely
-    }
-
-    // Remove the section from sidebar
-    setSidebarItems(prev => prev.filter(item => item.id !== sectionId));
-
-    // If the deleted section was active, navigate to the first available section
-    if (activeSection === sectionId) {
-      const remainingSections = sidebarItems.filter(item => item.id !== sectionId);
-      if (remainingSections.length > 0) {
-        setActiveSection(remainingSections[0].id);
-      } else {
-        setActiveSection(SECTION_TYPES.PERSONAL);
-      }
+    
+    // Special handling for 'summary' section which maps to 'about' field
+    if (sectionId === 'summary') {
+      updateField('about', '');
     }
   }
+
+  // Remove the section from sidebar
+  setSidebarItems(prev => prev.filter(item => item.id !== sectionId));
+
+  // If the deleted section was active, navigate to the first available section
+  if (activeSection === sectionId) {
+    const remainingSections = sidebarItems.filter(item => item.id !== sectionId);
+    if (remainingSections.length > 0) {
+      setActiveSection(remainingSections[0].id);
+    } else {
+      setActiveSection(SECTION_TYPES.PERSONAL);
+    }
+  }
+}
 
   return (
     <div className="min-h-screen bg-gray-50">
