@@ -361,13 +361,24 @@ function DocumentPreview({ formData }) {
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "11pt" }}>
-                    {project.name || "Project Name"}
-                  </strong>
-                  {project.url && (
-                    <span style={{ fontSize: "10pt", color: "#666", marginLeft: "8pt" }}>
-                      ({project.url})
-                    </span>
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "11pt",
+                        fontWeight: "bold",
+                        color: "#000",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {project.name || "Project Name"}
+                    </a>
+                  ) : (
+                    <strong style={{ fontSize: "11pt" }}>
+                      {project.name || "Project Name"}
+                    </strong>
                   )}
                 </div>
                 <div style={{ fontSize: "10pt", color: "#333" }}>
