@@ -82,6 +82,10 @@ export const SECTION_TEMPLATES = {
   skills: {
     skillName: ''
   },
+
+  technologiesSkills: {
+    technologiesSkillName: ''
+  },
   
   // Template for custom section entries
   customEntry: {
@@ -113,6 +117,7 @@ export const INITIAL_FORM_DATA = {
   // Dynamic Sections (arrays of objects based on templates)
   projects: [],
   skills: [],
+  technologiesSkills: [],
   education: [],
   employment: [],
   languages: [],

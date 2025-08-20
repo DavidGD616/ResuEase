@@ -6,6 +6,7 @@ import EmploymentHistoryForm from '../forms/sections/EmploymentHistoryForm';
 import PersonalDetailsForm from '../forms/sections/PersonalDetailsForm';
 import ProfessionalSummaryForm from '../forms/sections/ProfessionalSummaryForm';
 import SkillsForm from '../forms/sections/SkillsForm';
+import TechnologiesSkillsForm from '../forms/sections/TechnologiesSkillsForm';
 import InternshipsForm from '../forms/sections/InternshipsForm';
 import AdditionalSectionsForm from '../forms/sections/AdditionalSectionsForm';
 import CoursesForm from '../forms/sections/CoursesForm';
@@ -93,6 +94,16 @@ function MainContent({
       {activeSection === 'skills' && (
         <SkillsForm 
           onDeleteSection={() => onDeleteSection('skills')}
+          formData={formData}
+          addSectionItem={addSectionItem}
+          updateSectionItem={updateSectionItem}
+          removeSectionItem={removeSectionItem}
+        />
+      )}
+
+      {activeSection === 'technologiesSkills' && (
+        <TechnologiesSkillsForm 
+          onDeleteSection={() => onDeleteSection('technologiesSkills')}
           formData={formData}
           addSectionItem={addSectionItem}
           updateSectionItem={updateSectionItem}

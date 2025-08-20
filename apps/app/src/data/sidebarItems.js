@@ -1,4 +1,4 @@
-import { User, Phone, FileDown, Briefcase, GraduationCap, Award, MessageSquare, Globe, Link, Gamepad2, Code, FolderKanban } from 'lucide-react';
+import { User, Phone, FileDown, Briefcase, GraduationCap, Award, MessageSquare, Globe, Link, Gamepad2, Code, FolderKanban, Cpu } from 'lucide-react';
 
 // Core sections that appear by default in the sidebar
 export const SIDEBAR_ITEMS = [
@@ -9,7 +9,8 @@ export const SIDEBAR_ITEMS = [
   { id: 'projects', icon: FolderKanban,  label: 'Projects', order: 4, fixed: false },
   { id: 'courses', icon: GraduationCap, label: 'Courses', order: 5, fixed: false },
   { id: 'skills', icon: Award, label: 'Skills', order: 6, fixed: false },
-  { id: 'hobbies', icon: Gamepad2, label: 'Hobbies', order: 7, fixed: false },
+   { id: 'technologiesSkills', icon: Cpu, label: 'Technologies', order: 7, fixed: false },
+  { id: 'hobbies', icon: Gamepad2, label: 'Hobbies', order: 8, fixed: false },
 ];
 
 // Additional section types that can be added via "Additional section"

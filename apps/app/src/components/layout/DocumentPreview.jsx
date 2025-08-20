@@ -499,6 +499,23 @@ function DocumentPreview({ formData }) {
         </div>
       )}
 
+      {/* Technologies */}
+      {formData.technologiesSkills && Array.isArray(formData.technologiesSkills) && formData.technologiesSkills.length > 0 && (
+        <div className="mb-6">
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
+            <strong>Technologies:</strong>{" "}
+            {formData.technologiesSkills
+              .filter(techSkill => techSkill && techSkill.technologiesSkillName) // Filter out invalid entries
+              .map((techSkill, index, filteredArray) => (
+                <span key={techSkill.id || index}>
+                  {techSkill.technologiesSkillName}
+                  {index < filteredArray.length - 1 ? "; " : ""}
+                </span>
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* Hobbies & Interests */}
       {formData.hobbies && Array.isArray(formData.hobbies) && formData.hobbies.length > 0 && (
         <div className="mb-6">
