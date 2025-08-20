@@ -95,22 +95,6 @@ function DocumentPreview({ formData }) {
           </p>
         </div>
       )}
-      {/* Skills */}
-      {formData.skills && Array.isArray(formData.skills) && formData.skills.length > 0 && (
-        <div className="mb-6">
-          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
-            <strong>Skills:</strong>{" "}
-            {formData.skills
-              .filter(skill => skill && skill.skillName) // Filter out invalid entries
-              .map((skill, index, filteredArray) => (
-                <span key={skill.id || index}>
-                  {skill.skillName}
-                  {index < filteredArray.length - 1 ? "; " : ""}
-                </span>
-              ))}
-          </div>
-        </div>
-      )}
       
       {/* Professional Experience */}
       {formData.employment && formData.employment.length > 0 && (
@@ -350,7 +334,68 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-      {/* Languages - FIXED */}
+
+      {/* Projects */}
+      {formData.projects && formData.projects.length > 0 && (
+        <div className="mb-6">
+          <h2
+            style={{
+              fontSize: "12pt",
+              fontWeight: "bold",
+              marginBottom: "8pt",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #000",
+              paddingBottom: "2pt",
+            }}
+          >
+            Projects
+          </h2>
+          {formData.projects.map((project, index) => (
+            <div key={project.id || index} style={{ marginBottom: "12pt" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  marginBottom: "4pt",
+                }}
+              >
+                <div>
+                  <strong style={{ fontSize: "11pt" }}>
+                    {project.name || "Project Name"}
+                  </strong>
+                  {project.url && (
+                    <span style={{ fontSize: "10pt", color: "#666", marginLeft: "8pt" }}>
+                      ({project.url})
+                    </span>
+                  )}
+                </div>
+                <div style={{ fontSize: "10pt", color: "#333" }}>
+                  {project.dateRange}
+                </div>
+              </div>
+              {project.bulletPoints && project.bulletPoints.length > 0 && (
+                <div
+                  style={{
+                    fontSize: "11pt",
+                    lineHeight: "1.3",
+                    marginLeft: "12pt",
+                    marginTop: "4pt",
+                  }}
+                >
+                  {project.bulletPoints.map((bullet, bulletIndex) => (
+                    <div key={bulletIndex} style={{ marginBottom: "2pt" }}>
+                      • {bullet}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Languages */}
       {formData.languages && formData.languages.length > 0 && (
         <div className="mb-6">
           <h2
@@ -387,6 +432,7 @@ function DocumentPreview({ formData }) {
           </div>
         </div>
       )}
+      
       {/* Professional Development / Courses */}
       {formData.courses && formData.courses.length > 0 && (
         <div className="mb-6">
@@ -424,6 +470,41 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
+
+      {/* Skills */}
+      {formData.skills && Array.isArray(formData.skills) && formData.skills.length > 0 && (
+        <div className="mb-6">
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
+            <strong>Skills:</strong>{" "}
+            {formData.skills
+              .filter(skill => skill && skill.skillName) // Filter out invalid entries
+              .map((skill, index, filteredArray) => (
+                <span key={skill.id || index}>
+                  {skill.skillName}
+                  {index < filteredArray.length - 1 ? "; " : ""}
+                </span>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Hobbies & Interests */}
+      {formData.hobbies && Array.isArray(formData.hobbies) && formData.hobbies.length > 0 && (
+        <div className="mb-6">
+          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
+            <strong>Interests:</strong>{" "}
+            {formData.hobbies
+              .filter(hobby => hobby && hobby.hobbyName) // Filter out invalid entries
+              .map((hobby, index, filteredArray) => (
+                <span key={hobby.id || index}>
+                  {hobby.hobbyName}
+                  {index < filteredArray.length - 1 ? "; " : ""}
+                </span>
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* Links / Portfolio */}
       {formData.links && formData.links.length > 0 && (
         <div className="mb-6">
@@ -454,23 +535,6 @@ function DocumentPreview({ formData }) {
           ))}
         </div>
       )}
-      {/* Hobbies & Interests */}
-      {formData.hobbies && Array.isArray(formData.hobbies) && formData.hobbies.length > 0 && (
-        <div className="mb-6">
-          <div style={{ fontSize: "11pt", lineHeight: "1.3" }}>
-            <strong>Interests:</strong>{" "}
-            {formData.hobbies
-              .filter(hobby => hobby && hobby.hobbyName) // Filter out invalid entries
-              .map((hobby, index, filteredArray) => (
-                <span key={hobby.id || index}>
-                  {hobby.hobbyName}
-                  {index < filteredArray.length - 1 ? "; " : ""}
-                </span>
-              ))}
-          </div>
-        </div>
-      )}
-
       
       {/* Custom Sections */}
       {
