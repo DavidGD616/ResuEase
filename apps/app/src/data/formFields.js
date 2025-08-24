@@ -53,9 +53,6 @@ export const SECTION_TEMPLATES = {
   
   courses: {
     courseName: '',
-    institution: '',
-    startDate: '',
-    endDate: ''
   },
   
   references: {

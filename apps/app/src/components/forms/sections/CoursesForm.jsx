@@ -55,7 +55,7 @@ function CoursesForm({
         {courses.map((course) => (
           <div key={course.id} className="border border-gray-200 rounded-md sm:rounded-lg">
             <FormEntryHeader
-              title={course.courseName || course.institution || 'Untitled'}
+              title={course.courseName || 'Untitled'}
               isExpanded={expandedItems[course.id]}
               onToggleExpanded={() => toggleExpanded(course.id)}
               onRemove={() => removeCourse(course.id)}
