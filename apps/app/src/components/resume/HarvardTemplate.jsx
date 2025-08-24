@@ -234,16 +234,6 @@ const ListSection = ({ data, sectionId }) => {
             <strong style={styles.itemTitle}>
               {item.courseName || "Course Name"}
             </strong>
-            {item.institution && (
-              <span style={styles.itemTitle}>
-                {", "}{item.institution}
-              </span>
-            )}
-            {item.startDate && item.endDate && (
-              <span style={styles.itemDate}>
-                {" ("}{item.startDate} - {item.endDate}{")"}
-              </span>
-            )}
           </div>
         );
 
