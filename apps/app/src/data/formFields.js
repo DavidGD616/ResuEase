@@ -107,6 +107,7 @@ export const INITIAL_FORM_DATA = {
   email: '',
   phone: '',
   location: '',
+  portfolio: '',
   
   // Professional Summary
   about: '',
