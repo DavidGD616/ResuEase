@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import DocumentPreview from './DocumentPreview';
 
-function PreviewPanel({ formData }) {
+function PreviewPanel({ formData, sidebarItems = [] }) {
   const containerRef = useRef(null);
   const [scale, setScale] = useState(0.54);
 
@@ -58,7 +58,7 @@ function PreviewPanel({ formData }) {
               transformOrigin: 'center center'
             }}
           >
-            <DocumentPreview formData={formData} />
+            <DocumentPreview formData={formData} sidebarItems={sidebarItems} />
           </div>
         </div>
       </div>

@@ -152,6 +152,7 @@ function ResumeBuilder() {
          <div className="order-last lg:order-none flex justify-center">
             <PreviewPanel 
               formData={formData}
+              sidebarItems={sidebarItems}
             />
           </div>
         </div>
