@@ -228,15 +228,6 @@ const ListSection = ({ data, sectionId }) => {
           </div>
         );
 
-      case 'courses':
-        return (
-          <div key={item.id || index} style={{ marginBottom: "6pt" }}>
-            <strong style={styles.itemTitle}>
-              {item.courseName || "Course Name"}
-            </strong>
-          </div>
-        );
-
       case 'links':
         return (
           <div key={item.id || index} style={{ marginBottom: "6pt" }}>
@@ -283,30 +274,61 @@ const ListSection = ({ data, sectionId }) => {
   );
 };
 
-// Inline Section Component (for skills, technologies, hobbies)
-const InlineSection = ({ data, sectionId }) => {
-  if (data.isEmpty) return null;
+// Combined Skills Section Component
+const CombinedSkillsSection = ({ formData, availableSections }) => {
+  const sectionMap = {
+    courses: { title: 'CERTIFICATIONS', key: 'courses' },
+    skills: { title: 'SKILLS', key: 'skills' },
+    technologiesSkills: { title: 'TECHNOLOGIES', key: 'technologiesSkills' },
+    languages: { title: 'LANGUAGES', key: 'languages' },
+    hobbies: { title: 'INTERESTS', key: 'hobbies' }
+  };
 
-  const renderInlineContent = () => {
+  // Get data for each section and check if it has content
+  const sectionsWithData = [];
+  const sectionData = {};
+
+  availableSections.forEach(sectionId => {
+    if (sectionMap[sectionId]) {
+      const processor = processSectionData[sectionId];
+      if (processor) {
+        const data = processor(formData);
+        if (!data.isEmpty) {
+          sectionsWithData.push(sectionMap[sectionId].title);
+          sectionData[sectionId] = data;
+        }
+      }
+    }
+  });
+
+  // If no sections have data, return null
+  if (sectionsWithData.length === 0) return null;
+
+  // Build the combined title
+  let combinedTitle;
+  if (sectionsWithData.length === 1) {
+    combinedTitle = sectionsWithData[0];
+  } else if (sectionsWithData.length === 2) {
+    combinedTitle = sectionsWithData.join(' & ');
+  } else {
+    const lastSection = sectionsWithData.pop();
+    combinedTitle = sectionsWithData.join(', ') + ' & ' + lastSection;
+  }
+
+  const renderInlineContent = (sectionId, data) => {
     switch (sectionId) {
-      case 'languages':
-        return data.items.map((language, index) => {
-          const languageText =
-            typeof language === "object" && language !== null
-              ? language.language &&
-                language.proficiency &&
-                language.proficiency !== "Not applicable"
-                ? `${language.language} (${language.proficiency})`
-                : language.language || ""
-              : String(language || "");
-
-          return (
-            <span key={language.id || index}>
-              {languageText}
-              {index < data.items.length - 1 ? " • " : ""}
-            </span>
-          );
-        });
+      case 'courses':
+        return (
+          <>
+            <strong>Certifications:</strong>{" "}
+            {data.items.map((course, index) => (
+              <span key={course.id || index}>
+                {course.courseName}
+                {index < data.items.length - 1 ? "; " : ""}
+              </span>
+            ))}
+          </>
+        );
 
       case 'skills':
         return (
@@ -334,6 +356,30 @@ const InlineSection = ({ data, sectionId }) => {
           </>
         );
 
+      case 'languages':
+        return (
+          <>
+            <strong>Languages:</strong>{" "}
+            {data.items.map((language, index) => {
+              const languageText =
+                typeof language === "object" && language !== null
+                  ? language.language &&
+                    language.proficiency &&
+                    language.proficiency !== "Not applicable"
+                    ? `${language.language} (${language.proficiency})`
+                    : language.language || ""
+                  : String(language || "");
+
+              return (
+                <span key={language.id || index}>
+                  {languageText}
+                  {index < data.items.length - 1 ? "; " : ""}
+                </span>
+              );
+            })}
+          </>
+        );
+
       case 'hobbies':
         return (
           <>
@@ -352,22 +398,15 @@ const InlineSection = ({ data, sectionId }) => {
     }
   };
 
-  // Languages get full section treatment, others are inline
-  if (sectionId === 'languages') {
-    return (
-      <div className="mb-6">
-        <h2 style={styles.sectionTitle}>{data.title}</h2>
-        <div style={styles.inlineList}>
-          {renderInlineContent()}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="mb-6">
+      <h2 style={styles.sectionTitle}>{combinedTitle}</h2>
       <div style={styles.inlineList}>
-        {renderInlineContent()}
+        {Object.entries(sectionData).map(([sectionId, data], index) => (
+          <div key={sectionId} style={{ marginBottom: index < Object.keys(sectionData).length - 1 ? "8pt" : "0" }}>
+            {renderInlineContent(sectionId, data)}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -427,9 +466,18 @@ export const HarvardTemplate = ({ formData, sidebarItems }) => {
   // Process header data
   const headerData = processHeaderData(formData);
   
-  // Get ordered sections
+  // Define which sections should be combined
+  const combinedSkillsSections = ['courses', 'skills', 'technologiesSkills', 'languages', 'hobbies'];
+  
+  // Get ordered sections, excluding the combined ones
   const orderedSections = sidebarItems
-    .filter(item => !item.fixed && item.id !== 'additional')
+    .filter(item => !item.fixed && item.id !== 'additional' && !combinedSkillsSections.includes(item.id))
+    .sort((a, b) => a.order - b.order)
+    .map(item => item.id);
+
+  // Get available combined sections in order
+  const availableCombinedSections = sidebarItems
+    .filter(item => combinedSkillsSections.includes(item.id))
     .sort((a, b) => a.order - b.order)
     .map(item => item.id);
 
@@ -451,8 +499,6 @@ export const HarvardTemplate = ({ formData, sidebarItems }) => {
     // Determine component type based on section
     if (sectionId === 'summary') {
       return <TextSection key={sectionId} data={sectionData} />;
-    } else if (['skills', 'technologiesSkills', 'hobbies', 'languages'].includes(sectionId)) {
-      return <InlineSection key={sectionId} data={sectionData} sectionId={sectionId} />;
     } else {
       return <ListSection key={sectionId} data={sectionData} sectionId={sectionId} />;
     }
@@ -465,6 +511,14 @@ export const HarvardTemplate = ({ formData, sidebarItems }) => {
       
       {/* Render sections in sidebar order */}
       {orderedSections.map(renderSection)}
+      
+      {/* Render combined skills section if any of the sections have data */}
+      {availableCombinedSections.length > 0 && (
+        <CombinedSkillsSection 
+          formData={formData} 
+          availableSections={availableCombinedSections} 
+        />
+      )}
     </div>
   );
 };
