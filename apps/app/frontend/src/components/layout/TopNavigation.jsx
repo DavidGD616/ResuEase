@@ -20,7 +20,12 @@ function TopNavigation({ onMenuClick }) {
           </button>
           
           {/* App Title */}
-          <div>
+          <div className="flex items-center space-x-2">
+            <img 
+              src="/ResuEase-logo.svg" 
+              alt="ResuEase Logo" 
+              className="w-6 h-6 sm:w-8 sm:h-8"
+            />
             <h1 className="text-lg font-semibold text-gray-900">ResuEase</h1>
           </div>
         </div>
