@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import BottomNavigation from '../../components/layout/BottomNavigation';
+import BottomNavigation from './BottomNavigation';
 import ContactInformationForm from '../forms/sections/ContactInformationForm';
 import EducationForm from '../forms/sections/EducationForm';
 import EmploymentHistoryForm from '../forms/sections/EmploymentHistoryForm';
