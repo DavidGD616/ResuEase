@@ -2,10 +2,11 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { INITIAL_FORM_DATA, createSectionItem } from '../data/formFields';
 
 const FORM_DATA_STORAGE_KEY = 'resumeBuilder_formData';
-const DEBOUNCE_DELAY = 1000; // 1 second debounce
+const DEBOUNCE_DELAY = 2000; // 1 second debounce
 
 export const useFormData = () => {
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [saveStatus, setSaveStatus] = useState('saved'); // 'saved', 'saving', 'error'
   const debounceTimeoutRef = useRef(null);
 
   // Load form data from localStorage on component mount
@@ -30,6 +31,7 @@ export const useFormData = () => {
         }
       } catch (error) {
         console.warn('Error loading form data from localStorage:', error);
+        setSaveStatus('error');
       }
     };
 
@@ -38,6 +40,9 @@ export const useFormData = () => {
 
   // Debounced save to localStorage
   const debouncedSave = useCallback((data) => {
+    // Set status to saving when we start the debounce
+    setSaveStatus('saving');
+    
     // Clear existing timeout
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
@@ -47,8 +52,10 @@ export const useFormData = () => {
     debounceTimeoutRef.current = setTimeout(() => {
       try {
         localStorage.setItem(FORM_DATA_STORAGE_KEY, JSON.stringify(data));
+        setSaveStatus('saved');
       } catch (error) {
         console.warn('Error saving form data to localStorage:', error);
+        setSaveStatus('error');
       }
     }, DEBOUNCE_DELAY);
   }, []);
@@ -174,6 +181,7 @@ export const useFormData = () => {
 
   return {
     formData,
+    saveStatus,
     updateField,
     addSectionItem,
     updateSectionItem,

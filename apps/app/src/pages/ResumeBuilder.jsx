@@ -10,6 +10,7 @@ import PreviewPanel from '../components/layout/PreviewPanel';
 function ResumeBuilder() {
   const { 
     formData, 
+    saveStatus, // Add saveStatus from the hook
     updateField,
     addSectionItem,
     updateSectionItem,
@@ -156,6 +157,7 @@ function ResumeBuilder() {
             <PreviewPanel 
               formData={formData}
               sidebarItems={sidebarItems}
+              saveStatus={saveStatus}
             />
           </div>
         </div>

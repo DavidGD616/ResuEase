@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
-import { Check } from 'lucide-react'
 import DocumentPreview from './DocumentPreview';
+import SaveStatus from '../ui/SaveStatus';
 
-function PreviewPanel({ formData, sidebarItems = [] }) {
+function PreviewPanel({ formData, sidebarItems = [], saveStatus }) {
   const containerRef = useRef(null);
   const [scale, setScale] = useState(0.54);
 
@@ -65,10 +65,7 @@ function PreviewPanel({ formData, sidebarItems = [] }) {
       </div>
 
       <div className="flex items-center justify-center mt-4 text-xs text-gray-500">
-        <div className="flex items-center gap-1">
-          <Check className='w-3 h-3' />
-          Saved
-        </div>
+        <SaveStatus status={saveStatus} />
       </div>
     </div>
   );
