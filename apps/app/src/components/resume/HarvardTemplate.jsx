@@ -83,26 +83,6 @@ const HeaderSection = ({ data }) => (
       {data.contact.phone && data.contact.email && <span> • </span>}
       {data.contact.email && <span>{data.contact.email}</span>}
     </div>
-
-    {/* Additional personal details */}
-    {(data.additionalInfo.nationality ||
-      data.additionalInfo.driversLicense ||
-      data.additionalInfo.birthDate) && (
-      <div style={{ ...styles.contact, marginTop: "4pt" }}>
-        {data.additionalInfo.nationality && (
-          <span>Nationality: {data.additionalInfo.nationality}</span>
-        )}
-        {data.additionalInfo.nationality && data.additionalInfo.driversLicense && (
-          <span> • </span>
-        )}
-        {data.additionalInfo.driversLicense && (
-          <span>License: {data.additionalInfo.driversLicense}</span>
-        )}
-        {(data.additionalInfo.nationality || data.additionalInfo.driversLicense) &&
-          data.additionalInfo.birthDate && <span> • </span>}
-        {data.additionalInfo.birthDate && <span>DOB: {data.additionalInfo.birthDate}</span>}
-      </div>
-    )}
   </div>
 );
 
