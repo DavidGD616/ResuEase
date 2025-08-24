@@ -4,12 +4,8 @@ export const processHeaderData = (formData) => ({
   contact: {
     location: formData.location,
     phone: formData.phone,
-    email: formData.email
-  },
-  additionalInfo: {
-    nationality: formData.nationality,
-    driversLicense: formData.driversLicense,
-    birthDate: formData.birthDate
+    email: formData.email,
+    portfolio: formData.portfolio
   }
 });
 

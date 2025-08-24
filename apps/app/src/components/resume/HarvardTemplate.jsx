@@ -78,10 +78,21 @@ const HeaderSection = ({ data }) => (
 
     <div style={styles.contact}>
       {data.contact.location && <span>{data.contact.location}</span>}
-      {data.contact.location && (data.contact.phone || data.contact.email) && <span> • </span>}
+      {data.contact.location && (data.contact.phone || data.contact.email || data.contact.portfolio) && <span> • </span>}
       {data.contact.phone && <span>{data.contact.phone}</span>}
-      {data.contact.phone && data.contact.email && <span> • </span>}
+      {data.contact.phone && (data.contact.email || data.contact.portfolio) && <span> • </span>}
       {data.contact.email && <span>{data.contact.email}</span>}
+      {data.contact.email && data.contact.portfolio && <span> • </span>}
+      {data.contact.portfolio && (
+        <a 
+          href={data.contact.portfolio.startsWith('http') ? data.contact.portfolio : `https://${data.contact.portfolio}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#333", textDecoration: "underline" }}
+        >
+          {data.contact.portfolio}
+        </a>
+      )}
     </div>
   </div>
 );
