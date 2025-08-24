@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFormData } from '../hooks/useFormData';
-import { SIDEBAR_ITEMS, SECTION_TYPES } from '../data/sidebarItems';
+import { useSidebarStorage } from '../hooks/useSidebarStorage';
+import { SECTION_TYPES } from '../data/sidebarItems';
 import TopNavigation from '../components/layout/TopNavigation';
 import Sidebar from '../components/layout/Sidebar';
 import MainContent from '../components/layout/MainContent';
@@ -16,16 +17,17 @@ function ResumeBuilder() {
     updateSection,
   } = useFormData();
   
+  
+  const { sidebarItems, updateSidebarItems } = useSidebarStorage();
   const [activeSection, setActiveSection] = useState(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
-  const [sidebarItems, setSidebarItems] = useState(SIDEBAR_ITEMS);
   const [showAdditionalSections, setShowAdditionalSections] = useState(false);
   const [customSectionCounter, setCustomSectionCounter] = useState(1);
 
-  // function to reorder items of any non-fixed section
+  // Function to reorder items - now uses the storage hook
   const handleReorderItems = (newItems) => {
-    setSidebarItems(newItems);
+    updateSidebarItems(newItems);
   }
 
   const handleAdditionalSectionClick = () => {
@@ -45,7 +47,7 @@ function ResumeBuilder() {
         order: sidebarItems.length,
         fixed: false
       };
-      setSidebarItems(prev => [...prev, customSection]);
+      updateSidebarItems([...sidebarItems, customSection]);
       setCustomSectionCounter(prev => prev + 1);
       
       // Initialize empty array for this custom section's entries in form data
@@ -61,7 +63,7 @@ function ResumeBuilder() {
         order: sidebarItems.length,
         fixed: false
       };
-      setSidebarItems(prev => [...prev, newSection]);
+      updateSidebarItems([...sidebarItems, newSection]);
       setActiveSection(section.id);
     }
   }
@@ -72,46 +74,47 @@ function ResumeBuilder() {
     setSidebarOpen(false);
   }
 
-  // Function to handle section deletion of any non-fixed section
+  // Function to handle section deletion - now uses the storage hook
   const handleDeleteSection = (sectionId) => {
-  // Prevent deletion of fixed sections
-  const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
-  if (sectionToDelete?.fixed) {
-    return;
-  }
-
-  // Clean up form data based on section type
-  if (sectionId.startsWith('custom-')) {
-    // For custom sections, remove the custom entries
-    const customSectionKey = `customEntries_${sectionId}`;
-    updateField(customSectionKey, undefined);
-  } else {
-    // For regular sections, clear the section data
-    // This handles: skills, education, employment, internships, courses, 
-    // references, links, languages, hobbies, projects
-    if (formData[sectionId]) {
-      updateField(sectionId, []);
+    // Prevent deletion of fixed sections
+    const sectionToDelete = sidebarItems.find(item => item.id === sectionId);
+    if (sectionToDelete?.fixed) {
+      return;
     }
-    
-    // Special handling for 'summary' section which maps to 'about' field
-    if (sectionId === 'summary') {
-      updateField('about', '');
-    }
-  }
 
-  // Remove the section from sidebar
-  setSidebarItems(prev => prev.filter(item => item.id !== sectionId));
-
-  // If the deleted section was active, navigate to the first available section
-  if (activeSection === sectionId) {
-    const remainingSections = sidebarItems.filter(item => item.id !== sectionId);
-    if (remainingSections.length > 0) {
-      setActiveSection(remainingSections[0].id);
+    // Clean up form data based on section type
+    if (sectionId.startsWith('custom-')) {
+      // For custom sections, remove the custom entries
+      const customSectionKey = `customEntries_${sectionId}`;
+      updateField(customSectionKey, undefined);
     } else {
-      setActiveSection(SECTION_TYPES.PERSONAL);
+      // For regular sections, clear the section data
+      // This handles: skills, education, employment, internships, courses, 
+      // references, links, languages, hobbies, projects
+      if (formData[sectionId]) {
+        updateField(sectionId, []);
+      }
+      
+      // Special handling for 'summary' section which maps to 'about' field
+      if (sectionId === 'summary') {
+        updateField('about', '');
+      }
+    }
+
+    // Remove the section from sidebar using the storage hook
+    const updatedItems = sidebarItems.filter(item => item.id !== sectionId);
+    updateSidebarItems(updatedItems);
+
+    // If the deleted section was active, navigate to the first available section
+    if (activeSection === sectionId) {
+      const remainingSections = updatedItems;
+      if (remainingSections.length > 0) {
+        setActiveSection(remainingSections[0].id);
+      } else {
+        setActiveSection(SECTION_TYPES.PERSONAL);
+      }
     }
   }
-}
 
   return (
     <div className="min-h-screen bg-gray-50">
