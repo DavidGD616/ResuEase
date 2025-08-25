@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const { generateTestPDF, convertHtmlToPdf } = require('./src/controllers/pdfController');
 
 const app = express();
@@ -36,11 +35,11 @@ app.get('/api/test', (req, res) => {
 // PDF generation test endpoint
 app.get('/api/generate-test-pdf', generateTestPDF);
 
-// HTML to PDF conversion endpoint (NEW APPROACH)
+// HTML to PDF conversion endpoint
 app.post('/api/html-to-pdf', convertHtmlToPdf);
 
 // Basic error handler
-app.use((err, req, res, next) => {
+app.use((err, res) => {
   console.error('Error:', err.stack);
   res.status(500).json({ 
     success: false, 
