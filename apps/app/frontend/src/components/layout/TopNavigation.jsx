@@ -17,12 +17,6 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }) {
         return;
       }
       
-      console.log('Backend connected successfully!');
-      console.log('Generating PDF with form data:', {
-        name: `${formData.firstName} ${formData.lastName}`,
-        sectionsCount: sidebarItems.length
-      });
-      
       // Download real resume PDF with form data
       const result = await PdfService.downloadResumePDF(formData, sidebarItems);
       

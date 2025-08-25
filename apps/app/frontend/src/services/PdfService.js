@@ -17,7 +17,6 @@ export class PdfService {
   // Generate and download test PDF
   static async downloadTestPDF() {
     try {
-      console.log('Requesting PDF from backend...');
       
       const response = await fetch(`${API_BASE_URL}/generate-test-pdf`, {
         method: 'GET',
@@ -47,7 +46,6 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
-      console.log('PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {
@@ -59,7 +57,6 @@ export class PdfService {
   // Generate and download real resume PDF
   static async downloadResumePDF(formData, sidebarItems) {
     try {
-      console.log('Requesting resume PDF from backend...');
       
       const response = await fetch(`${API_BASE_URL}/generate-resume-pdf`, {
         method: 'POST',
@@ -100,7 +97,6 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
-      console.log('Resume PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {
