@@ -17,10 +17,6 @@ const generateResumePDF = async (req, res) => {
     }
 
     console.log('Starting resume PDF generation...');
-    console.log('Form data preview:', {
-      name: `${formData.firstName} ${formData.lastName}`,
-      sectionsCount: sidebarItems.length
-    });
 
     // Launch browser
     browser = await puppeteer.launch({
