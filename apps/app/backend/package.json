@@ -12,10 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "helmet": "^8.1.0",
     "puppeteer": "^24.17.0"
   },
   "devDependencies": {
