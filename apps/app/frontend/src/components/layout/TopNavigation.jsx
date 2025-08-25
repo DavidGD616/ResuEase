@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FileDown, Menu, Home } from 'lucide-react';
 import { PdfService } from '../../services/PdfService';
 
-function TopNavigation({ onMenuClick }) {
+function TopNavigation({ onMenuClick, formData, sidebarItems }) {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadClick = async () => {
@@ -18,9 +18,13 @@ function TopNavigation({ onMenuClick }) {
       }
       
       console.log('Backend connected successfully!');
+      console.log('Generating PDF with form data:', {
+        name: `${formData.firstName} ${formData.lastName}`,
+        sectionsCount: sidebarItems.length
+      });
       
-      // Download test PDF
-      const result = await PdfService.downloadTestPDF();
+      // Download real resume PDF with form data
+      const result = await PdfService.downloadResumePDF(formData, sidebarItems);
       
       if (!result.success) {
         alert(`PDF generation failed: ${result.error}`);

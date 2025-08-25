@@ -1,4 +1,83 @@
 const puppeteer = require('puppeteer');
+const { generateResumeHTML } = require('../templates/resumeTemplate');
+
+// Generate PDF from real resume data
+const generateResumePDF = async (req, res) => {
+  let browser = null;
+
+  try {
+    const { formData, sidebarItems } = req.body;
+    
+    // Validate input
+    if (!formData || !sidebarItems) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing formData or sidebarItems'
+      });
+    }
+
+    console.log('Starting resume PDF generation...');
+    console.log('Form data preview:', {
+      name: `${formData.firstName} ${formData.lastName}`,
+      sectionsCount: sidebarItems.length
+    });
+
+    // Launch browser
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const page = await browser.newPage();
+
+    // Generate HTML from resume data
+    const resumeHTML = generateResumeHTML(formData, sidebarItems);
+
+    // Set the HTML content
+    await page.setContent(resumeHTML, { waitUntil: 'networkidle0' });
+
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      margin: {
+        top: '0.75in',
+        right: '0.75in',
+        bottom: '0.75in',
+        left: '0.75in'
+      },
+      printBackground: true
+    });
+
+    console.log('Resume PDF generated successfully!');
+
+    // Create filename
+    const fileName = `${formData.firstName || 'resume'}_${formData.lastName || 'document'}_${Date.now()}.pdf`;
+
+    // Set headers for download
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Content-Length': pdfBuffer.length,
+    });
+
+    // Send the PDF
+    res.send(pdfBuffer);
+
+  } catch (error) {
+    console.error('Resume PDF generation error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate resume PDF',
+      error: error.message
+    });
+  } finally {
+    // Always close the browser
+    if (browser) {
+      await browser.close();
+      console.log('Browser closed.');
+    }
+  }
+};
 
 // Test PDF generation with simple HTML
 const generateTestPDF = async (req, res) => {
@@ -117,5 +196,6 @@ const generateTestPDF = async (req, res) => {
 };
 
 module.exports = {
-  generateTestPDF
+  generateTestPDF,
+  generateResumePDF
 };

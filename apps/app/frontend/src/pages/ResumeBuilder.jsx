@@ -120,7 +120,8 @@ function ResumeBuilder() {
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNavigation 
-        formData={formData} 
+        formData={formData}
+        sidebarItems={sidebarItems}
         onMenuClick={() => setSidebarOpen(open => !open)} 
       />
       
