@@ -1,22 +1,22 @@
 const puppeteer = require('puppeteer');
-const { generateResumeHTML } = require('../templates/resumeTemplate');
 
-// Generate PDF from real resume data
-const generateResumePDF = async (req, res) => {
+// Simple HTML to PDF conversion service
+const convertHtmlToPdf = async (req, res) => {
   let browser = null;
 
   try {
-    const { formData, sidebarItems } = req.body;
+    const { html, options = {} } = req.body;
     
     // Validate input
-    if (!formData || !sidebarItems) {
+    if (!html) {
       return res.status(400).json({
         success: false,
-        message: 'Missing formData or sidebarItems'
+        message: 'HTML content is required'
       });
     }
 
-    console.log('Starting resume PDF generation...');
+    console.log('Converting HTML to PDF...');
+    console.log('HTML length:', html.length, 'characters');
 
     // Launch browser
     browser = await puppeteer.launch({
@@ -26,14 +26,11 @@ const generateResumePDF = async (req, res) => {
 
     const page = await browser.newPage();
 
-    // Generate HTML from resume data
-    const resumeHTML = generateResumeHTML(formData, sidebarItems);
+    // Set the HTML content directly
+    await page.setContent(html, { waitUntil: 'networkidle0' });
 
-    // Set the HTML content
-    await page.setContent(resumeHTML, { waitUntil: 'networkidle0' });
-
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
+    // Default PDF options (can be overridden by request)
+    const defaultOptions = {
       format: 'A4',
       margin: {
         top: '0.75in',
@@ -42,17 +39,20 @@ const generateResumePDF = async (req, res) => {
         left: '0.75in'
       },
       printBackground: true
-    });
+    };
 
-    console.log('Resume PDF generated successfully!');
+    // Merge with provided options
+    const pdfOptions = { ...defaultOptions, ...options };
 
-    // Create filename
-    const fileName = `${formData.firstName || 'resume'}_${formData.lastName || 'document'}_${Date.now()}.pdf`;
+    // Generate PDF
+    const pdfBuffer = await page.pdf(pdfOptions);
+
+    console.log('PDF generated successfully from HTML!');
 
     // Set headers for download
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Content-Disposition': 'attachment; filename="resume.pdf"',
       'Content-Length': pdfBuffer.length,
     });
 
@@ -60,10 +60,10 @@ const generateResumePDF = async (req, res) => {
     res.send(pdfBuffer);
 
   } catch (error) {
-    console.error('Resume PDF generation error:', error);
+    console.error('HTML to PDF conversion error:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to generate resume PDF',
+      message: 'Failed to convert HTML to PDF',
       error: error.message
     });
   } finally {
@@ -193,5 +193,5 @@ const generateTestPDF = async (req, res) => {
 
 module.exports = {
   generateTestPDF,
-  generateResumePDF
+  convertHtmlToPdf
 };

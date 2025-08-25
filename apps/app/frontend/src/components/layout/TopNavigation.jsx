@@ -17,8 +17,15 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }) {
         return;
       }
       
-      // Download real resume PDF with form data
-      const result = await PdfService.downloadResumePDF(formData, sidebarItems);
+      console.log('Backend connected successfully!');
+      console.log('Generating PDF with form data:', {
+        name: `${formData.firstName} ${formData.lastName}`,
+        sectionsCount: sidebarItems.length
+      });
+      
+      // Download resume PDF using HTML generation (NEW APPROACH)
+      // You can change 'harvard' to other templates when you add them
+      const result = await PdfService.downloadResumePDF(formData, sidebarItems, 'harvard');
       
       if (!result.success) {
         alert(`PDF generation failed: ${result.error}`);

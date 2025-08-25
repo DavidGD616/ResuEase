@@ -1,4 +1,5 @@
-// Frontend service to handle PDF generation requests
+import { HtmlGenerator } from "../utils/htmlGenerator";
+
 const API_BASE_URL = 'http://localhost:3001/api';
 
 export class PdfService {
@@ -17,6 +18,7 @@ export class PdfService {
   // Generate and download test PDF
   static async downloadTestPDF() {
     try {
+      console.log('Requesting PDF from backend...');
       
       const response = await fetch(`${API_BASE_URL}/generate-test-pdf`, {
         method: 'GET',
@@ -46,6 +48,7 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
+      console.log('PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {
@@ -54,19 +57,34 @@ export class PdfService {
     }
   }
 
-  // Generate and download real resume PDF
-  static async downloadResumePDF(formData, sidebarItems) {
+  // Generate and download resume PDF using HTML generation
+  static async downloadResumePDF(formData, sidebarItems, templateName = 'harvard') {
     try {
+      console.log('Generating HTML from React template...');
       
-      const response = await fetch(`${API_BASE_URL}/generate-resume-pdf`, {
+      // Step 1: Generate HTML from React component
+      const htmlContent = HtmlGenerator.generateHtml(templateName, formData, sidebarItems);
+      
+      console.log('HTML generated, requesting PDF from backend...');
+      
+      // Step 2: Send HTML to backend for PDF conversion
+      const response = await fetch(`${API_BASE_URL}/html-to-pdf`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/pdf',
         },
         body: JSON.stringify({
-          formData,
-          sidebarItems
+          html: htmlContent,
+          options: {
+            format: 'A4',
+            margin: {
+              top: '0.75in',
+              right: '0.75in',
+              bottom: '0.75in',
+              left: '0.75in'
+            }
+          }
         }),
       });
 
@@ -75,7 +93,7 @@ export class PdfService {
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
-      // Get the PDF as a blob
+      // Step 3: Download the PDF
       const pdfBlob = await response.blob();
       
       // Create filename based on user's name
@@ -97,6 +115,7 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
+      console.log('Resume PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {

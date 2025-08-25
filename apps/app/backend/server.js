@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { generateTestPDF, generateResumePDF } = require('./src/controllers/pdfController');
+const { generateTestPDF, convertHtmlToPdf } = require('./src/controllers/pdfController');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -36,8 +36,8 @@ app.get('/api/test', (req, res) => {
 // PDF generation test endpoint
 app.get('/api/generate-test-pdf', generateTestPDF);
 
-// Real resume PDF generation endpoint
-app.post('/api/generate-resume-pdf', generateResumePDF);
+// HTML to PDF conversion endpoint (NEW APPROACH)
+app.post('/api/html-to-pdf', convertHtmlToPdf);
 
 // Basic error handler
 app.use((err, req, res, next) => {
@@ -64,7 +64,6 @@ app.listen(PORT, () => {
   console.log(`   - Health check: http://localhost:${PORT}/`);
   console.log(`   - Test endpoint: http://localhost:${PORT}/api/test`);
   console.log(`   - Test PDF: http://localhost:${PORT}/api/generate-test-pdf`);
-  console.log(`   - Resume PDF: POST http://localhost:3001/api/generate-resume-pdf`)
 });
 
 module.exports = app;
