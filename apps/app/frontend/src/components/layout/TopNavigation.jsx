@@ -1,6 +1,38 @@
+import { useState } from 'react';
 import { FileDown, Menu, Home } from 'lucide-react';
+import { PdfService } from '../../services/PdfService';
 
 function TopNavigation({ onMenuClick }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadClick = async () => {
+    setIsDownloading(true);
+    
+    try {
+      // First test the connection
+      const connectionTest = await PdfService.testConnection();
+      
+      if (!connectionTest.success) {
+        alert('Backend connection failed. Make sure the server is running on port 3001.');
+        return;
+      }
+      
+      console.log('Backend connected successfully!');
+      
+      // Download test PDF
+      const result = await PdfService.downloadTestPDF();
+      
+      if (!result.success) {
+        alert(`PDF generation failed: ${result.error}`);
+      }
+      
+    } catch (error) {
+      console.error('Download error:', error);
+      alert(`Download failed: ${error.message}`);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <div className="bg-white border-b border-gray-200 px-2 sm:px-4 py-3">
@@ -33,10 +65,20 @@ function TopNavigation({ onMenuClick }) {
         <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Download Button */}
           <button 
-            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2"
+            onClick={handleDownloadClick}
+            disabled={isDownloading}
+            className={`
+              px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2
+              ${isDownloading 
+                ? 'bg-gray-400 text-white cursor-not-allowed' 
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+              }
+            `}
           >
-            <FileDown className="w-4 h-4" />
-            <span className="hidden sm:inline">Download</span>
+            <FileDown className={`w-4 h-4 ${isDownloading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">
+              {isDownloading ? 'Generating...' : 'Download'}
+            </span>
           </button>
         </div>
       </div>
