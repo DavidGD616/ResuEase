@@ -18,7 +18,6 @@ export class PdfService {
   // Generate and download test PDF
   static async downloadTestPDF() {
     try {
-      console.log('Requesting PDF from backend...');
       
       const response = await fetch(`${API_BASE_URL}/generate-test-pdf`, {
         method: 'GET',
@@ -48,7 +47,6 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
-      console.log('PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {
@@ -60,12 +58,9 @@ export class PdfService {
   // Generate and download resume PDF using HTML generation
   static async downloadResumePDF(formData, sidebarItems, templateName = 'harvard') {
     try {
-      console.log('Generating HTML from React template...');
       
       // Step 1: Generate HTML from React component
       const htmlContent = HtmlGenerator.generateHtml(templateName, formData, sidebarItems);
-      
-      console.log('HTML generated, requesting PDF from backend...');
       
       // Step 2: Send HTML to backend for PDF conversion
       const response = await fetch(`${API_BASE_URL}/html-to-pdf`, {
@@ -115,7 +110,6 @@ export class PdfService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
       
-      console.log('Resume PDF downloaded successfully!');
       return { success: true };
       
     } catch (error) {

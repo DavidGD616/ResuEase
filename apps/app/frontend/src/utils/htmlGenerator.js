@@ -10,14 +10,14 @@ export class HtmlGenerator {
   /**
    * Generate complete HTML document with styles from React template
    * @param {string} templateName - Name of the template ('harvard', 'modern', etc.)
-   * @param {Object} formData 
-   * @param {Array} sidebarItems 
-   * @returns {string} 
+   * @param {Object} formData - Resume form data
+   * @param {Array} sidebarItems - Sidebar configuration
+   * @returns {string} Complete HTML document with inline styles
    */
   static generateHtml(templateName, formData, sidebarItems) {
     try {
-      console.log(`Generating HTML for template: ${templateName}`);
       
+      // For now we only have Harvard template, but this structure makes it easy to add more
       let TemplateComponent;
       
       switch (templateName.toLowerCase()) {
@@ -41,9 +41,7 @@ export class HtmlGenerator {
       
       // Wrap in complete HTML document
       const fullHtml = this.wrapInHtmlDocument(templateHtml, styles, formData);
-      console.log("Styles template",styles, templateHtml, formData)
       
-      console.log('HTML generated successfully');
       return fullHtml;
       
     } catch (error) {
@@ -54,11 +52,11 @@ export class HtmlGenerator {
   
   /**
    * Get CSS styles for the template
-   * This extracts the styles your templates use
+   * Since you're using inline styles, we only need base styles
    */
   static getTemplateStyles(templateName) {
-    // Harvard template styles (same as your current template)
-    const harvardStyles = `
+    // Minimal base styles - your inline styles handle the rest
+    const baseStyles = `
       body {
         font-family: 'Times', 'Times New Roman', serif;
         font-size: 11pt;
@@ -68,104 +66,13 @@ export class HtmlGenerator {
         padding: 0;
       }
       
-      .header {
-        text-align: center;
-        margin-bottom: 24pt;
-        padding-bottom: 16pt;
-        border-bottom: 1px solid #000;
-      }
-      
-      .name {
-        font-size: 16pt;
-        font-weight: bold;
-        margin-bottom: 8pt;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      
-      .job-title {
-        font-size: 11pt;
-        margin-bottom: 4pt;
-      }
-      
-      .contact {
-        font-size: 10pt;
-        color: #333;
-      }
-      
-      .section {
-        margin-bottom: 24pt;
-      }
-      
-      .section-title {
-        font-size: 12pt;
-        font-weight: bold;
-        margin-bottom: 8pt;
-        text-transform: uppercase;
-        border-bottom: 1px solid #000;
-        padding-bottom: 2pt;
-      }
-      
-      .item-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 4pt;
-      }
-      
-      .item-title {
-        font-size: 11pt;
-        font-weight: bold;
-      }
-      
-      .item-date {
-        font-size: 10pt;
-        color: #333;
-      }
-      
-      .item-description {
-        font-size: 11pt;
-        line-height: 1.3;
-        margin-left: 12pt;
-        text-align: justify;
-        margin-bottom: 4pt;
-      }
-      
-      .bullet-points {
-        font-size: 11pt;
-        line-height: 1.3;
-        margin-left: 12pt;
-        margin-top: 4pt;
-      }
-      
-      .bullet-point {
-        margin-bottom: 2pt;
-      }
-      
-      .item {
-        margin-bottom: 12pt;
-      }
-      
-      .inline-list {
-        font-size: 11pt;
-        line-height: 1.3;
-      }
-      
-      .inline-section {
-        margin-bottom: 8pt;
-      }
-      
-      .inline-section:last-child {
-        margin-bottom: 0;
-      }
-      
-      /* Ensure links are styled properly for PDF */
+      /* Links */
       a {
         color: #333;
         text-decoration: underline;
       }
       
-      /* Print-specific styles */
+      /* Print styles */
       @media print {
         body {
           margin: 0;
@@ -177,7 +84,7 @@ export class HtmlGenerator {
     switch (templateName.toLowerCase()) {
       case 'harvard':
       default:
-        return harvardStyles;
+        return baseStyles;
       // Future templates:
       // case 'modern':
       //   return modernStyles;

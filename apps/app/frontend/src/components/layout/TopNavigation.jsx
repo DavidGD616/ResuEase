@@ -17,11 +17,6 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }) {
         return;
       }
       
-      console.log('Backend connected successfully!');
-      console.log('Generating PDF with form data:', {
-        name: `${formData.firstName} ${formData.lastName}`,
-        sectionsCount: sidebarItems.length
-      });
       
       // Download resume PDF using HTML generation
       // You can change 'harvard' to other templates when you add them
