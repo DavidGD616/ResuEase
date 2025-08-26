@@ -65,7 +65,7 @@ const styles = {
 
 // Header Component
 const HeaderSection = ({ data }) => (
-  <div className="header text-center mb-6 pb-4 border-b border-black">
+  <div style={{ textAlign: "center", marginBottom: "24pt", paddingBottom: "16pt", borderBottom: "1px solid #000" }}>
     <h1 style={styles.name}>
       {data.fullName.toUpperCase()}
     </h1>
@@ -102,7 +102,7 @@ const TextSection = ({ data }) => {
   if (data.isEmpty) return null;
   
   return (
-    <div className="mb-6">
+    <div style={{ marginBottom: "24pt" }}>
       <h2 style={styles.sectionTitle}>{data.title}</h2>
       <p style={styles.itemDescription}>
         {data.content}
@@ -278,7 +278,7 @@ const ListSection = ({ data, sectionId }) => {
   };
 
   return (
-    <div className="mb-6">
+    <div style={{ marginBottom: "24pt" }}>
       <h2 style={styles.sectionTitle}>{data.title}</h2>
       {data.items.map(renderItem)}
     </div>
@@ -410,7 +410,7 @@ const CombinedSkillsSection = ({ formData, availableSections }) => {
   };
 
   return (
-    <div className="mb-6">
+    <div style={{ marginBottom: "24pt" }}>
       <h2 style={styles.sectionTitle}>{combinedTitle}</h2>
       <div style={styles.inlineList}>
         {Object.entries(sectionData).map(([sectionId, data], index) => (
@@ -428,7 +428,7 @@ const CustomSection = ({ data }) => {
   if (data.isEmpty) return null;
 
   return (
-    <div className="mb-6">
+    <div style={{ marginBottom: "24pt" }}>
       <h2 style={styles.sectionTitle}>{data.title}</h2>
       {data.items.map((entry, index) => (
         <div key={entry.id || index} style={{ marginBottom: "12pt" }}>
