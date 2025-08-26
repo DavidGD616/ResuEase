@@ -65,7 +65,7 @@ const styles = {
 
 // Header Component
 const HeaderSection = ({ data }) => (
-  <div className="text-center mb-6 pb-4 border-b border-black">
+  <div className="header text-center mb-6 pb-4 border-b border-black">
     <h1 style={styles.name}>
       {data.fullName.toUpperCase()}
     </h1>

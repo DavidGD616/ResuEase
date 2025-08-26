@@ -23,7 +23,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }) {
         sectionsCount: sidebarItems.length
       });
       
-      // Download resume PDF using HTML generation (NEW APPROACH)
+      // Download resume PDF using HTML generation
       // You can change 'harvard' to other templates when you add them
       const result = await PdfService.downloadResumePDF(formData, sidebarItems, 'harvard');
       

@@ -41,6 +41,7 @@ export class HtmlGenerator {
       
       // Wrap in complete HTML document
       const fullHtml = this.wrapInHtmlDocument(templateHtml, styles, formData);
+      console.log("Styles template",styles, templateHtml, formData)
       
       console.log('HTML generated successfully');
       return fullHtml;
