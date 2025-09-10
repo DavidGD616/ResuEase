@@ -1,6 +1,7 @@
 import { HtmlGenerator } from "../utils/htmlGenerator";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+// const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export class PdfService {
   // Test the backend connection
