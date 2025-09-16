@@ -11,7 +11,7 @@ const DocumentPreview = ({ formData, sidebarItems = [] }) => {
     const calculatePages = () => {
       if (!contentRef.current) return;
 
-      const pageHeight = 11 * 96 - (0.75 * 2 * 96); // 11 inches minus top/bottom margins in pixels
+      const pageHeight = 11 * 96 - (0.5 * 2 * 96); // 11 inches minus top/bottom margins in pixels
       const content = contentRef.current;
       const contentHeight = content.scrollHeight;
       
@@ -48,7 +48,7 @@ const DocumentPreview = ({ formData, sidebarItems = [] }) => {
         <div key={pageNum} className="bg-white" style={{
           width: '8.5in',
           height: '11in',
-          padding: '0.75in',
+          padding: '0.5in',
           pageBreakAfter: pageNum < pages.length ? 'always' : 'avoid',
           overflow: 'hidden',
           position: 'relative'
@@ -56,7 +56,7 @@ const DocumentPreview = ({ formData, sidebarItems = [] }) => {
           <div style={{
             height: '100%',
             overflow: 'hidden',
-            transform: `translateY(-${(pageNum - 1) * (11 * 96 - 0.75 * 2 * 96)}px)`
+            transform: `translateY(-${(pageNum - 1) * (11 * 96 - 0.5 * 2 * 96)}px)`
           }}>
             {pageNum === 1 ? renderContent() : null}
           </div>
@@ -68,7 +68,7 @@ const DocumentPreview = ({ formData, sidebarItems = [] }) => {
         position: 'absolute', 
         left: '-9999px', 
         width: '8.5in', 
-        padding: '0.75in' 
+        padding: '0.5in' 
       }}>
         {renderContent()}
       </div>

@@ -75,10 +75,10 @@ export class PdfService {
           options: {
             format: 'A4',
             margin: {
-              top: '0.75in',
-              right: '0.75in',
-              bottom: '0.75in',
-              left: '0.75in'
+              top: '0.5in',
+              right: '0.5in',
+              bottom: '0.5in',
+              left: '0.5in'
             }
           }
         }),
