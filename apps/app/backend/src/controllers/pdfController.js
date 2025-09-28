@@ -1,4 +1,35 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+
+// Get Puppeteer configuration for different environments
+const getPuppeteerConfig = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  if (isProduction && process.env.BROWSER_WS_ENDPOINT) {
+    // Use Browserless in production
+    return {
+      browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT
+    };
+  }
+  
+  // Development configuration (local puppeteer)
+  return {
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  };
+};
+
+// Connect to browser based on environment
+const connectToBrowser = async () => {
+  const config = getPuppeteerConfig();
+  
+  if (config.browserWSEndpoint) {
+    // Connect to Browserless
+    return await puppeteer.connect(config);
+  } else {
+    // Launch local browser (development)
+    return await puppeteer.launch(config);
+  }
+};
 
 // Simple HTML to PDF conversion service
 const convertHtmlToPdf = async (req, res) => {
@@ -17,12 +48,10 @@ const convertHtmlToPdf = async (req, res) => {
 
     console.log('Converting HTML to PDF...');
     console.log('HTML length:', html.length, 'characters');
+    console.log('Using Browserless:', !!process.env.BROWSER_WS_ENDPOINT);
 
-    // Launch browser
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    // Connect to browser (Browserless or local)
+    browser = await connectToBrowser();
 
     const page = await browser.newPage();
 
@@ -81,12 +110,11 @@ const generateTestPDF = async (req, res) => {
 
   try {
     console.log('Starting PDF generation...');
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('Browserless endpoint:', process.env.BROWSER_WS_ENDPOINT ? 'Connected' : 'Not configured');
 
-    // Launch browser
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    // Connect to browser (Browserless or local)
+    browser = await connectToBrowser();
 
     const page = await browser.newPage();
 
@@ -125,18 +153,24 @@ const generateTestPDF = async (req, res) => {
               margin-bottom: 10px;
               text-transform: uppercase;
             }
+            .success {
+              color: green;
+              font-weight: bold;
+            }
           </style>
         </head>
         <body>
           <div class="header">
             <div class="name">TEST RESUME</div>
-            <div>PDF Generation Test</div>
+            <div>PDF Generation Test - <span class="success">SUCCESS!</span></div>
           </div>
           
           <div class="section">
             <div class="section-title">Test Section</div>
-            <p>This is a test PDF generated with Puppeteer!</p>
+            <p>This PDF was generated successfully with Puppeteer!</p>
             <p>Timestamp: ${new Date().toISOString()}</p>
+            <p>Environment: ${process.env.NODE_ENV}</p>
+            <p>Browser: ${process.env.BROWSER_WS_ENDPOINT ? 'Browserless' : 'Local Puppeteer'}</p>
           </div>
 
           <div class="section">
