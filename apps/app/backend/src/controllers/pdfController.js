@@ -20,14 +20,30 @@ const getPuppeteerConfig = () => {
 
 // Connect to browser based on environment
 const connectToBrowser = async () => {
-  const config = getPuppeteerConfig();
-  
-  if (config.browserWSEndpoint) {
-    // Connect to Browserless
-    return await puppeteer.connect(config);
-  } else {
-    // Launch local browser (development)
-    return await puppeteer.launch(config);
+  try {
+    const browserConfig = {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu'
+      ]
+    };
+
+    // Only set executablePath for local development
+    if (!process.env.RAILWAY_ENVIRONMENT && process.env.NODE_ENV !== 'production') {
+      browserConfig.executablePath = '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev';
+    }
+
+    const browser = await puppeteer.launch(browserConfig);
+    return browser;
+  } catch (error) {
+    console.error('Failed to launch browser:', error);
+    throw error;
   }
 };
 
