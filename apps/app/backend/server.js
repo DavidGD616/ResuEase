@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
+const { explainAI } = require('./src/controllers/aiController');
 const { generateTestPDF, convertHtmlToPdf } = require('./src/controllers/pdfController');
 
 const app = express();
@@ -12,8 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Basic health check route
 app.get('/', (req, res) => {
-  res.json({ 
-    message: 'ResuEase Backend API is running!', 
+  res.json({
+    message: 'ResuEase Backend API is running!',
     timestamp: new Date().toISOString(),
     version: '1.0.0'
   });
@@ -21,8 +24,8 @@ app.get('/', (req, res) => {
 
 // Test route to make sure everything works
 app.get('/api/test', (req, res) => {
-  res.json({ 
-    success: true, 
+  res.json({
+    success: true,
     message: 'API is working correctly!',
     data: {
       server: 'Express',
@@ -32,6 +35,9 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// Gemini integration endpoint
+app.post('/api/ai/generate', explainAI);
+
 // PDF generation test endpoint
 app.get('/api/generate-test-pdf', generateTestPDF);
 
@@ -39,10 +45,10 @@ app.get('/api/generate-test-pdf', generateTestPDF);
 app.post('/api/html-to-pdf', convertHtmlToPdf);
 
 // Basic error handler
-app.use((err, res) => {
+app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
@@ -50,18 +56,19 @@ app.use((err, res) => {
 
 // Handle 404 routes
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: `Route ${req.originalUrl} not found` 
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`
   });
 });
 
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📍 API endpoints:`);
+  console.log('📍 API endpoints:');
   console.log(`   - Health check: http://localhost:${PORT}/`);
   console.log(`   - Test endpoint: http://localhost:${PORT}/api/test`);
+  console.log(`   - Gemini: http://localhost:${PORT}/api/ai/generate`);
   console.log(`   - Test PDF: http://localhost:${PORT}/api/generate-test-pdf`);
 });
 
