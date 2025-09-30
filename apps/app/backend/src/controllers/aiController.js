@@ -49,14 +49,12 @@ const healthCheck = async (req, res) => {
 };
 
 // Skills
-
-const skills = async (req, res) => {
+const softSkills = async (req, res) => {
   try {
     const {
       jobTitle,
       currentSkills = [],
       experienceLevel = "mid-level",
-      skillType = "all",
       count = 8,
     } = req.body;
 
@@ -69,34 +67,27 @@ const skills = async (req, res) => {
     }
 
     // Build the prompt
-    const prompt = `You are a career advisor helping to build a resume skills section. This section should showcase key abilities that give employers a quick overview of strengths and how they fit with the job.
+    const prompt = `You are a career advisor helping to build a resume skills section. This section should showcase key soft skills and abilities that give employers a quick overview of your strengths and how they fit with the job. Note: Technical skills like programming languages, frameworks, and tools are covered in a separate section.
 
 **Role Details:**
 - Job Title: ${jobTitle}
 - Experience Level: ${experienceLevel}
-- Skill Focus: ${
-      skillType === "technical"
-        ? "Technical skills only"
-        : skillType === "soft"
-        ? "Soft skills only"
-        : "Prioritize soft skills (60-70%) with supporting technical skills (30-40%)"
-    }
 
 **Current Skills to Avoid:**
 ${currentSkills.length > 0 ? currentSkills.join(", ") : "None listed"}
 
 **Requirements:**
-- Suggest ${count} key abilities that are highly relevant for this role
-- When suggesting a mix, prioritize soft skills (communication, problem-solving, leadership, teamwork, adaptability) over technical skills
-- Include hard skills (technical knowledge, tools, methodologies) as complementary abilities
+- Suggest ${count} relevant soft skills for this role
+- Focus on interpersonal abilities, leadership qualities, and professional competencies
+- Include skills like: communication, problem-solving, leadership, teamwork, adaptability, time management, critical thinking, collaboration, conflict resolution, project management
 - Focus on skills commonly required in job postings for this position
-- Consider current trends and in-demand abilities for this role
-- Make skills specific and actionable (avoid vague terms)
+- Consider current trends and in-demand soft skills for this role
+- Make skills specific and actionable (avoid vague terms like "hardworking" or "team player")
 - Prioritize skills that demonstrate clear value to employers
 
 **Output Format:**
 Return exactly ${count} skills as a comma-separated list with no additional text, explanations, or numbering.
-Example format: Leadership, Cross-functional Collaboration, Problem Solving, Python, Strategic Planning, Communication, Agile Methodology, Adaptability`;
+Example format: Leadership, Cross-functional Collaboration, Problem Solving, Strategic Planning, Communication, Team Management, Adaptability, Stakeholder Management`;
 
     console.log(`Suggesting ${count} skills for ${jobTitle}`);
 
@@ -139,7 +130,6 @@ Example format: Leadership, Cross-functional Collaboration, Problem Solving, Pyt
           model: MODEL_NAME,
           jobTitle,
           experienceLevel,
-          skillType,
           requestedCount: count,
           returnedCount: suggestedSkills.length,
         },
@@ -156,5 +146,5 @@ Example format: Leadership, Cross-functional Collaboration, Problem Solving, Pyt
 
 module.exports = { 
   healthCheck,
-  skills
+  softSkills,
  };
