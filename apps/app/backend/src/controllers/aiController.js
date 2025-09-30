@@ -144,7 +144,104 @@ Example format: Leadership, Cross-functional Collaboration, Problem Solving, Str
   }
 };
 
+const technicalSkills = async (req, res) => {
+  try {
+    const {
+      jobTitle,
+      currentSkills = [],
+      experienceLevel = "mid-level",
+      count = 8,
+    } = req.body;
+
+    // Validate required fields
+    if (!jobTitle || jobTitle.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Job title is required to suggest relevant technical skills",
+      });
+    }
+
+    // Build the prompt
+    const prompt = `You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
+
+**Role Details:**
+- Job Title: ${jobTitle}
+- Experience Level: ${experienceLevel}
+
+**Current Technical Skills to Avoid:**
+${currentSkills.length > 0 ? currentSkills.join(", ") : "None listed"}
+
+**Requirements:**
+- Suggest ${count} relevant technical skills for this role
+- Focus on programming languages, frameworks, libraries, tools, platforms, and technologies
+- Include both established and trending technologies relevant to this position
+- Consider skills commonly listed in job postings for this role
+- Prioritize in-demand technical capabilities that add value
+- Be specific with versions or variants when relevant (e.g., "React" not just "JavaScript frameworks")
+- Include tools and platforms commonly used in this field
+- Make skills concrete and verifiable (avoid soft skills or vague terms)
+
+**Output Format:**
+Return exactly ${count} technical skills as a comma-separated list with no additional text, explanations, or numbering.
+Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kubernetes`;
+
+    console.log(`Suggesting ${count} technical skills for ${jobTitle}`);
+
+    // Make API call to Gemini
+    const response = await geminiClient.models.generateContent({
+      model: MODEL_NAME,
+      contents: [{ parts: [{ text: prompt }] }],
+    });
+
+    const text = (response.text || "").trim();
+
+    // Parse the response to extract skills
+    const suggestedSkills = text
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter((skill) => skill.length > 1)
+      .filter(
+        (skill) =>
+          !currentSkills.some(
+            (existing) =>
+              existing.toLowerCase().includes(skill.toLowerCase()) ||
+              skill.toLowerCase().includes(existing.toLowerCase())
+          )
+      )
+      .slice(0, count);
+
+    if (suggestedSkills.length === 0) {
+      throw new Error(
+        "No new technical skills could be suggested. You may already have comprehensive technical skills listed."
+      );
+    }
+
+    console.log(`Successfully suggested ${suggestedSkills.length} technical skills`);
+
+    return res.json({
+      success: true,
+      data: {
+        suggestedSkills,
+        metadata: {
+          model: MODEL_NAME,
+          jobTitle,
+          experienceLevel,
+          requestedCount: count,
+          returnedCount: suggestedSkills.length,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Technical skills suggestion error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to suggest technical skills",
+    });
+  }
+};
+
 module.exports = { 
   healthCheck,
   softSkills,
+  technicalSkills
  };

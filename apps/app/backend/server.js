@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const { healthCheck, softSkills } = require('./src/controllers/aiController');
+const { healthCheck, softSkills, technicalSkills } = require('./src/controllers/aiController');
 const { generateTestPDF, convertHtmlToPdf } = require('./src/controllers/pdfController');
 
 const app = express();
@@ -37,7 +37,8 @@ app.get('/api/test', (req, res) => {
 
 // Gemini integration endpoint
 app.post('/api/ai/generate', healthCheck);
-app.post('/api/ai/skills', softSkills)
+app.post('/api/ai/soft-skills', softSkills)
+app.post('/api/ai/technical-skills', technicalSkills)
 
 // PDF generation test endpoint
 app.get('/api/generate-test-pdf', generateTestPDF);
