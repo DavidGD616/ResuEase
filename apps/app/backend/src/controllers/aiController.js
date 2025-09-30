@@ -37,15 +37,124 @@ const healthCheck = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('AI health check failed:', error);
+    console.error("AI health check failed:", error);
     return res.status(500).json({
       success: false,
-      message: 'AI service health check failed',
-      error: error.message || 'Service unavailable',
+      message: "AI service health check failed",
+      error: error.message || "Service unavailable",
       model: MODEL_NAME,
-      timestamp: new Date().toISOString()
-    })
+      timestamp: new Date().toISOString(),
+    });
   }
 };
 
-module.exports = { healthCheck };
+// Skills
+
+const skills = async (req, res) => {
+  try {
+    const {
+      jobTitle,
+      currentSkills = [],
+      experienceLevel = "mid-level",
+      skillType = "all",
+      count = 8,
+    } = req.body;
+
+    // Validate required fields
+    if (!jobTitle || jobTitle.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Job title is required to suggest relevant skills",
+      });
+    }
+
+    // Build the prompt
+    const prompt = `You are a career advisor helping to build a resume skills section. This section should showcase key abilities that give employers a quick overview of strengths and how they fit with the job.
+
+**Role Details:**
+- Job Title: ${jobTitle}
+- Experience Level: ${experienceLevel}
+- Skill Focus: ${
+      skillType === "technical"
+        ? "Technical skills only"
+        : skillType === "soft"
+        ? "Soft skills only"
+        : "Prioritize soft skills (60-70%) with supporting technical skills (30-40%)"
+    }
+
+**Current Skills to Avoid:**
+${currentSkills.length > 0 ? currentSkills.join(", ") : "None listed"}
+
+**Requirements:**
+- Suggest ${count} key abilities that are highly relevant for this role
+- When suggesting a mix, prioritize soft skills (communication, problem-solving, leadership, teamwork, adaptability) over technical skills
+- Include hard skills (technical knowledge, tools, methodologies) as complementary abilities
+- Focus on skills commonly required in job postings for this position
+- Consider current trends and in-demand abilities for this role
+- Make skills specific and actionable (avoid vague terms)
+- Prioritize skills that demonstrate clear value to employers
+
+**Output Format:**
+Return exactly ${count} skills as a comma-separated list with no additional text, explanations, or numbering.
+Example format: Leadership, Cross-functional Collaboration, Problem Solving, Python, Strategic Planning, Communication, Agile Methodology, Adaptability`;
+
+    console.log(`Suggesting ${count} skills for ${jobTitle}`);
+
+    // Make API call to Gemini
+    const response = await geminiClient.models.generateContent({
+      model: MODEL_NAME,
+      contents: [{ parts: [{ text: prompt }] }],
+    });
+
+    const text = (response.text || "").trim();
+
+    // Parse the response to extract skills
+    const suggestedSkills = text
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter((skill) => skill.length > 2)
+      .filter(
+        (skill) =>
+          !currentSkills.some(
+            (existing) =>
+              existing.toLowerCase().includes(skill.toLowerCase()) ||
+              skill.toLowerCase().includes(existing.toLowerCase())
+          )
+      )
+      .slice(0, count);
+
+    if (suggestedSkills.length === 0) {
+      throw new Error(
+        "No new skills could be suggested. You may already have comprehensive skills listed."
+      );
+    }
+
+    console.log(`Successfully suggested ${suggestedSkills.length} skills`);
+
+    return res.json({
+      success: true,
+      data: {
+        suggestedSkills,
+        metadata: {
+          model: MODEL_NAME,
+          jobTitle,
+          experienceLevel,
+          skillType,
+          requestedCount: count,
+          returnedCount: suggestedSkills.length,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Skills suggestion error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to suggest skills",
+    });
+  }
+};
+
+module.exports = { 
+  healthCheck,
+  skills
+ };
