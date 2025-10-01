@@ -5,6 +5,7 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 import TechnologiesSkillEntryForm from '../entries/TechnologiesSkillEntryForm';
+import AISkillSuggester from '../shared/AiSkillSuggester';
 
 function TechnologiesSkillsForm({ 
   onDeleteSection, 
@@ -43,6 +44,12 @@ function TechnologiesSkillsForm({
     }));
   };
 
+  // Handle adding a technical skill from AI suggestions
+  const handleAddSkillFromAI = (skillName) => {
+    const newItemId = addSectionItem('technologiesSkills');
+    updateSectionItem('technologiesSkills', newItemId, 'technologiesSkillName', skillName);
+  };
+
   return (
     <div>
       <FormHeader title="Technologies" onDelete={deleteModal.openModal} showDelete />
@@ -50,6 +57,14 @@ function TechnologiesSkillsForm({
       <FormDescription>
         List your technical skills, programming languages, frameworks, tools, and technologies you're proficient in. This helps employers quickly identify your technical capabilities.
       </FormDescription>
+      
+      {/* AI Skill Suggester Component */}
+      <AISkillSuggester
+        jobTitle={formData.jobTitle}
+        currentSkills={technologiesSkills}
+        onAddSkill={handleAddSkillFromAI}
+        skillType="technical"
+      />
       
       <FormSection>
         {technologiesSkills.map((technologiesSkill) => (

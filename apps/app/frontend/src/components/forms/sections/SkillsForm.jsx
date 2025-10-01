@@ -5,6 +5,7 @@ import AddEntryButton from '../shared/AddEntryButton';
 import Modal from '../../ui/Modal';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
 import SkillEntryForm from '../entries/SkillEntryForm';
+import AISkillSuggester from '../shared/AiSkillSuggester';
 
 function SkillsForm({ 
   onDeleteSection, 
@@ -43,6 +44,12 @@ function SkillsForm({
     }));
   };
 
+  // Handle adding a skill from AI suggestions
+  const handleAddSkillFromAI = (skillName) => {
+    const newItemId = addSectionItem('skills');
+    updateSectionItem('skills', newItemId, 'skillName', skillName);
+  };
+
   return (
     <div>
       <FormHeader title="Skills" onDelete={deleteModal.openModal} showDelete />
@@ -50,6 +57,14 @@ function SkillsForm({
       <FormDescription>
         This section is for summarizing your key abilities. Include both hard skills (like technical knowledge) and soft skills (like communication or problem-solving). It gives employers a quick overview of your strengths and how they fit with the job.
       </FormDescription>
+      
+      {/* AI Skill Suggester Component */}
+      <AISkillSuggester
+        jobTitle={formData.jobTitle}
+        currentSkills={skills}
+        onAddSkill={handleAddSkillFromAI}
+        skillType="soft"
+      />
       
       <FormSection>
         {skills.map((skill) => (
