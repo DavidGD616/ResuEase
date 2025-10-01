@@ -153,16 +153,22 @@ const technicalSkills = async (req, res) => {
       count = 8,
     } = req.body;
 
-    // Validate required fields
-    if (!jobTitle || jobTitle.trim().length < 2) {
+    // Validate required fields - at least one of jobTitle or currentSkills must be provided
+    if (
+      (!jobTitle || jobTitle.trim().length < 2) &&
+      currentSkills.length === 0
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Job title is required to suggest relevant technical skills",
+        message:
+          "At least one of jobTitle or currentSkills must be provided to suggest relevant technical skills",
       });
     }
 
     // Build the prompt
-    const prompt = `You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
+    let prompt;
+    if (jobTitle && jobTitle.trim().length >= 2) {
+      prompt = `You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
 
 **Role Details:**
 - Job Title: ${jobTitle}
@@ -184,6 +190,25 @@ ${currentSkills.length > 0 ? currentSkills.join(", ") : "None listed"}
 **Output Format:**
 Return exactly ${count} technical skills as a comma-separated list with no additional text, explanations, or numbering.
 Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kubernetes`;
+    } else {
+      // If no job title, suggest complementary skills based on current skills
+      prompt = `You are a career advisor helping to build a resume technical skills section. Based on the user's current technical skills, suggest complementary technologies and tools that would enhance their technical profile.
+
+**Current Technical Skills:**
+${currentSkills.join(", ")}
+
+**Requirements:**
+- Suggest ${count} complementary technical skills that work well with the current skill set
+- Focus on programming languages, frameworks, libraries, tools, platforms, and technologies
+- Include both established and trending technologies
+- Prioritize in-demand technical capabilities that add value
+- Be specific with versions or variants when relevant
+- Make skills concrete and verifiable
+
+**Output Format:**
+Return exactly ${count} technical skills as a comma-separated list with no additional text, explanations, or numbering.
+Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kubernetes`;
+    }
 
     console.log(`Suggesting ${count} technical skills for ${jobTitle}`);
 
@@ -216,7 +241,9 @@ Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kuberne
       );
     }
 
-    console.log(`Successfully suggested ${suggestedSkills.length} technical skills`);
+    console.log(
+      `Successfully suggested ${suggestedSkills.length} technical skills`
+    );
 
     return res.json({
       success: true,
@@ -240,8 +267,8 @@ Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kuberne
   }
 };
 
-module.exports = { 
+module.exports = {
   healthCheck,
   softSkills,
-  technicalSkills
- };
+  technicalSkills,
+};
