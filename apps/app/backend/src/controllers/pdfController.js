@@ -1,26 +1,20 @@
 const puppeteer = require('puppeteer-core');
 
-// Get Puppeteer configuration for different environments
-const getPuppeteerConfig = () => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  
-  if (isProduction && process.env.BROWSER_WS_ENDPOINT) {
-    // Use Browserless in production
-    return {
-      browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT
-    };
-  }
-  
-  // Development configuration (local puppeteer)
-  return {
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  };
-};
-
 // Connect to browser based on environment
 const connectToBrowser = async () => {
   try {
+    // Check if Browserless endpoint is configured (production)
+    if (process.env.BROWSER_WS_ENDPOINT) {
+      console.log('Connecting to Browserless...');
+      const browser = await puppeteer.connect({
+        browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT
+      });
+      console.log('Connected to Browserless successfully!');
+      return browser;
+    }
+
+    // Local development - launch Chrome locally
+    console.log('Launching local Chrome...');
     const browserConfig = {
       headless: true,
       args: [
@@ -31,18 +25,15 @@ const connectToBrowser = async () => {
         '--no-first-run',
         '--no-zygote',
         '--disable-gpu'
-      ]
+      ],
+      executablePath: '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev'
     };
 
-    // Only set executablePath for local development
-    if (!process.env.RAILWAY_ENVIRONMENT && process.env.NODE_ENV !== 'production') {
-      browserConfig.executablePath = '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev';
-    }
-
     const browser = await puppeteer.launch(browserConfig);
+    console.log('Local Chrome launched successfully!');
     return browser;
   } catch (error) {
-    console.error('Failed to launch browser:', error);
+    console.error('Failed to connect to browser:', error);
     throw error;
   }
 };
