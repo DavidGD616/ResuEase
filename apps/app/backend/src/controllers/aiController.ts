@@ -1,4 +1,5 @@
-const { GoogleGenAI } = require("@google/genai");
+import { GoogleGenAI } from "@google/genai";
+import { Request, Response } from "express";
 
 // Initialize Google Gemini AI client
 const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
@@ -9,8 +10,22 @@ const geminiClient = new GoogleGenAI({ apiKey });
 // Model name
 const MODEL_NAME = "gemini-2.5-flash-lite";
 
+interface SoftSkillsBody {
+  jobTitle: string;
+  currentSkills?: string[];
+  experienceLevel?: string;
+  count?: number;
+}
+
+interface TechnicalSkillsBody {
+  jobTitle?: string;
+  currentSkills?: string[];
+  experienceLevel?: string;
+  count?: number;
+}
+
 // HEALTH CHECK
-const healthCheck = async (req, res) => {
+export const healthCheck = async (req: Request, res: Response) => {
   try {
     console.log(`Testing AI service health with ${MODEL_NAME}`);
 
@@ -38,18 +53,19 @@ const healthCheck = async (req, res) => {
     });
   } catch (error) {
     console.error("AI health check failed:", error);
+    const message = error instanceof Error ? error.message : "Service unavailable";
     return res.status(500).json({
       success: false,
       message: "AI service health check failed",
-      error: error.message || "Service unavailable",
+      error: message,
       model: MODEL_NAME,
       timestamp: new Date().toISOString(),
     });
   }
 };
 
-// Skills
-const softSkills = async (req, res) => {
+// Soft Skills
+export const softSkills = async (req: Request<{}, {}, SoftSkillsBody>, res: Response) => {
   try {
     const {
       jobTitle,
@@ -137,14 +153,15 @@ Example format: Leadership, Cross-functional Collaboration, Problem Solving, Str
     });
   } catch (error) {
     console.error("Skills suggestion error:", error);
+    const message = error instanceof Error ? error.message : "Failed to suggest skills";
     return res.status(500).json({
       success: false,
-      message: error.message || "Failed to suggest skills",
+      message,
     });
   }
 };
 
-const technicalSkills = async (req, res) => {
+export const technicalSkills = async (req: Request<{}, {}, TechnicalSkillsBody>, res: Response) => {
   try {
     const {
       jobTitle,
@@ -166,7 +183,7 @@ const technicalSkills = async (req, res) => {
     }
 
     // Build the prompt
-    let prompt;
+    let prompt: string;
     if (jobTitle && jobTitle.trim().length >= 2) {
       prompt = `You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
 
@@ -260,15 +277,10 @@ Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kuberne
     });
   } catch (error) {
     console.error("Technical skills suggestion error:", error);
+    const message = error instanceof Error ? error.message : "Failed to suggest technical skills";
     return res.status(500).json({
       success: false,
-      message: error.message || "Failed to suggest technical skills",
+      message,
     });
   }
-};
-
-module.exports = {
-  healthCheck,
-  softSkills,
-  technicalSkills,
 };

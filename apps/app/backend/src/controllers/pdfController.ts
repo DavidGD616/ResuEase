@@ -1,61 +1,68 @@
-const puppeteer = require('puppeteer-core');
+import puppeteer, { Browser, PDFOptions } from "puppeteer-core";
+import { Request, Response } from "express";
+
+interface HtmlToPdfBody {
+  html: string;
+  options?: Partial<PDFOptions>;
+}
 
 // Connect to browser based on environment
-const connectToBrowser = async () => {
+const connectToBrowser = async (): Promise<Browser> => {
   try {
     // Check if Browserless endpoint is configured (production)
     if (process.env.BROWSER_WS_ENDPOINT) {
-      console.log('Connecting to Browserless...');
+      console.log("Connecting to Browserless...");
       const browser = await puppeteer.connect({
-        browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT
+        browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT,
       });
-      console.log('Connected to Browserless successfully!');
+      console.log("Connected to Browserless successfully!");
       return browser;
     }
 
     // Local development - launch Chrome locally
-    console.log('Launching local Chrome...');
+    console.log("Launching local Chrome...");
     const browserConfig = {
-      headless: true,
+      headless: true as const,
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--no-zygote",
+        "--disable-gpu",
       ],
-      executablePath: '/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev'
+      executablePath:
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", 
     };
 
     const browser = await puppeteer.launch(browserConfig);
-    console.log('Local Chrome launched successfully!');
+    console.log("Local Chrome launched successfully!");
     return browser;
   } catch (error) {
-    console.error('Failed to connect to browser:', error);
+    console.error("Failed to connect to browser:", error);
     throw error;
   }
 };
 
 // Simple HTML to PDF conversion service
-const convertHtmlToPdf = async (req, res) => {
-  let browser = null;
+export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res: Response) => {
+  let browser: Browser | null = null;
 
   try {
     const { html, options = {} } = req.body;
-    
+
     // Validate input
     if (!html) {
       return res.status(400).json({
         success: false,
-        message: 'HTML content is required'
+        message: "HTML content is required",
       });
     }
 
-    console.log('Converting HTML to PDF...');
-    console.log('HTML length:', html.length, 'characters');
-    console.log('Using Browserless:', !!process.env.BROWSER_WS_ENDPOINT);
+    console.log("Converting HTML to PDF...");
+    console.log("HTML length:", html.length, "characters");
+    console.log("Using Browserless:", !!process.env.BROWSER_WS_ENDPOINT);
 
     // Connect to browser (Browserless or local)
     browser = await connectToBrowser();
@@ -63,62 +70,65 @@ const convertHtmlToPdf = async (req, res) => {
     const page = await browser.newPage();
 
     // Set the HTML content directly
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.setContent(html, { waitUntil: "networkidle0" });
 
     // Default PDF options (can be overridden by request)
-    const defaultOptions = {
-      format: 'A4',
+    const defaultOptions: PDFOptions = {
+      format: "A4",
       margin: {
-        top: '0.75in',
-        right: '0.75in',
-        bottom: '0.75in',
-        left: '0.75in'
+        top: "0.75in",
+        right: "0.75in",
+        bottom: "0.75in",
+        left: "0.75in",
       },
-      printBackground: true
+      printBackground: true,
     };
 
     // Merge with provided options
-    const pdfOptions = { ...defaultOptions, ...options };
+    const pdfOptions: PDFOptions = { ...defaultOptions, ...options };
 
     // Generate PDF
     const pdfBuffer = await page.pdf(pdfOptions);
 
-    console.log('PDF generated successfully from HTML!');
+    console.log("PDF generated successfully from HTML!");
 
     // Set headers for download
     res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="resume.pdf"',
-      'Content-Length': pdfBuffer.length,
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="resume.pdf"',
+      "Content-Length": pdfBuffer.length.toString(),
     });
 
     // Send the PDF
     res.send(pdfBuffer);
-
   } catch (error) {
-    console.error('HTML to PDF conversion error:', error);
+    console.error("HTML to PDF conversion error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({
       success: false,
-      message: 'Failed to convert HTML to PDF',
-      error: error.message
+      message: "Failed to convert HTML to PDF",
+      error: message,
     });
   } finally {
     // Always close the browser
     if (browser) {
       await browser.close();
-      console.log('Browser closed.');
+      console.log("Browser closed.");
     }
   }
 };
 
 // Test PDF generation with simple HTML
-const generateTestPDF = async (req, res) => {
-  let browser = null;
+export const generateTestPDF = async (req: Request, res: Response) => {
+  let browser: Browser | null = null;
 
   try {
-    console.log('Starting PDF generation...');
-    console.log('Environment:', process.env.NODE_ENV);
-    console.log('Browserless endpoint:', process.env.BROWSER_WS_ENDPOINT ? 'Connected' : 'Not configured');
+    console.log("Starting PDF generation...");
+    console.log("Environment:", process.env.NODE_ENV);
+    console.log(
+      "Browserless endpoint:",
+      process.env.BROWSER_WS_ENDPOINT ? "Connected" : "Not configured"
+    );
 
     // Connect to browser (Browserless or local)
     browser = await connectToBrowser();
@@ -171,13 +181,13 @@ const generateTestPDF = async (req, res) => {
             <div class="name">TEST RESUME</div>
             <div>PDF Generation Test - <span class="success">SUCCESS!</span></div>
           </div>
-          
+
           <div class="section">
             <div class="section-title">Test Section</div>
             <p>This PDF was generated successfully with Puppeteer!</p>
             <p>Timestamp: ${new Date().toISOString()}</p>
             <p>Environment: ${process.env.NODE_ENV}</p>
-            <p>Browser: ${process.env.BROWSER_WS_ENDPOINT ? 'Browserless' : 'Local Puppeteer'}</p>
+            <p>Browser: ${process.env.BROWSER_WS_ENDPOINT ? "Browserless" : "Local Puppeteer"}</p>
           </div>
 
           <div class="section">
@@ -190,49 +200,44 @@ const generateTestPDF = async (req, res) => {
     `;
 
     // Set the HTML content
-    await page.setContent(testHTML, { waitUntil: 'networkidle0' });
+    await page.setContent(testHTML, { waitUntil: "networkidle0" });
 
     // Generate PDF
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+      format: "A4",
       margin: {
-        top: '0.75in',
-        right: '0.75in',
-        bottom: '0.75in',
-        left: '0.75in'
+        top: "0.75in",
+        right: "0.75in",
+        bottom: "0.75in",
+        left: "0.75in",
       },
-      printBackground: true
+      printBackground: true,
     });
 
-    console.log('PDF generated successfully!');
+    console.log("PDF generated successfully!");
 
     // Set headers for download
     res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="test-resume.pdf"',
-      'Content-Length': pdfBuffer.length,
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="test-resume.pdf"',
+      "Content-Length": pdfBuffer.length.toString(),
     });
 
     // Send the PDF
     res.send(pdfBuffer);
-
   } catch (error) {
-    console.error('PDF generation error:', error);
+    console.error("PDF generation error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({
       success: false,
-      message: 'Failed to generate PDF',
-      error: error.message
+      message: "Failed to generate PDF",
+      error: message,
     });
   } finally {
     // Always close the browser
     if (browser) {
       await browser.close();
-      console.log('Browser closed.');
+      console.log("Browser closed.");
     }
   }
-};
-
-module.exports = {
-  generateTestPDF,
-  convertHtmlToPdf
 };

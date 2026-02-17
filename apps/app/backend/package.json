@@ -1,10 +1,12 @@
 {
   "name": "resuease-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "server.ts",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node --import tsx server.ts",
+    "dev": "tsx watch server.ts",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,15 +14,19 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google/genai": "^1.21.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "express-rate-limit": "^8.1.0",
-    "puppeteer-core": "^24.19.0"
+    "@google/genai": "^1.41.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "puppeteer-core": "^24.37.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.2.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.17.1"
 }
