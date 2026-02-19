@@ -60,9 +60,9 @@ ResuEase/
 - `src/components/layout/` — TopNav, Sidebar, MainContent, PreviewPanel, BottomNav
 - `src/components/resume/` — Resume templates (currently only HarvardTemplate)
 - `src/hooks/` — useFormData, useSidebarStorage, useAuth, useDragDrop, useBulletPoints, useDeleteModal
-- `src/services/` — AiService.js, PdfService.js
+- `src/services/` — AiService.ts, PdfService.ts
 - `src/context/` — AuthContext (Supabase)
-- `src/data/` — formFields.js (initial data + schemas), sidebarItems.js
+- `src/data/` — formFields.ts (initial data + schemas), sidebarItems.ts
 
 ### State Management
 - **AuthContext** — Supabase user session
@@ -114,7 +114,7 @@ pnpm dev            # Vite dev server
 
 ## Conventions
 
-- Frontend uses `.jsx` extensions for all React components
+- Frontend uses `.tsx` extensions for all React components
 - Tailwind utility classes for all styling (no CSS modules)
 - Components are organized by feature domain, not by type
 - Custom hooks encapsulate all stateful logic
