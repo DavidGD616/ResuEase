@@ -1,0 +1,234 @@
+import { useEffect } from 'react';
+import type { FC, ReactNode, MouseEvent } from 'react';
+import { X, Trash2 } from 'lucide-react';
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children?: ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  showCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  className?: string;
+  icon?: ReactNode;
+  iconBgColor?: string;
+  iconColor?: string;
+}
+
+interface ChildrenClassNameProps {
+  children?: ReactNode;
+  className?: string;
+}
+
+interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title?: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+}
+
+interface HintModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  description?: ReactNode;
+}
+
+const sizes: Record<string, string> = {
+  sm: 'max-w-md',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+  full: 'max-w-7xl',
+};
+
+type ModalType = FC<ModalProps> & {
+  Header: FC<ChildrenClassNameProps>;
+  Body: FC<ChildrenClassNameProps>;
+  Footer: FC<ChildrenClassNameProps>;
+  Confirmation: FC<ConfirmationModalProps>;
+  Hint: FC<HintModalProps>;
+};
+
+const Modal: ModalType = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size = 'md',
+  showCloseButton = true,
+  closeOnOverlayClick = true,
+  closeOnEscape = true,
+  className = '',
+  icon,
+  iconBgColor = 'bg-red-100',
+  iconColor = 'text-red-600',
+}) => {
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (closeOnEscape && event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, closeOnEscape, onClose]);
+
+  if (!isOpen) return null;
+
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (closeOnOverlayClick && e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div
+        className="fixed inset-0 bg-black opacity-30 transition-opacity"
+        onClick={handleOverlayClick}
+      />
+
+      <div className="flex min-h-full items-center justify-center p-4">
+        <div
+          className={`
+            relative w-full ${sizes[size]} bg-white rounded-3xl shadow-xl
+            transform transition-all ${className}
+          `}
+        >
+          {showCloseButton && (
+            <button
+              onClick={onClose}
+              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          )}
+
+          <div className="p-8 pt-12 text-center">
+            {icon && (
+              <div className="mx-auto mb-8">
+                <div className={`w-20 h-20 ${iconBgColor} rounded-full flex items-center justify-center mx-auto`}>
+                  <div className={`w-8 h-8 ${iconColor}`}>
+                    {icon}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {title && (
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                {title}
+              </h3>
+            )}
+
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ModalHeader: FC<ChildrenClassNameProps> = ({ children, className = '' }) => (
+  <div className={`text-center mb-6 ${className}`}>
+    {children}
+  </div>
+);
+
+const ModalBody: FC<ChildrenClassNameProps> = ({ children, className = '' }) => (
+  <div className={`text-center mb-8 text-gray-600 ${className}`}>
+    {children}
+  </div>
+);
+
+const ModalFooter: FC<ChildrenClassNameProps> = ({ children, className = '' }) => (
+  <div className={`flex flex-col sm:flex-row gap-3 justify-center ${className}`}>
+    {children}
+  </div>
+);
+
+const ConfirmationModal: FC<ConfirmationModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title = "Are you sure you want to delete this section?",
+  message = "You can't undo this action.",
+  confirmText = "Delete",
+  cancelText = "Cancel",
+}) => (
+  <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    size="sm"
+    icon={<Trash2 className="w-8 h-8" />}
+    iconBgColor="bg-red-100"
+    iconColor="text-red-600"
+    title={title}
+  >
+    <Modal.Body>
+      {message}
+    </Modal.Body>
+    <Modal.Footer>
+      <button
+        onClick={onClose}
+        className="px-8 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors min-w-[120px]"
+      >
+        {cancelText}
+      </button>
+      <button
+        onClick={onConfirm}
+        className="px-8 py-3 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors min-w-[120px]"
+      >
+        {confirmText}
+      </button>
+    </Modal.Footer>
+  </Modal>
+);
+
+const HintModal: FC<HintModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  description,
+}) => (
+  <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    size="sm"
+    title={title}
+  >
+    <Modal.Body className='text-left'>
+      {description}
+    </Modal.Body>
+    <Modal.Footer>
+      <button
+        onClick={onClose}
+        className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+      >
+        Got it
+      </button>
+    </Modal.Footer>
+  </Modal>
+);
+
+Modal.Header = ModalHeader;
+Modal.Body = ModalBody;
+Modal.Footer = ModalFooter;
+Modal.Confirmation = ConfirmationModal;
+Modal.Hint = HintModal;
+
+export default Modal;
