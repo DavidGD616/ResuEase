@@ -1,9 +1,31 @@
 import puppeteer, { Browser, PDFOptions } from "puppeteer-core";
 import { Request, Response } from "express";
 
+// Narrow the accepted PDF options to a safe subset.
+// Never accept the full PDFOptions from the client — Puppeteer's `path` option,
+// for example, would write the PDF to an arbitrary filesystem path on the server.
+interface SafePdfOptions {
+  format?: PDFOptions["format"];
+  margin?: PDFOptions["margin"];
+  printBackground?: PDFOptions["printBackground"];
+}
+
 interface HtmlToPdfBody {
   html: string;
-  options?: Partial<PDFOptions>;
+  options?: SafePdfOptions;
+}
+
+// Tags that can enable SSRF, XSS, or remote code execution inside Puppeteer.
+// <script>  — arbitrary JS execution
+// <iframe>  — loads external documents from the server's network context (SSRF)
+// <object>  — plugin / external content embedding
+// <embed>   — same as object
+// <link rel="import"> — HTML imports (deprecated but still parsed by some engines)
+const DANGEROUS_TAG_RE = /<(script|iframe|object|embed)\b/i;
+const IMPORT_LINK_RE = /<link[^>]*rel=["']?\s*import/i;
+
+function containsDangerousTags(html: string): boolean {
+  return DANGEROUS_TAG_RE.test(html) || IMPORT_LINK_RE.test(html);
 }
 
 // Connect to browser based on environment
@@ -60,6 +82,16 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
       });
     }
 
+    // Reject HTML that contains tags capable of SSRF, XSS, or remote execution.
+    // JS is also disabled in the page below, but blocking at this layer gives a
+    // clear 400 to the caller and avoids launching a browser at all.
+    if (containsDangerousTags(html)) {
+      return res.status(400).json({
+        success: false,
+        message: "HTML contains disallowed elements",
+      });
+    }
+
     console.log("Converting HTML to PDF...");
     console.log("HTML length:", html.length, "characters");
     console.log("Using Browserless:", !!process.env.BROWSER_WS_ENDPOINT);
@@ -69,10 +101,14 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
 
     const page = await browser.newPage();
 
-    // Set the HTML content directly
-    await page.setContent(html, { waitUntil: "networkidle0" });
+    // Disable JavaScript execution in the page as a second line of defence.
+    // This prevents any JS that slips through tag detection from running.
+    await page.setJavaScriptEnabled(false);
 
-    // Default PDF options (can be overridden by request)
+    // Cap rendering time to prevent a hanging request from tying up the server.
+    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30_000 });
+
+    // Default PDF options
     const defaultOptions: PDFOptions = {
       format: "A4",
       margin: {
@@ -84,8 +120,13 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
       printBackground: true,
     };
 
-    // Merge with provided options
-    const pdfOptions: PDFOptions = { ...defaultOptions, ...options };
+    // Build PDF options from the safe subset only — never spread raw client
+    // options, which could include Puppeteer's `path` key and write the PDF
+    // to an arbitrary location on the server's filesystem.
+    const pdfOptions: PDFOptions = { ...defaultOptions };
+    if (options.format !== undefined) pdfOptions.format = options.format;
+    if (options.margin !== undefined) pdfOptions.margin = options.margin;
+    if (options.printBackground !== undefined) pdfOptions.printBackground = options.printBackground;
 
     // Generate PDF
     const pdfBuffer = await page.pdf(pdfOptions);
