@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import express, { type Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { healthCheck, softSkills, technicalSkills } from "./src/controllers/aiController.js";
 import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfController.js";
 
@@ -18,6 +19,24 @@ const allowedOrigins = new Set(
     .map((o) => o.trim())
     .filter(Boolean)
 );
+
+// Rate limiters — applied per-route to protect paid external services.
+// Both standard (RateLimit-*) and legacy (X-RateLimit-*) headers are sent.
+const aiLimiter = rateLimit({
+  windowMs: 60_000,       // 1 minute
+  limit: 20,              // 20 requests per IP per window
+  standardHeaders: "draft-8",
+  legacyHeaders: true,
+  message: { success: false, message: "Too many AI requests, please try again later." },
+});
+
+const pdfLimiter = rateLimit({
+  windowMs: 60_000,       // 1 minute
+  limit: 10,              // 10 requests per IP per window
+  standardHeaders: "draft-8",
+  legacyHeaders: true,
+  message: { success: false, message: "Too many PDF requests, please try again later." },
+});
 
 // Middleware
 app.use(
@@ -56,15 +75,15 @@ app.get("/api/test", (req: Request, res: Response) => {
 });
 
 // Gemini integration endpoint
-app.post("/api/ai/generate", healthCheck);
-app.post("/api/ai/soft-skills", softSkills);
-app.post("/api/ai/technical-skills", technicalSkills);
+app.post("/api/ai/generate", aiLimiter, healthCheck);
+app.post("/api/ai/soft-skills", aiLimiter, softSkills);
+app.post("/api/ai/technical-skills", aiLimiter, technicalSkills);
 
 // PDF generation test endpoint
 app.get("/api/generate-test-pdf", generateTestPDF);
 
 // HTML to PDF conversion endpoint
-app.post("/api/html-to-pdf", convertHtmlToPdf);
+app.post("/api/html-to-pdf", pdfLimiter, convertHtmlToPdf);
 
 // Basic error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
