@@ -8,8 +8,28 @@ import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfControll
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
 
+// CORS — restrict to an explicit origin allowlist.
+// Set CORS_ALLOWED_ORIGINS to a comma-separated list of allowed origins.
+// Defaults to localhost:5173 (Vite dev server) when not set.
+const rawOrigins = process.env.CORS_ALLOWED_ORIGINS ?? "http://localhost:5173";
+const allowedOrigins = new Set(
+  rawOrigins
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean)
+);
+
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no Origin header (server-to-server, curl, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.has(origin)) return callback(null, true);
+      callback(new Error(`CORS: Origin '${origin}' is not allowed`));
+    },
+  })
+);
 app.use(express.json({ limit: "10mb" })); // Increase limit for form data
 app.use(express.urlencoded({ extended: true }));
 
@@ -70,6 +90,7 @@ app.use((req: Request, res: Response) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`🔒 CORS allowed origins: ${[...allowedOrigins].join(", ")}`);
   console.log("📍 API endpoints:");
   console.log(`   - Health check: http://localhost:${PORT}/`);
   console.log(`   - Test endpoint: http://localhost:${PORT}/api/test`);
