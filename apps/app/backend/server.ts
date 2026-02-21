@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 import { healthCheck, softSkills, technicalSkills } from "./src/controllers/aiController.js";
 import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfController.js";
 import { requireAuth } from "./src/middleware/auth.js";
+import { closeBrowser } from "./src/lib/browserManager.js";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -108,7 +109,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`🔒 CORS allowed origins: ${[...allowedOrigins].join(", ")}`);
   console.log("📍 API endpoints:");
@@ -117,5 +118,15 @@ app.listen(PORT, () => {
   console.log(`   - Gemini: http://localhost:${PORT}/api/ai/generate`);
   console.log(`   - Test PDF: http://localhost:${PORT}/api/generate-test-pdf`);
 });
+
+// Graceful shutdown — close the shared browser and stop accepting new connections.
+const shutdown = async () => {
+  server.close();
+  await closeBrowser();
+  process.exit(0);
+};
+
+process.once("SIGTERM", shutdown);
+process.once("SIGINT", shutdown);
 
 export default app;

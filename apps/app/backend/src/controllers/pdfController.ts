@@ -1,5 +1,6 @@
-import puppeteer, { Browser, PDFOptions } from "puppeteer-core";
+import { PDFOptions, Page } from "puppeteer-core";
 import { Request, Response } from "express";
+import { getBrowser } from "../lib/browserManager.js";
 
 // Narrow the accepted PDF options to a safe subset.
 // Never accept the full PDFOptions from the client — Puppeteer's `path` option,
@@ -28,48 +29,9 @@ function containsDangerousTags(html: string): boolean {
   return DANGEROUS_TAG_RE.test(html) || IMPORT_LINK_RE.test(html);
 }
 
-// Connect to browser based on environment
-const connectToBrowser = async (): Promise<Browser> => {
-  try {
-    // Check if Browserless endpoint is configured (production)
-    if (process.env.BROWSER_WS_ENDPOINT) {
-      console.log("Connecting to Browserless...");
-      const browser = await puppeteer.connect({
-        browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT,
-      });
-      console.log("Connected to Browserless successfully!");
-      return browser;
-    }
-
-    // Local development - launch Chrome locally
-    console.log("Launching local Chrome...");
-    const browserConfig = {
-      headless: true as const,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--no-first-run",
-        "--no-zygote",
-        "--disable-gpu",
-      ],
-      executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", 
-    };
-
-    const browser = await puppeteer.launch(browserConfig);
-    console.log("Local Chrome launched successfully!");
-    return browser;
-  } catch (error) {
-    console.error("Failed to connect to browser:", error);
-    throw error;
-  }
-};
-
 // Simple HTML to PDF conversion service
 export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res: Response) => {
-  let browser: Browser | null = null;
+  let page: Page | null = null;
 
   try {
     const { html, options = {} } = req.body;
@@ -84,7 +46,7 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
 
     // Reject HTML that contains tags capable of SSRF, XSS, or remote execution.
     // JS is also disabled in the page below, but blocking at this layer gives a
-    // clear 400 to the caller and avoids launching a browser at all.
+    // clear 400 to the caller and avoids opening a page at all.
     if (containsDangerousTags(html)) {
       return res.status(400).json({
         success: false,
@@ -96,10 +58,9 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
     console.log("HTML length:", html.length, "characters");
     console.log("Using Browserless:", !!process.env.BROWSER_WS_ENDPOINT);
 
-    // Connect to browser (Browserless or local)
-    browser = await connectToBrowser();
-
-    const page = await browser.newPage();
+    // Reuse the shared browser instance; open a fresh page for this request.
+    const browser = await getBrowser();
+    page = await browser.newPage();
 
     // Disable JavaScript execution in the page as a second line of defence.
     // This prevents any JS that slips through tag detection from running.
@@ -151,17 +112,16 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
       error: message,
     });
   } finally {
-    // Always close the browser
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
+    // Close only the page — the browser stays alive for the next request.
+    if (page) {
+      await page.close();
     }
   }
 };
 
 // Test PDF generation with simple HTML
 export const generateTestPDF = async (req: Request, res: Response) => {
-  let browser: Browser | null = null;
+  let page: Page | null = null;
 
   try {
     console.log("Starting PDF generation...");
@@ -171,10 +131,10 @@ export const generateTestPDF = async (req: Request, res: Response) => {
       process.env.BROWSER_WS_ENDPOINT ? "Connected" : "Not configured"
     );
 
-    // Connect to browser (Browserless or local)
-    browser = await connectToBrowser();
+    // Reuse the shared browser instance; open a fresh page for this request.
+    const browser = await getBrowser();
 
-    const page = await browser.newPage();
+    page = await browser.newPage();
 
     // Simple test HTML
     const testHTML = `
@@ -275,10 +235,9 @@ export const generateTestPDF = async (req: Request, res: Response) => {
       error: message,
     });
   } finally {
-    // Always close the browser
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
+    // Close only the page — the browser stays alive for the next request.
+    if (page) {
+      await page.close();
     }
   }
 };
