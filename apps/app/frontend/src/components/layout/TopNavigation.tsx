@@ -22,13 +22,6 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
     setIsDownloading(true);
 
     try {
-      const connectionTest = await PdfService.testConnection();
-
-      if (!connectionTest.success) {
-        alert('Backend connection failed. Make sure the server is running on port 3001.');
-        return;
-      }
-
       const result = await PdfService.downloadResumePDF(formData, sidebarItems, 'harvard');
 
       if (!result.success) {
