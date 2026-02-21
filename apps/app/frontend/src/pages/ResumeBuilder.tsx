@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useFormData } from '../hooks/useFormData';
 import { useSidebarStorage } from '../hooks/useSidebarStorage';
@@ -28,6 +28,16 @@ function ResumeBuilder() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
   const [customSectionCounter, setCustomSectionCounter] = useState(1);
+
+  // Derive the counter from the highest existing custom-N ID so that adding
+  // a new custom section after a page reload never collides with an existing one.
+  useEffect(() => {
+    const max = sidebarItems
+      .filter((item) => /^custom-\d+$/.test(item.id))
+      .map((item) => parseInt(item.id.slice('custom-'.length), 10))
+      .reduce((acc, n) => Math.max(acc, n), 0);
+    setCustomSectionCounter(max + 1);
+  }, [sidebarItems]);
 
   const handleReorderItems = (newItems: SidebarItem[]) => {
     updateSidebarItems(newItems);
