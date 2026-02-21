@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ReactElement } from 'react';
 import BottomNavigation from './BottomNavigation';
 import PersonalDetailsForm from '../forms/sections/PersonalDetailsForm';
 import ContactInformationForm from '../forms/sections/ContactInformationForm';
@@ -49,7 +50,7 @@ interface SectionProps {
   sectionId: string;
 }
 
-type SectionRenderer = (props: SectionProps) => JSX.Element;
+type SectionRenderer = (props: SectionProps) => ReactElement;
 
 // Maps every fixed section ID to its render function.
 // Adding a new section only requires one entry here — no conditional chain to extend.
