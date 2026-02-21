@@ -15,6 +15,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@resuease/types": "link:../../../packages/types",
     "@google/genai": "^1.41.0",
     "@supabase/supabase-js": "^2.97.0",
     "cors": "^2.8.6",

@@ -12,6 +12,9 @@ importers:
 
   .:
     dependencies:
+      '@resuease/types':
+        specifier: link:../../../packages/types
+        version: link:../../../packages/types
       '@supabase/auth-ui-react':
         specifier: ^0.4.7
         version: 0.4.7(@supabase/supabase-js@2.97.0)
