@@ -142,7 +142,7 @@ function ResumeBuilder() {
             removeSectionItem={removeSectionItem}
           />
 
-          <div className="order-last lg:order-none flex justify-center">
+          <div className="order-last lg:order-0 flex justify-center">
             <PreviewPanel
               formData={debouncedFormData}
               sidebarItems={sidebarItems}
