@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useFormData } from '../hooks/useFormData';
 import { useSidebarStorage } from '../hooks/useSidebarStorage';
+import { useDebounce } from '../hooks/useDebounce';
 import { SECTION_TYPES } from '../data/sidebarItems';
 import type { SidebarItem } from '../types/resume';
 import type { AdditionalSectionItem } from '../data/sidebarItems';
@@ -24,6 +25,7 @@ function ResumeBuilder() {
   } = useFormData(userId);
 
   const { sidebarItems, updateSidebarItems } = useSidebarStorage(userId);
+  const debouncedFormData = useDebounce(formData, 300);
   const [activeSection, setActiveSection] = useState<string>(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
@@ -142,7 +144,7 @@ function ResumeBuilder() {
 
           <div className="order-last lg:order-none flex justify-center">
             <PreviewPanel
-              formData={formData}
+              formData={debouncedFormData}
               sidebarItems={sidebarItems}
               saveStatus={saveStatus}
             />
