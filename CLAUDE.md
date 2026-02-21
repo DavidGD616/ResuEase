@@ -114,6 +114,7 @@ pnpm dev            # Vite dev server
 
 ## Conventions
 
+- Always use context7 when I need code generation, setup or configuration steps, or library/API documentation
 - Frontend uses `.tsx` extensions for all React components
 - Tailwind utility classes for all styling (no CSS modules)
 - Components are organized by feature domain, not by type
