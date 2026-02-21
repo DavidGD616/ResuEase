@@ -7,7 +7,8 @@ import {
 import type { SidebarItem } from '../types/resume';
 import type { LucideIcon } from 'lucide-react';
 
-const SIDEBAR_STORAGE_KEY = 'resumeBuilder_sidebarItems';
+// Legacy key used before user-scoped storage was introduced.
+const LEGACY_SIDEBAR_KEY = 'resumeBuilder_sidebarItems';
 
 // Map of icon names to icon components
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -39,24 +40,47 @@ const deserializeItems = (items: SerializedSidebarItem[]): SidebarItem[] => {
   }));
 };
 
-export const useSidebarStorage = () => {
+export const useSidebarStorage = (userId: string) => {
+  const storageKey = userId ? `resumeBuilder_sidebarItems_${userId}` : null;
+
   const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
 
-  // Load sidebar items from localStorage on component mount
+  // Load sidebar items from localStorage on mount.
+  // Tries the user-scoped key first; if absent, migrates any data from the
+  // legacy unscoped key and removes it.
   useEffect(() => {
+    if (!storageKey) {
+      setSidebarItems(SIDEBAR_ITEMS);
+      return;
+    }
+
     const loadSidebarItems = () => {
       try {
-        const storedItems = localStorage.getItem(SIDEBAR_STORAGE_KEY);
-
+        // 1. Try user-scoped key
+        const storedItems = localStorage.getItem(storageKey);
         if (storedItems) {
           const parsedItems: SerializedSidebarItem[] = JSON.parse(storedItems);
-
           const isValidStructure = parsedItems.every(
             (item) => item.id && item.label && typeof item.order === 'number'
           );
-
           if (isValidStructure) {
             setSidebarItems(deserializeItems(parsedItems));
+            return;
+          }
+        }
+
+        // 2. Migrate from legacy unscoped key (one-time, on first login after this change)
+        const legacyItems = localStorage.getItem(LEGACY_SIDEBAR_KEY);
+        if (legacyItems) {
+          const parsedLegacy: SerializedSidebarItem[] = JSON.parse(legacyItems);
+          const isValidStructure = parsedLegacy.every(
+            (item) => item.id && item.label && typeof item.order === 'number'
+          );
+          if (isValidStructure) {
+            const items = deserializeItems(parsedLegacy);
+            setSidebarItems(items);
+            localStorage.setItem(storageKey, JSON.stringify(serializeItems(items)));
+            localStorage.removeItem(LEGACY_SIDEBAR_KEY);
             return;
           }
         }
@@ -68,12 +92,14 @@ export const useSidebarStorage = () => {
     };
 
     loadSidebarItems();
-  }, []);
+  }, [storageKey]);
 
   const updateSidebarItems = (newItems: SidebarItem[]) => {
     try {
       setSidebarItems(newItems);
-      localStorage.setItem(SIDEBAR_STORAGE_KEY, JSON.stringify(serializeItems(newItems)));
+      if (storageKey) {
+        localStorage.setItem(storageKey, JSON.stringify(serializeItems(newItems)));
+      }
     } catch (error) {
       console.warn('Error saving sidebar items to localStorage:', error);
       setSidebarItems(newItems);
@@ -82,7 +108,9 @@ export const useSidebarStorage = () => {
 
   const resetSidebar = () => {
     try {
-      localStorage.removeItem(SIDEBAR_STORAGE_KEY);
+      if (storageKey) {
+        localStorage.removeItem(storageKey);
+      }
       setSidebarItems(SIDEBAR_ITEMS);
     } catch (error) {
       console.warn('Error resetting sidebar:', error);

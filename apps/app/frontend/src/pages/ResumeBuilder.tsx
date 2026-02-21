@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
 import { useFormData } from '../hooks/useFormData';
 import { useSidebarStorage } from '../hooks/useSidebarStorage';
 import { SECTION_TYPES } from '../data/sidebarItems';
@@ -10,6 +11,9 @@ import MainContent from '../components/layout/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {
+  const { user } = useAuth();
+  const userId = user?.id ?? '';
+
   const {
     formData,
     saveStatus,
@@ -17,9 +21,9 @@ function ResumeBuilder() {
     addSectionItem,
     updateSectionItem,
     removeSectionItem,
-  } = useFormData();
+  } = useFormData(userId);
 
-  const { sidebarItems, updateSidebarItems } = useSidebarStorage();
+  const { sidebarItems, updateSidebarItems } = useSidebarStorage(userId);
   const [activeSection, setActiveSection] = useState<string>(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAdditional, setShowAdditional] = useState(false);
