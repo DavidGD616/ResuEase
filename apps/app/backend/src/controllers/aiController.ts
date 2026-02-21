@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { Request, Response } from "express";
+import type { SoftSkillsBody, TechnicalSkillsBody } from "@resuease/types";
 
 // Initialize Google Gemini AI client
 const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
@@ -9,20 +10,6 @@ const geminiClient = new GoogleGenAI({ apiKey });
 
 // Model name
 const MODEL_NAME = "gemini-2.5-flash-lite";
-
-interface SoftSkillsBody {
-  jobTitle: string;
-  currentSkills?: string[];
-  experienceLevel?: string;
-  count?: number;
-}
-
-interface TechnicalSkillsBody {
-  jobTitle?: string;
-  currentSkills?: string[];
-  experienceLevel?: string;
-  count?: number;
-}
 
 // HEALTH CHECK
 export const healthCheck = async (req: Request, res: Response) => {

@@ -11,6 +11,9 @@ importers:
       '@google/genai':
         specifier: ^1.41.0
         version: 1.41.0
+      '@resuease/types':
+        specifier: link:../../../packages/types
+        version: link:../../../packages/types
       '@supabase/supabase-js':
         specifier: ^2.97.0
         version: 2.97.0

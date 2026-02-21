@@ -1,23 +1,7 @@
 import { supabase } from '../lib/supabase';
+import type { SkillSuggestionData, SkillSuggestionResult } from '@resuease/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
-
-interface SkillSuggestionMetadata {
-  model: string;
-  jobTitle: string;
-  experienceLevel: string;
-  requestedCount: number;
-  returnedCount: number;
-}
-
-interface SkillSuggestionData {
-  suggestedSkills: string[];
-  metadata: SkillSuggestionMetadata;
-}
-
-type SkillSuggestionResult =
-  | { success: true; data: SkillSuggestionData }
-  | { success: false; error: string };
 
 export class AIService {
   static async suggestSoftSkills(

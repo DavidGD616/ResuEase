@@ -1,20 +1,7 @@
 import { PDFOptions, Page } from "puppeteer-core";
 import { Request, Response } from "express";
 import { getBrowser } from "../lib/browserManager.js";
-
-// Narrow the accepted PDF options to a safe subset.
-// Never accept the full PDFOptions from the client — Puppeteer's `path` option,
-// for example, would write the PDF to an arbitrary filesystem path on the server.
-interface SafePdfOptions {
-  format?: PDFOptions["format"];
-  margin?: PDFOptions["margin"];
-  printBackground?: PDFOptions["printBackground"];
-}
-
-interface HtmlToPdfBody {
-  html: string;
-  options?: SafePdfOptions;
-}
+import type { HtmlToPdfBody } from "@resuease/types";
 
 // Tags that can enable SSRF, XSS, or remote code execution inside Puppeteer.
 // <script>  — arbitrary JS execution
@@ -85,7 +72,7 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
     // options, which could include Puppeteer's `path` key and write the PDF
     // to an arbitrary location on the server's filesystem.
     const pdfOptions: PDFOptions = { ...defaultOptions };
-    if (options.format !== undefined) pdfOptions.format = options.format;
+    if (options.format !== undefined) pdfOptions.format = options.format as PDFOptions["format"];
     if (options.margin !== undefined) pdfOptions.margin = options.margin;
     if (options.printBackground !== undefined) pdfOptions.printBackground = options.printBackground;
 
