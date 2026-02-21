@@ -80,7 +80,7 @@ Dynamic: `custom-{id}` sections
 | Service      | Purpose              | Env Variable              |
 |--------------|----------------------|---------------------------|
 | Supabase     | Authentication       | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
-| Google Gemini| AI skill suggestions | `GEMINI_API_KEY`          |
+| Google Gemini| AI skill suggestions | `GOOGLE_GEMINI_API_KEY`          |
 | Browserless  | Headless Chrome PDF  | `BROWSER_WS_ENDPOINT`    |
 | Backend API  | AI + PDF proxy       | `VITE_API_BASE_URL`       |
 
