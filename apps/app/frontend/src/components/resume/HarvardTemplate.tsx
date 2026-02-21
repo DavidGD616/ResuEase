@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { processHeaderData, processSectionData } from '../../utils/resumeDataProcessors';
 import type { FormData, SidebarItem } from '../../types/resume';
 
@@ -537,7 +538,7 @@ interface HarvardTemplateProps {
   sidebarItems: SidebarItem[];
 }
 
-export const HarvardTemplate = ({ formData, sidebarItems }: HarvardTemplateProps) => {
+export const HarvardTemplate = memo(({ formData, sidebarItems }: HarvardTemplateProps) => {
   const headerData = processHeaderData(formData);
 
   const combinedSkillsSections = ['courses', 'skills', 'technologiesSkills', 'languages', 'hobbies'];
@@ -585,6 +586,6 @@ export const HarvardTemplate = ({ formData, sidebarItems }: HarvardTemplateProps
       )}
     </div>
   );
-};
+});
 
 export default HarvardTemplate;
