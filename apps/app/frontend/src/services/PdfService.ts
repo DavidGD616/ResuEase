@@ -1,3 +1,4 @@
+import { supabase } from '../lib/supabase';
 import { HtmlGenerator } from '../utils/htmlGenerator';
 import type { FormData, SidebarItem } from '../types/resume';
 
@@ -65,11 +66,13 @@ export class PdfService {
       const htmlContent = HtmlGenerator.generateHtml(templateName, formData, sidebarItems);
 
       // Step 2: Send HTML to backend for PDF conversion
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`${API_BASE_URL}/html-to-pdf`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/pdf',
+          'Authorization': `Bearer ${session?.access_token}`,
         },
         body: JSON.stringify({
           html: htmlContent,
