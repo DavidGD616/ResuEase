@@ -36,6 +36,160 @@ interface MainContentProps {
   removeSectionItem: (sectionType: string, itemId: string) => void;
 }
 
+// Props forwarded from MainContent into every section renderer.
+interface SectionProps {
+  formData: FormData;
+  handleInputChange: (field: string, value: unknown) => void;
+  sidebarItems: SidebarItem[];
+  onAddSection: (section: AdditionalSectionItem) => void;
+  onDeleteSection: (id: string) => void;
+  addSectionItem: (sectionType: string) => string;
+  updateSectionItem: (sectionType: string, itemId: string, field: string, value: unknown) => void;
+  removeSectionItem: (sectionType: string, itemId: string) => void;
+  sectionId: string;
+}
+
+type SectionRenderer = (props: SectionProps) => JSX.Element;
+
+// Maps every fixed section ID to its render function.
+// Adding a new section only requires one entry here — no conditional chain to extend.
+const SECTION_REGISTRY: Record<string, SectionRenderer> = {
+  personal: ({ formData, handleInputChange }) => (
+    <PersonalDetailsForm formData={formData} handleInputChange={handleInputChange} />
+  ),
+  contact: ({ formData, handleInputChange }) => (
+    <ContactInformationForm formData={formData} handleInputChange={handleInputChange} />
+  ),
+  summary: ({ formData, handleInputChange, onDeleteSection }) => (
+    <ProfessionalSummaryForm
+      onDeleteSection={() => onDeleteSection('summary')}
+      formData={formData}
+      handleInputChange={handleInputChange}
+    />
+  ),
+  employment: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <EmploymentHistoryForm
+      onDeleteSection={() => onDeleteSection('employment')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  skills: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <SkillsForm
+      onDeleteSection={() => onDeleteSection('skills')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  technologiesSkills: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <TechnologiesSkillsForm
+      onDeleteSection={() => onDeleteSection('technologiesSkills')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  education: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <EducationForm
+      onDeleteSection={() => onDeleteSection('education')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  projects: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <ProjectsForm
+      onDeleteSection={() => onDeleteSection('projects')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  internships: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <InternshipsForm
+      onDeleteSection={() => onDeleteSection('internships')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  courses: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <CoursesForm
+      onDeleteSection={() => onDeleteSection('courses')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  references: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <ReferencesForm
+      onDeleteSection={() => onDeleteSection('references')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  languages: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <LanguagesForm
+      onDeleteSection={() => onDeleteSection('languages')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  links: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <LinksForm
+      onDeleteSection={() => onDeleteSection('links')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  hobbies: ({ formData, addSectionItem, updateSectionItem, removeSectionItem, onDeleteSection }) => (
+    <HobbiesForm
+      onDeleteSection={() => onDeleteSection('hobbies')}
+      formData={formData}
+      addSectionItem={addSectionItem}
+      updateSectionItem={updateSectionItem}
+      removeSectionItem={removeSectionItem}
+    />
+  ),
+  additional: ({ sidebarItems, onAddSection }) => (
+    <AdditionalSectionsForm sidebarItems={sidebarItems} onAddSection={onAddSection} />
+  ),
+};
+
+// Renderer for any custom-* section — handles dynamic IDs not known at build time.
+const customSectionRenderer: SectionRenderer = ({
+  formData,
+  addSectionItem,
+  updateSectionItem,
+  removeSectionItem,
+  onDeleteSection,
+  sectionId,
+}) => (
+  <CustomSectionForm
+    onDeleteSection={() => onDeleteSection(sectionId)}
+    formData={formData}
+    addSectionItem={addSectionItem}
+    updateSectionItem={updateSectionItem}
+    removeSectionItem={removeSectionItem}
+    sectionId={sectionId}
+  />
+);
+
 function MainContent({
   activeSection,
   formData,
@@ -67,158 +221,25 @@ function MainContent({
     );
   }
 
+  const renderer = activeSection.startsWith('custom-')
+    ? customSectionRenderer
+    : SECTION_REGISTRY[activeSection];
+
+  const sectionProps: SectionProps = {
+    formData,
+    handleInputChange,
+    sidebarItems,
+    onAddSection,
+    onDeleteSection,
+    addSectionItem,
+    updateSectionItem,
+    removeSectionItem,
+    sectionId: activeSection,
+  };
+
   return (
     <div className="flex-1 p-6 max-w-2xl">
-      {activeSection === 'personal' && (
-        <PersonalDetailsForm
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-      )}
-
-      {activeSection === 'contact' && (
-        <ContactInformationForm
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-      )}
-
-      {activeSection === 'summary' && (
-        <ProfessionalSummaryForm
-          onDeleteSection={() => onDeleteSection('summary')}
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
-      )}
-
-      {activeSection === 'employment' && (
-        <EmploymentHistoryForm
-          onDeleteSection={() => onDeleteSection('employment')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'skills' && (
-        <SkillsForm
-          onDeleteSection={() => onDeleteSection('skills')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'technologiesSkills' && (
-        <TechnologiesSkillsForm
-          onDeleteSection={() => onDeleteSection('technologiesSkills')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'education' && (
-        <EducationForm
-          onDeleteSection={() => onDeleteSection('education')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'projects' && (
-        <ProjectsForm
-          onDeleteSection={() => onDeleteSection('projects')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'internships' && (
-        <InternshipsForm
-          onDeleteSection={() => onDeleteSection('internships')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'courses' && (
-        <CoursesForm
-          onDeleteSection={() => onDeleteSection('courses')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'references' && (
-        <ReferencesForm
-          onDeleteSection={() => onDeleteSection('references')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'languages' && (
-        <LanguagesForm
-          onDeleteSection={() => onDeleteSection('languages')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'links' && (
-        <LinksForm
-          onDeleteSection={() => onDeleteSection('links')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection === 'hobbies' && (
-        <HobbiesForm
-          onDeleteSection={() => onDeleteSection('hobbies')}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-        />
-      )}
-
-      {activeSection.startsWith('custom-') && (
-        <CustomSectionForm
-          onDeleteSection={() => onDeleteSection(activeSection)}
-          formData={formData}
-          addSectionItem={addSectionItem}
-          updateSectionItem={updateSectionItem}
-          removeSectionItem={removeSectionItem}
-          sectionId={activeSection}
-        />
-      )}
-
-      {activeSection === 'additional' && (
-        <AdditionalSectionsForm
-          sidebarItems={sidebarItems}
-          onAddSection={onAddSection}
-        />
-      )}
-
+      {renderer?.(sectionProps) ?? null}
       <BottomNavigation
         activeSection={activeSection}
         onSectionChange={onSectionChange}
