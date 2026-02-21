@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 interface SkillSuggestionMetadata {
@@ -24,10 +26,12 @@ export class AIService {
     count: number = 8
   ): Promise<SkillSuggestionResult> {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`${API_BASE_URL}/ai/soft-skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`,
         },
         body: JSON.stringify({ jobTitle, currentSkills, count }),
       });
@@ -53,10 +57,12 @@ export class AIService {
     count: number = 8
   ): Promise<SkillSuggestionResult> {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`${API_BASE_URL}/ai/technical-skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`,
         },
         body: JSON.stringify({ jobTitle, currentSkills, count }),
       });

@@ -5,6 +5,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { healthCheck, softSkills, technicalSkills } from "./src/controllers/aiController.js";
 import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfController.js";
+import { requireAuth } from "./src/middleware/auth.js";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -74,16 +75,16 @@ app.get("/api/test", (req: Request, res: Response) => {
   });
 });
 
-// Gemini integration endpoint
-app.post("/api/ai/generate", aiLimiter, healthCheck);
-app.post("/api/ai/soft-skills", aiLimiter, softSkills);
-app.post("/api/ai/technical-skills", aiLimiter, technicalSkills);
+// Gemini integration endpoint (auth + rate-limited)
+app.post("/api/ai/generate", requireAuth, aiLimiter, healthCheck);
+app.post("/api/ai/soft-skills", requireAuth, aiLimiter, softSkills);
+app.post("/api/ai/technical-skills", requireAuth, aiLimiter, technicalSkills);
 
-// PDF generation test endpoint
+// PDF generation test endpoint (no auth — dev/diagnostic only)
 app.get("/api/generate-test-pdf", generateTestPDF);
 
-// HTML to PDF conversion endpoint
-app.post("/api/html-to-pdf", pdfLimiter, convertHtmlToPdf);
+// HTML to PDF conversion endpoint (auth + rate-limited)
+app.post("/api/html-to-pdf", requireAuth, pdfLimiter, convertHtmlToPdf);
 
 // Basic error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
