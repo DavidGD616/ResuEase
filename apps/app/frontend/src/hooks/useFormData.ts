@@ -2,31 +2,47 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { INITIAL_FORM_DATA, createSectionItem } from '../data/formFields';
 import type { FormData } from '../types/resume';
 
-const FORM_DATA_STORAGE_KEY = 'resumeBuilder_formData';
+// Legacy key used before user-scoped storage was introduced.
+// Kept here only for the one-time migration path.
+const LEGACY_FORM_DATA_KEY = 'resumeBuilder_formData';
 const DEBOUNCE_DELAY = 2000;
 
 type SaveStatus = 'saved' | 'saving' | 'error';
 
-export const useFormData = () => {
+export const useFormData = (userId: string) => {
+  const storageKey = userId ? `resumeBuilder_formData_${userId}` : null;
+
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Load form data from localStorage on component mount
+  // Load form data from localStorage on mount.
+  // Tries the user-scoped key first; if absent, migrates any data from the
+  // legacy unscoped key and removes it.
   useEffect(() => {
+    if (!storageKey) return;
+
     const loadFormData = () => {
       try {
-        const storedData = localStorage.getItem(FORM_DATA_STORAGE_KEY);
-
+        // 1. Try user-scoped key
+        const storedData = localStorage.getItem(storageKey);
         if (storedData) {
           const parsedData = JSON.parse(storedData);
-
           if (typeof parsedData === 'object' && parsedData !== null) {
-            const mergedData: FormData = {
-              ...INITIAL_FORM_DATA,
-              ...parsedData,
-            };
+            setFormData({ ...INITIAL_FORM_DATA, ...parsedData });
+            return;
+          }
+        }
+
+        // 2. Migrate from legacy unscoped key (one-time, on first login after this change)
+        const legacyData = localStorage.getItem(LEGACY_FORM_DATA_KEY);
+        if (legacyData) {
+          const parsedLegacy = JSON.parse(legacyData);
+          if (typeof parsedLegacy === 'object' && parsedLegacy !== null) {
+            const mergedData: FormData = { ...INITIAL_FORM_DATA, ...parsedLegacy };
             setFormData(mergedData);
+            localStorage.setItem(storageKey, JSON.stringify(mergedData));
+            localStorage.removeItem(LEGACY_FORM_DATA_KEY);
             return;
           }
         }
@@ -37,10 +53,12 @@ export const useFormData = () => {
     };
 
     loadFormData();
-  }, []);
+  }, [storageKey]);
 
   // Debounced save to localStorage
   const debouncedSave = useCallback((data: FormData) => {
+    if (!storageKey) return;
+
     setSaveStatus('saving');
 
     if (debounceTimeoutRef.current) {
@@ -49,14 +67,14 @@ export const useFormData = () => {
 
     debounceTimeoutRef.current = setTimeout(() => {
       try {
-        localStorage.setItem(FORM_DATA_STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem(storageKey, JSON.stringify(data));
         setSaveStatus('saved');
       } catch (error) {
         console.warn('Error saving form data to localStorage:', error);
         setSaveStatus('error');
       }
     }, DEBOUNCE_DELAY);
-  }, []);
+  }, [storageKey]);
 
   // Update simple fields (strings, numbers, etc.)
   const updateField = useCallback(
