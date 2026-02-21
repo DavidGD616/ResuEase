@@ -1,16 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 
 function AuthPage() {
-  const navigate = useNavigate();
   const { user } = useAuth();
 
-  // Redirect if already authenticated
+  // Redirect already-authenticated users away from the auth page.
   if (user) {
-    navigate('/', { replace: true });
+    return <Navigate to="/" replace />;
   }
 
   return (
