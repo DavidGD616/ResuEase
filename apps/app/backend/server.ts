@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./src/lib/validateConfig.js"; // exits with a clear error if any required env var is missing
 
 import express, { type Express, Request, Response, NextFunction } from "express";
 import cors from "cors";

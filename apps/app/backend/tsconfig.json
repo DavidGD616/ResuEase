@@ -12,6 +12,6 @@
     "declaration": true,
     "resolveJsonModule": true
   },
-  "include": ["server.ts", "src/**/*.ts"],
+  "include": ["server.ts", "vitest.setup.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
