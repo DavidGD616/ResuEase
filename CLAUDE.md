@@ -131,3 +131,30 @@ pnpm dev            # Vite dev server
 - Custom hooks encapsulate all stateful logic
 - Services are static-method classes that call the backend API
 - Brand color: blue (`#2563eb` / `#1d4ed8`)
+
+## Testing Rules (Vitest)
+
+Use **Vitest** for all tests (shares Vite config, ESM-native, Jest-compatible API).
+
+### Write tests for:
+
+- **`useFormData`** — localStorage merge logic, debounce behavior, per-user scoping (`user.id` key), section add/remove/reorder
+- **`useSidebarStorage`** — section ordering persistence, read/write to localStorage
+- **`useDragDrop`** — drag state transitions, reorder output
+- **`useBulletPoints`** — bullet parsing, add/remove/edit logic
+- **`AiService.ts` / `PdfService.ts`** — request construction, error handling, response parsing (mock `fetch`)
+- **Backend route handlers** — input validation (missing fields, wrong types), correct response shape, rate limiter config, CORS header presence
+- **`validateConfig.ts`** — exits when env vars are missing, passes when all are present
+- **`packages/types`** — any type guards or runtime validators added to the shared types package
+- **Regression cases** — any bug that is fixed must get a test to prevent recurrence
+
+### Do NOT write tests for:
+
+- **Layout/presentational components** — `TopNav`, `Sidebar`, `MainContent`, `PreviewPanel`, `BottomNav`, `BottomNav` — pure Tailwind markup with no logic
+- **Form section/entry components** (`src/components/forms/sections/`, `src/components/forms/entries/`) — they are thin wrappers that delegate all logic to hooks; test the hooks instead
+- **`AuthContext`** — wraps Supabase Auth UI directly; testing it means testing Supabase, not our code
+- **`AuthPage`** — renders Supabase's `<Auth>` component; no custom logic to verify
+- **`HarvardTemplate`** — resume rendering is visual; correctness is verified by eye or snapshot, not unit tests
+- **Health-check / test routes** (`GET /`, `GET /api/test`) — no logic, not worth the overhead
+- **External service integrations directly** — do not test Gemini API responses or Puppeteer PDF output; mock at the service boundary instead
+- **`formFields.ts` initial data** — static config, not logic
