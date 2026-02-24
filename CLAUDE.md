@@ -7,6 +7,7 @@ A resume builder web application. Users authenticate, fill out structured forms,
 ## Repository Structure
 
 Informal monorepo — no workspace linking. Each app has its own `package.json` and runs independently.
+`packages/types` is referenced via pnpm `link:` from both apps — no workspace root required.
 
 ```
 ResuEase/
@@ -14,8 +15,9 @@ ResuEase/
 │   ├── backend/       # Express 5 API (port 3001)
 │   ├── frontend/      # React 19 SPA via Vite 7 (port 5173)
 │   └── web/           # Empty placeholder
-├── packages/          # Reserved for shared code (empty)
-└── docs/              # Reserved for docs (empty)
+├── packages/
+│   └── types/         # @resuease/types — shared API contract types (frontend + backend)
+└── docs/              # Architecture review
 ```
 
 ## Tech Stack
@@ -59,7 +61,7 @@ ResuEase/
 - `src/components/forms/shared/` — Reusable: RichTextEditor, AiSkillSuggester, FormComponents
 - `src/components/layout/` — TopNav, Sidebar, MainContent, PreviewPanel, BottomNav
 - `src/components/resume/` — Resume templates (currently only HarvardTemplate)
-- `src/hooks/` — useFormData, useSidebarStorage, useAuth, useDragDrop, useBulletPoints, useDeleteModal
+- `src/hooks/` — useFormData, useSidebarStorage, useAuth, useDragDrop, useBulletPoints, useDeleteModal, useDebounce
 - `src/services/` — AiService.ts, PdfService.ts
 - `src/context/` — AuthContext (Supabase)
 - `src/data/` — formFields.ts (initial data + schemas), sidebarItems.ts
@@ -77,12 +79,19 @@ Dynamic: `custom-{id}` sections
 
 ## External Services
 
+### Frontend env vars (`apps/app/frontend/.env`)
 | Service      | Purpose              | Env Variable              |
 |--------------|----------------------|---------------------------|
-| Supabase     | Authentication       | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
-| Google Gemini| AI skill suggestions | `GOOGLE_GEMINI_API_KEY`          |
-| Browserless  | Headless Chrome PDF  | `BROWSER_WS_ENDPOINT`    |
+| Supabase     | Authentication UI    | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
 | Backend API  | AI + PDF proxy       | `VITE_API_BASE_URL`       |
+
+### Backend env vars (`apps/app/backend/.env`)
+| Service      | Purpose              | Env Variable              |
+|--------------|----------------------|---------------------------|
+| Supabase     | JWT verification     | `SUPABASE_URL`, `SUPABASE_ANON_KEY` |
+| Google Gemini| AI skill suggestions | `GOOGLE_GEMINI_API_KEY`   |
+| Browserless  | Headless Chrome PDF  | `BROWSER_WS_ENDPOINT`     |
+| Express      | CORS allowlist       | `CORS_ALLOWED_ORIGINS`    |
 
 ## Running Locally
 
@@ -90,7 +99,7 @@ Dynamic: `custom-{id}` sections
 # Backend
 cd apps/app/backend
 pnpm install
-pnpm start          # or: node server.js
+pnpm start          # or: node --import tsx server.ts
 
 # Frontend
 cd apps/app/frontend
@@ -100,13 +109,14 @@ pnpm dev            # Vite dev server
 
 ## Important Notes
 
-- **No database for resume data** — Resumes live entirely in browser localStorage. No server-side persistence yet.
-- **Supabase is auth-only** — Not used as a database.
+- **No database for resume data** — Resumes live in localStorage scoped to `user.id`. No server-side persistence yet.
+- **Supabase is auth-only** — Used for JWT verification on the backend and Auth UI on the frontend. Not used as a database.
 - **Backend is stateless** — Pure proxy to Gemini and Puppeteer. No DB, no sessions.
 - **Single resume template** — Only `HarvardTemplate` exists.
-- **Rate limiting** — `express-rate-limit` is installed but not wired up.
-- **CORS** — Wide open (all origins allowed).
+- **Rate limiting** — `aiLimiter` (20 req/min) on AI routes, `pdfLimiter` (10 req/min) on PDF route.
+- **CORS** — Restricted to `CORS_ALLOWED_ORIGINS` env var (comma-separated allowlist).
 - **Body limit** — 10MB for JSON payloads (needed for HTML-to-PDF).
+- **Startup validation** — `validateConfig.ts` checks all required backend env vars at boot and exits with a full list if any are missing.
 
 ## Git Conventions
 
