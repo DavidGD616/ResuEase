@@ -4,7 +4,7 @@ import "./src/lib/validateConfig.js"; // exits with a clear error if any require
 import express, { type Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import { healthCheck, softSkills, technicalSkills } from "./src/controllers/aiController.js";
+import { healthCheck, softSkills, technicalSkills, textTransform } from "./src/controllers/aiController.js";
 import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfController.js";
 import { requireAuth } from "./src/middleware/auth.js";
 import { closeBrowser } from "./src/lib/browserManager.js";
@@ -81,6 +81,7 @@ app.get("/api/test", (req: Request, res: Response) => {
 app.post("/api/ai/generate", requireAuth, aiLimiter, healthCheck);
 app.post("/api/ai/soft-skills", requireAuth, aiLimiter, softSkills);
 app.post("/api/ai/technical-skills", requireAuth, aiLimiter, technicalSkills);
+app.post("/api/ai/text-transform", requireAuth, aiLimiter, textTransform);
 
 // PDF generation test endpoint (no auth — dev/diagnostic only)
 app.get("/api/generate-test-pdf", generateTestPDF);
