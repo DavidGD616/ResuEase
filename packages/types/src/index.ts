@@ -31,6 +31,34 @@ export type SkillSuggestionResult =
   | { success: true; data: SkillSuggestionData }
   | { success: false; error: string };
 
+// ─── AI text-transform endpoint ───────────────────────────────────────────────
+
+export type TextTransformMode = "rewrite" | "add-metrics" | "make-stronger";
+
+export interface TextTransformRequest {
+  text: string;
+  mode: TextTransformMode;
+  jobTitle?: string;
+  sectionName?: string;
+  fieldLabel?: string;
+}
+
+export interface TextTransformMetadata {
+  model: string;
+  mode: TextTransformMode;
+  originalLength: number;
+  transformedLength: number;
+}
+
+export interface TextTransformData {
+  transformedText: string;
+  metadata: TextTransformMetadata;
+}
+
+export type TextTransformResult =
+  | { success: true; data: TextTransformData }
+  | { success: false; error: string };
+
 // ─── PDF endpoint ─────────────────────────────────────────────────────────────
 
 export interface HtmlToPdfOptions {
