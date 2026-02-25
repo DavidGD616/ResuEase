@@ -72,7 +72,7 @@ export class AIService {
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      const response = await fetch(`${API_BASE_URL}/api/ai/text-transform`, {
+      const response = await fetch(`${API_BASE_URL}/ai/text-transform`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

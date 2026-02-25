@@ -58,7 +58,7 @@ describe('AIService.transformText', () => {
 
     expect(mockFetch).toHaveBeenCalledOnce();
     const [url, init] = mockFetch.mock.calls[0];
-    expect(url).toBe('http://localhost:3001/api/api/ai/text-transform');
+    expect(url).toBe('http://localhost:3001/api/ai/text-transform');
     expect(init.method).toBe('POST');
     expect(init.headers['Authorization']).toBe(`Bearer ${VALID_TOKEN}`);
     expect(init.headers['Content-Type']).toBe('application/json');
