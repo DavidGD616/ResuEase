@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Plus, Trash2, ChevronDown, ChevronUp, X, HelpCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Modal from '../../ui/Modal';
+import AiTextActions from './AiTextActions';
 
 interface HintConfig {
   title: string;
@@ -144,9 +145,15 @@ export function FormInput({ label, hint, ...props }: FormInputProps) {
 interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   hint?: HintConfig;
+  aiTransform?: {
+    jobTitle?: string;
+    sectionName: string;
+    fieldLabel: string;
+    onTransformAccept: (newText: string) => void;
+  };
 }
 
-export function FormTextarea({ label, hint, ...props }: FormTextareaProps) {
+export function FormTextarea({ label, hint, aiTransform, ...props }: FormTextareaProps) {
   return (
     <div>
       {label && (
@@ -161,6 +168,15 @@ export function FormTextarea({ label, hint, ...props }: FormTextareaProps) {
         className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base resize-none"
         {...props}
       />
+      {aiTransform && (
+        <AiTextActions
+          text={(props.value as string) ?? ''}
+          jobTitle={aiTransform.jobTitle}
+          sectionName={aiTransform.sectionName}
+          fieldLabel={aiTransform.fieldLabel}
+          onAccept={aiTransform.onTransformAccept}
+        />
+      )}
     </div>
   );
 }
