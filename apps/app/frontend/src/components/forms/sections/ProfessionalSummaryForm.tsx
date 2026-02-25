@@ -26,6 +26,12 @@ function ProfessionalSummaryForm({ formData, handleInputChange, onDeleteSection 
         onChange={(e) => handleInputChange('about', e.target.value)}
         rows={6}
         placeholder="e.g. Passionate frontend developer with 3+ years of experience..."
+        aiTransform={{
+          jobTitle: formData.jobTitle,
+          sectionName: 'Professional Summary',
+          fieldLabel: 'Summary',
+          onTransformAccept: (text) => handleInputChange('about', text),
+        }}
       />
 
       <Modal.Confirmation
