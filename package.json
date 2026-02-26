@@ -1,0 +1,12 @@
+{
+  "name": "resuease",
+  "private": true,
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "cd apps/app/backend && pnpm install && pnpm run build",
+    "start": "cd apps/app/backend && node --import tsx server.ts"
+  }
+}
