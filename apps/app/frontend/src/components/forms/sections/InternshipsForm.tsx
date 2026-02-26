@@ -71,6 +71,7 @@ function InternshipsForm({
               <InternshipEntryForm
                 internship={internship}
                 onUpdate={updateInternship}
+                jobTitle={formData.jobTitle}
               />
             )}
           </div>

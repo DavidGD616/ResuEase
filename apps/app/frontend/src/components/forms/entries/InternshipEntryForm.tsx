@@ -5,9 +5,10 @@ import type { InternshipItem } from '../../../types/resume';
 interface InternshipEntryFormProps {
   internship: InternshipItem & { id: string };
   onUpdate: (id: string, field: string, value: unknown) => void;
+  jobTitle?: string;
 }
 
-function InternshipEntryForm({ internship, onUpdate }: InternshipEntryFormProps) {
+function InternshipEntryForm({ internship, onUpdate, jobTitle }: InternshipEntryFormProps) {
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(internship.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -81,6 +82,12 @@ function InternshipEntryForm({ internship, onUpdate }: InternshipEntryFormProps)
           onChange={(e) => handleChange('description', e.target.value)}
           placeholder="Brief summary of role and impact."
           rows={3}
+          aiTransform={{
+            jobTitle,
+            sectionName: 'Internships',
+            fieldLabel: 'Description',
+            onTransformAccept: (text) => handleChange('description', text),
+          }}
         />
       </div>
 
@@ -97,6 +104,12 @@ function InternshipEntryForm({ internship, onUpdate }: InternshipEntryFormProps)
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
               placeholder="• Worked with teams to improve product features and overall user experience."
               rows={3}
+              aiTransform={{
+                jobTitle,
+                sectionName: 'Internships',
+                fieldLabel: 'Responsibility / Achievement',
+                onTransformAccept: (text) => handleUpdateBulletPoint(index, text),
+              }}
             />
           </div>
         </div>

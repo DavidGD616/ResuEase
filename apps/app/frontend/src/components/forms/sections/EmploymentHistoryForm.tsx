@@ -71,6 +71,7 @@ function EmploymentHistoryForm({
               <EmploymentEntryForm
                 experience={experience}
                 onUpdate={updateExperience}
+                jobTitle={formData.jobTitle}
               />
             )}
           </div>
