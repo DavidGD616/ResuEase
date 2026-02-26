@@ -8,11 +8,8 @@ if (!apiKey) throw new Error("Missing Gemini API key");
 
 const geminiClient = new GoogleGenAI({ apiKey });
 
-// Model name (shared: skill suggestions)
+// Model name for all AI features
 const MODEL_NAME = "gemini-2.5-flash-lite";
-
-// Model name (text transform actions)
-const TEXT_TRANSFORM_MODEL = "gemini-3-pro-preview";
 
 // HEALTH CHECK
 export const healthCheck = async (req: Request, res: Response) => {
@@ -354,7 +351,7 @@ ${safeText}
 
     // --- Call Gemini ---
     const response = await geminiClient.models.generateContent({
-      model: TEXT_TRANSFORM_MODEL,
+      model: MODEL_NAME,
       contents: [{ parts: [{ text: prompt }] }],
     });
 
@@ -384,7 +381,7 @@ ${safeText}
       data: {
         transformedText,
         metadata: {
-          model: TEXT_TRANSFORM_MODEL,
+          model: MODEL_NAME,
           mode,
           originalLength: safeText.length,
           transformedLength: transformedText.length,
