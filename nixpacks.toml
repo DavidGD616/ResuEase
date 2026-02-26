@@ -1,0 +1,10 @@
+providers = ["node"]
+
+[phases.install]
+cmds = ["cd apps/app/backend && pnpm install"]
+
+[phases.build]
+cmds = ["cd apps/app/backend && pnpm run build"]
+
+[start]
+cmd = "cd apps/app/backend && node --import tsx server.ts"

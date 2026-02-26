@@ -1,2 +1,2 @@
 [start]
-cmd = "cd apps/app/backend && pnpm start"
+cmd = "node --import tsx server.ts"
