@@ -121,7 +121,7 @@ describe('AIService.transformText', () => {
     expect(result).toEqual({ success: false, error: 'Network failure' });
   });
 
-  it('aborts the request and returns { success: false } after 15 seconds', async () => {
+  it('aborts the request and returns { success: false } after 30 seconds', async () => {
     vi.useFakeTimers();
     mockSession();
 
@@ -129,16 +129,19 @@ describe('AIService.transformText', () => {
     mockFetch.mockImplementation((_url: string, init: RequestInit) => {
       return new Promise((_resolve, reject) => {
         init.signal?.addEventListener('abort', () =>
-          reject(new DOMException('The operation was aborted.', 'AbortError'))
+          reject(new DOMException('Request timed out. Please try again.', 'AbortError'))
         );
       });
     });
 
     const resultPromise = AIService.transformText(VALID_PAYLOAD);
-    await vi.advanceTimersByTimeAsync(15_001);
+    await vi.advanceTimersByTimeAsync(30_001);
     const result = await resultPromise;
 
     expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe('Request timed out. Please try again.');
+    }
   });
 
   it('passes all optional TextTransformRequest fields in the request body', async () => {

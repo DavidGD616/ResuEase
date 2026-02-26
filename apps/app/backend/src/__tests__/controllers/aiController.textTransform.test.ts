@@ -109,7 +109,7 @@ describe('textTransform handler', () => {
       data: {
         transformedText: 'Improved summary sentence.',
         metadata: {
-          model: 'gemini-3-pro-preview',
+          model: 'gemini-2.5-flash-lite',
           mode: 'rewrite',
           originalLength: expect.any(Number),
           transformedLength: expect.any(Number),
@@ -125,11 +125,11 @@ describe('textTransform handler', () => {
     expect(json.mock.calls[0][0].data.metadata.mode).toBe('add-metrics');
   });
 
-  it('metadata.model is gemini-3-pro-preview', async () => {
+  it('metadata.model is gemini-2.5-flash-lite', async () => {
     geminiReturns('Spearheaded key initiatives.');
     const { res, json } = makeRes();
     await textTransform(makeReq({ text: 'Led initiatives.', mode: 'make-stronger' }), res);
-    expect(json.mock.calls[0][0].data.metadata.model).toBe('gemini-3-pro-preview');
+    expect(json.mock.calls[0][0].data.metadata.model).toBe('gemini-2.5-flash-lite');
   });
 
   it('metadata.originalLength reflects the sanitized input length', async () => {

@@ -68,7 +68,10 @@ export class AIService {
 
   static async transformText(payload: TextTransformRequest): Promise<TextTransformResult> {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15_000);
+    const timeout = setTimeout(
+      () => controller.abort(new DOMException('Request timed out. Please try again.', 'AbortError')),
+      30_000
+    );
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -92,7 +95,9 @@ export class AIService {
 
     } catch (error) {
       console.error('AI text transform failed:', error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      const message = error instanceof DOMException && error.name === 'AbortError'
+        ? error.message
+        : error instanceof Error ? error.message : 'Unknown error';
       return { success: false, error: message };
     } finally {
       clearTimeout(timeout);
