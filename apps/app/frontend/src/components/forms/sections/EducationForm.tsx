@@ -71,6 +71,7 @@ function EducationForm({
               <EducationEntryForm
                 education={education}
                 onUpdate={updateEducation}
+                jobTitle={formData.jobTitle}
               />
             )}
           </div>

@@ -5,9 +5,10 @@ import type { ProjectItem } from '../../../types/resume';
 interface ProjectEntryFormProps {
   project: ProjectItem & { id: string };
   onUpdate: (id: string, field: string, value: unknown) => void;
+  jobTitle?: string;
 }
 
-function ProjectEntryForm({ project, onUpdate }: ProjectEntryFormProps) {
+function ProjectEntryForm({ project, onUpdate, jobTitle }: ProjectEntryFormProps) {
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } =
     useBulletPoints(project.bulletPoints || []);
 
@@ -80,6 +81,12 @@ function ProjectEntryForm({ project, onUpdate }: ProjectEntryFormProps) {
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
               placeholder="• Developed Devsboard, a job aggregator web app that scrapes and displays real-time job listings across the U.S."
               rows={3}
+              aiTransform={{
+                jobTitle,
+                sectionName: 'Projects',
+                fieldLabel: 'Project Detail',
+                onTransformAccept: (text) => handleUpdateBulletPoint(index, text),
+              }}
             />
           </div>
         </div>

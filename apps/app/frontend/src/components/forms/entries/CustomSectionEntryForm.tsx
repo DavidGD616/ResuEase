@@ -5,9 +5,10 @@ import type { CustomEntryItem } from '../../../types/resume';
 interface CustomSectionEntryFormProps {
   entry: CustomEntryItem & { id: string };
   onUpdate: (id: string, field: string, value: unknown) => void;
+  jobTitle?: string;
 }
 
-function CustomSectionEntryForm({ entry, onUpdate }: CustomSectionEntryFormProps) {
+function CustomSectionEntryForm({ entry, onUpdate, jobTitle }: CustomSectionEntryFormProps) {
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(entry.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -74,6 +75,12 @@ function CustomSectionEntryForm({ entry, onUpdate }: CustomSectionEntryFormProps
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
               placeholder="• Custom bulletpoint"
               rows={3}
+              aiTransform={{
+                jobTitle,
+                sectionName: 'Custom Section',
+                fieldLabel: 'Detail',
+                onTransformAccept: (text) => handleUpdateBulletPoint(index, text),
+              }}
             />
           </div>
         </div>

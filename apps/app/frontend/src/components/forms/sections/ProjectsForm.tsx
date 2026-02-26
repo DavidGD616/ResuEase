@@ -69,6 +69,7 @@ function ProjectsForm({
               <ProjectEntryForm
                 project={project}
                 onUpdate={updateProject}
+                jobTitle={formData.jobTitle}
               />
             )}
           </div>

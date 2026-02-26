@@ -5,9 +5,10 @@ import type { EducationItem } from '../../../types/resume';
 interface EducationEntryFormProps {
   education: EducationItem & { id: string };
   onUpdate: (id: string, field: string, value: unknown) => void;
+  jobTitle?: string;
 }
 
-function EducationEntryForm({ education, onUpdate }: EducationEntryFormProps) {
+function EducationEntryForm({ education, onUpdate, jobTitle }: EducationEntryFormProps) {
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(education.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -111,6 +112,12 @@ function EducationEntryForm({ education, onUpdate }: EducationEntryFormProps) {
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
               placeholder="• Graduated with honors, recognized for outstanding achievement in Product Design."
               rows={3}
+              aiTransform={{
+                jobTitle,
+                sectionName: 'Education',
+                fieldLabel: 'Education Details',
+                onTransformAccept: (text) => handleUpdateBulletPoint(index, text),
+              }}
             />
           </div>
         </div>

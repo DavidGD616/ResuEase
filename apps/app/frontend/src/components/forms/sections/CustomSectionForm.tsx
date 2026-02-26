@@ -71,7 +71,7 @@ function CustomSectionForm({
             />
 
             {expandedItems[entry.id] && (
-              <CustomSectionEntryForm entry={entry} onUpdate={updateCustomEntry} />
+              <CustomSectionEntryForm entry={entry} onUpdate={updateCustomEntry} jobTitle={formData.jobTitle} />
             )}
           </div>
         ))}
