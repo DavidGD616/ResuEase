@@ -73,7 +73,7 @@ function TechnologiesSkillsForm({
 
       <FormSection>
         {technologiesSkills.map((technologiesSkill) => (
-          <div key={technologiesSkill.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={technologiesSkill.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={technologiesSkill.technologiesSkillName || 'Untitled'}
               isExpanded={expandedItems[technologiesSkill.id]}

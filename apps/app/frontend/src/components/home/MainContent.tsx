@@ -2,7 +2,7 @@ import EmptyState from './EmptyState';
 
 function MainContent() {
   return (
-    <div className="pb-16">
+    <div className="pb-8">
       <EmptyState />
     </div>
   );

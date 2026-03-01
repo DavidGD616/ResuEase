@@ -75,12 +75,13 @@ function AiTextActions({
   };
 
   return (
-    <div className="mt-2">
+    <div className="mt-1.5">
       {/* Action buttons */}
       <div className="flex flex-wrap gap-2">
         {ACTIONS.map(({ mode, label, loadingLabel }) => {
           const isThisLoading = activeMode === mode;
           const isOtherLoading = activeMode !== null && activeMode !== mode;
+          const isDisabledState = isOtherLoading || disabled || isTextEmpty || isTextTooLong;
 
           return (
             <button
@@ -88,16 +89,28 @@ function AiTextActions({
               type="button"
               onClick={() => handleTransform(mode)}
               disabled={buttonsDisabled}
-              className={`
-                flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border transition-all duration-150
-                ${
-                  isThisLoading
-                    ? 'border-blue-300 text-blue-600 bg-blue-50 cursor-not-allowed'
-                    : isOtherLoading || disabled || isTextEmpty || isTextTooLong
-                    ? 'border-gray-200 text-gray-400 bg-white cursor-not-allowed'
-                    : 'border-gray-300 text-gray-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50'
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-150"
+              style={
+                isThisLoading
+                  ? { border: '1px solid #c4b5fd', color: '#7c3aed', background: 'rgba(139,92,246,0.06)', cursor: 'not-allowed' }
+                  : isDisabledState
+                  ? { border: '1px solid var(--border)', color: 'var(--ink-3)', background: 'white', cursor: 'not-allowed' }
+                  : { border: '1px solid var(--border)', color: 'var(--ink-3)', background: 'white' }
+              }
+              onMouseEnter={e => {
+                if (!buttonsDisabled) {
+                  e.currentTarget.style.borderColor = '#c4b5fd';
+                  e.currentTarget.style.color = '#7c3aed';
+                  e.currentTarget.style.backgroundColor = 'rgba(139,92,246,0.05)';
                 }
-              `}
+              }}
+              onMouseLeave={e => {
+                if (!buttonsDisabled) {
+                  e.currentTarget.style.borderColor = 'var(--border)';
+                  e.currentTarget.style.color = 'var(--ink-3)';
+                  e.currentTarget.style.backgroundColor = 'white';
+                }
+              }}
             >
               {isThisLoading ? (
                 <>
@@ -106,7 +119,7 @@ function AiTextActions({
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-3 h-3" />
+                  <Sparkles className="w-3 h-3 text-purple-400" />
                   {label}
                 </>
               )}
@@ -127,21 +140,24 @@ function AiTextActions({
 
       {/* Preview panel */}
       {preview !== null && (
-        <div className="mt-3 p-4 bg-linear-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm">
+        <div
+          className="mt-3 p-4 bg-white rounded-lg shadow-sm"
+          style={{ border: '1px solid var(--border)' }}
+        >
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-purple-600" />
-            <h4 className="text-sm font-semibold text-gray-900">
+            <h4 className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>
               AI Suggestion — {MODE_DISPLAY[preview.mode]}
             </h4>
           </div>
 
-          <p className="text-sm text-gray-700 whitespace-pre-wrap mb-4">{preview.text}</p>
+          <p className="text-sm whitespace-pre-wrap mb-4" style={{ color: 'var(--ink-2)' }}>{preview.text}</p>
 
           <div className="flex gap-2">
             <button
               type="button"
               onClick={handleAccept}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors duration-150"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-full transition-colors duration-150"
             >
               <Check className="w-3 h-3" />
               Accept
@@ -149,7 +165,11 @@ function AiTextActions({
             <button
               type="button"
               onClick={handleDiscard}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-700 text-xs font-medium rounded-md border border-gray-300 hover:border-gray-400 transition-colors duration-150"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gray-50 text-xs font-medium rounded-full transition-colors duration-150"
+              style={{
+                color: 'var(--ink-2)',
+                border: '1px solid var(--border)',
+              }}
             >
               <X className="w-3 h-3" />
               Discard

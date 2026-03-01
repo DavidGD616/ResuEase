@@ -40,12 +40,22 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
   };
 
   return (
-    <div className="sticky sm:static bottom-0 z-10 flex justify-between items-center py-3 sm:pt-8 sm:mt-8 bg-white sm:bg-transparent border-t border-gray-200 shadow-[0_-1px_4px_0_rgba(0,0,0,0.04)] sm:shadow-none -mx-4 sm:mx-0 px-4 sm:px-0">
+    <div
+      className="sticky sm:static bottom-0 z-10 flex justify-between items-center py-3 sm:pt-8 sm:mt-8 sm:bg-transparent shadow-[0_-1px_4px_0_rgba(0,0,0,0.04)] sm:shadow-none -mx-4 sm:mx-0 px-4 sm:px-0"
+      style={{
+        background: 'var(--surface)',
+        borderTop: '1px solid var(--border)',
+      }}
+    >
       <div>
         {(!isFirstSection || isAdditionalSection) && (
           <button
             onClick={handleBack}
-            className="flex px-4 sm:px-6 bg-gray-200 py-2 sm:py-3 rounded-lg items-center gap-1 sm:gap-2 text-gray-700 hover:bg-gray-300 transition-colors text-sm sm:text-base"
+            className="flex px-4 sm:px-6 py-2 sm:py-3 rounded-lg items-center gap-1 sm:gap-2 bg-white hover:bg-gray-50 transition-colors text-sm sm:text-base"
+            style={{
+              border: '1px solid var(--border-strong)',
+              color: 'var(--ink-2)',
+            }}
           >
             <ChevronLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Back</span>
@@ -55,7 +65,8 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
 
       <button
         onClick={onReorderClick}
-        className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-900 text-xs sm:text-base"
+        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base transition-colors hover:opacity-70"
+        style={{ color: 'var(--ink-3)' }}
       >
         <Menu className="w-4 h-4" />
         <span className="hidden sm:inline">Reorder sections</span>

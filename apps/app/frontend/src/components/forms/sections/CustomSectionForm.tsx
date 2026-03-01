@@ -62,7 +62,7 @@ function CustomSectionForm({
 
       <FormSection>
         {customEntries.map((entry) => (
-          <div key={entry.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={entry.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={entry.header || 'Untitled'}
               isExpanded={expandedItems[entry.id]}

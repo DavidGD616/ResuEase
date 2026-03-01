@@ -104,7 +104,7 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
       </FormGrid>
 
       <div className="mb-3 sm:mb-4">
-        <label className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-gray-700 cursor-pointer">
+        <label className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-[var(--ink-2)] cursor-pointer">
           <input
             type="checkbox"
             checked={experience.isCurrentJob || false}
@@ -124,7 +124,7 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
 
       <div>
         <div className="flex items-center gap-2 mb-1 sm:mb-2">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+          <label className="block text-xs sm:text-sm font-medium text-[var(--ink-2)]">
             Company Description
           </label>
           <HintIcon

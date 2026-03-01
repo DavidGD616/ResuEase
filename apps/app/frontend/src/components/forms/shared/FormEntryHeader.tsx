@@ -9,14 +9,20 @@ interface FormEntryHeaderProps {
 
 function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
   return (
-    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 border-b border-gray-200">
+    <div
+      className="flex items-center justify-between p-3 sm:p-4 bg-white hover:bg-gray-50/50 transition-colors"
+      style={{ borderBottom: '1px solid var(--border)' }}
+    >
       <div className="flex items-center gap-3">
-        <h3 className="font-medium text-gray-900">
+        <h3 className="font-medium" style={{ color: 'var(--ink)' }}>
           {title || 'Untitled'}
         </h3>
         <button
           onClick={onToggleExpanded}
-          className="p-1 text-gray-400 hover:text-gray-600"
+          className="p-1 transition-colors"
+          style={{ color: 'var(--ink-3)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink-2)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
         >
           {isExpanded ?
             <ChevronUp className="w-4 h-4" /> :
@@ -26,7 +32,10 @@ function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: Form
       </div>
       <button
         onClick={onRemove}
-        className="p-1 text-gray-400 hover:text-gray-600"
+        className="p-1 rounded transition-colors"
+        style={{ color: 'var(--ink-3)' }}
+        onMouseEnter={e => { e.currentTarget.style.color = 'var(--danger)'; e.currentTarget.style.backgroundColor = '#fef2f2'; }}
+        onMouseLeave={e => { e.currentTarget.style.color = 'var(--ink-3)'; e.currentTarget.style.backgroundColor = ''; }}
       >
         <Trash2 className="w-4 h-4" />
       </button>

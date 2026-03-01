@@ -58,15 +58,21 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
 
   return (
     <div
-      className="w-full bg-gray-50 lg:border-l border-gray-200 p-3 sm:p-4 lg:p-6"
-      style={{ maxWidth: `calc((100vh - 104px) * ${DOC_WIDTH / DOC_HEIGHT} + 3rem)` }}
+      className="w-full lg:border-l p-3 sm:p-4 lg:p-6"
+      style={{
+        backgroundColor: '#e8e8e5',
+        borderColor: 'var(--border)',
+        maxWidth: `calc((100vh - 104px) * ${DOC_WIDTH / DOC_HEIGHT} + 3rem)`,
+      }}
     >
       <div className="w-full max-w-full flex justify-center">
         <div
-          className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
+          className="relative bg-white overflow-hidden rounded-lg w-full"
           style={{
             aspectRatio: '.707',
             maxWidth: 'min(100%, calc((100vh - 104px) * 0.707034728))',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08)',
+            border: '1px solid rgba(0,0,0,0.06)',
           }}
         >
           <div
@@ -87,15 +93,16 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
         </div>
       </div>
 
-      <div className="grid grid-cols-3 items-center mt-4 text-xs text-gray-500">
+      <div className="grid grid-cols-3 items-center mt-4 text-xs" style={{ color: 'var(--ink-3)' }}>
         <div><SaveStatus status={saveStatus} /></div>
         <div className="flex justify-center">
           {totalPages > 1 && (
-            <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-2.5 py-1">
+            <div className="flex items-center gap-1 bg-white rounded-full px-2.5 py-1" style={{ border: '1px solid var(--border)' }}>
               <button
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="p-0.5 rounded-full text-gray-400 hover:bg-gray-200 hover:text-blue-600 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                className="p-0.5 rounded-full disabled:opacity-40 disabled:pointer-events-none transition-colors hover:bg-white/80"
+                style={{ color: 'var(--ink-3)' }}
               >
                 <ChevronLeft size={14} />
               </button>
@@ -103,7 +110,8 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
               <button
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="p-0.5 rounded-full text-gray-400 hover:bg-gray-200 hover:text-blue-600 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                className="p-0.5 rounded-full disabled:opacity-40 disabled:pointer-events-none transition-colors hover:bg-white/80"
+                style={{ color: 'var(--ink-3)' }}
               >
                 <ChevronRight size={14} />
               </button>

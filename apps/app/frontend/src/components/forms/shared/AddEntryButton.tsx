@@ -9,12 +9,13 @@ function AddEntryButton({ onClick, label }: AddEntryButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:border-gray-400 hover:bg-gray-100 cursor-pointer transition-colors"
+      className="flex items-center gap-1.5 py-2 text-sm font-medium transition-colors hover:text-blue-600"
+      style={{ color: 'var(--ink-3)' }}
+      onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
+      onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
     >
-      <div className="flex items-center gap-2 text-gray-600 font-medium">
-        <Plus className="w-5 h-5" />
-        {label}
-      </div>
+      <Plus className="w-4 h-4" />
+      {label}
     </button>
   );
 }

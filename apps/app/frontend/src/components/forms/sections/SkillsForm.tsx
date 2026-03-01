@@ -73,7 +73,7 @@ function SkillsForm({
 
       <FormSection>
         {skills.map((skill) => (
-          <div key={skill.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={skill.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={skill.skillName || 'Untitled'}
               isExpanded={expandedItems[skill.id]}

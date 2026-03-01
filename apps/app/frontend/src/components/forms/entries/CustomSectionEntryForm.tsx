@@ -51,7 +51,7 @@ function CustomSectionEntryForm({ entry, onUpdate, jobTitle }: CustomSectionEntr
       </FormGrid>
 
       <div>
-        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+        <label className="block text-xs sm:text-sm font-medium text-[var(--ink-2)] mb-1 sm:mb-2">
           Custom Description
         </label>
         <FormTextarea

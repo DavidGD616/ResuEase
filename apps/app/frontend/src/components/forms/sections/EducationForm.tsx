@@ -59,7 +59,7 @@ function EducationForm({
 
       <FormSection>
         {educationEntries.map((education) => (
-          <div key={education.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={education.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={education.institution || education.degree || 'Untitled'}
               isExpanded={expandedItems[education.id]}

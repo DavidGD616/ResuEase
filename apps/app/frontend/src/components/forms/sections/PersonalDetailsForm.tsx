@@ -76,13 +76,16 @@ function PersonalDetailsForm({ formData, handleInputChange }: PersonalDetailsFor
               }
             />
           </div>
-          <FormButton
-            variant="panel"
-            icon={Camera}
+          <button
             onClick={() => {/* handle photo upload */}}
+            className="flex items-center gap-2 p-4 rounded-lg text-sm transition-colors"
+            style={{ border: '1px dashed var(--border-strong)', color: 'var(--ink-3)' }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--ink-2)')}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border-strong)')}
           >
-            Add photo
-          </FormButton>
+            <Camera className="w-4 h-4" />
+            Add photo <span style={{ color: 'var(--ink-3)', fontWeight: 400 }}>(Optional)</span>
+          </button>
         </div>
       </FormSection>
     </div>
