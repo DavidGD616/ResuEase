@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import HarvardTemplate from '../resume/HarvardTemplate';
 import type { FormData, SidebarItem } from '../../types/resume';
+import { DOC_WIDTH, DOC_HEIGHT, DOC_PADDING, DOC_USABLE_HEIGHT } from '../../constants/document';
 
 interface DocumentPreviewProps {
   formData: FormData;
@@ -15,14 +16,12 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
     const calculatePages = () => {
       if (!contentRef.current) return;
 
-      const pageHeight = 11 * 96 - 0.5 * 2 * 96;
-      const content = contentRef.current;
-      const contentHeight = content.scrollHeight;
+      const contentHeight = contentRef.current.scrollHeight;
 
-      if (contentHeight <= pageHeight) {
+      if (contentHeight <= DOC_USABLE_HEIGHT) {
         setPages([1]);
       } else {
-        const numberOfPages = Math.ceil(contentHeight / pageHeight);
+        const numberOfPages = Math.ceil(contentHeight / DOC_USABLE_HEIGHT);
         setPages(Array.from({ length: numberOfPages }, (_, i) => i + 1));
       }
     };
@@ -49,9 +48,9 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
     }}>
       {pages.map((pageNum) => (
         <div key={pageNum} className="bg-white" style={{
-          width: '8.5in',
-          height: '11in',
-          padding: '0.5in',
+          width: DOC_WIDTH,
+          height: DOC_HEIGHT,
+          padding: DOC_PADDING,
           pageBreakAfter: pageNum < pages.length ? 'always' : 'avoid',
           overflow: 'hidden',
           position: 'relative',
@@ -59,7 +58,7 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
           <div style={{
             height: '100%',
             overflow: 'hidden',
-            transform: `translateY(-${(pageNum - 1) * (11 * 96 - 0.5 * 2 * 96)}px)`,
+            transform: `translateY(-${(pageNum - 1) * DOC_USABLE_HEIGHT}px)`,
           }}>
             {pageNum === 1 ? renderContent() : null}
           </div>
@@ -69,8 +68,8 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
       <div style={{
         position: 'absolute',
         left: '-9999px',
-        width: '8.5in',
-        padding: '0.5in',
+        width: DOC_WIDTH,
+        padding: DOC_PADDING,
       }}>
         {renderContent()}
       </div>

@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import DocumentPreview from './DocumentPreview';
 import SaveStatus from '../ui/SaveStatus';
 import type { FormData, SidebarItem } from '../../types/resume';
+import { DOC_WIDTH, DOC_HEIGHT } from '../../constants/document';
 
 type SaveStatusValue = 'saving' | 'saved' | 'error';
 
@@ -22,8 +23,8 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
 
-        const documentWidth = 794;
-        const documentHeight = 1123;
+        const documentWidth = DOC_WIDTH;
+        const documentHeight = DOC_HEIGHT;
 
         const scaleX = containerWidth / documentWidth;
         const scaleY = containerHeight / documentHeight;
@@ -53,7 +54,7 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
         <div
           className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
           style={{
-            aspectRatio: '0.76',
+            aspectRatio: '.707',
             maxWidth: 'min(100%, calc((100vh - 104px) * 0.707034728))',
           }}
         >
