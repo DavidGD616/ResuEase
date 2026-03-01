@@ -34,7 +34,7 @@ function SaveStatus({ status }: SaveStatusProps) {
   const { icon: Icon, text, className } = config;
 
   return (
-    <div className={`flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1.5 text-sm ${className ?? ''}`}>
+    <div className={`inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-2.5 py-1 ${className ?? ''}`}>
       <Icon className="w-3 h-3" />
       {text}
     </div>

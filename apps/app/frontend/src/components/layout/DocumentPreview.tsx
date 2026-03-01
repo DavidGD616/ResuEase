@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import HarvardTemplate from '../resume/HarvardTemplate';
 import type { FormData, SidebarItem } from '../../types/resume';
 import { DOC_WIDTH, DOC_HEIGHT, DOC_PADDING, DOC_USABLE_HEIGHT } from '../../constants/document';
@@ -6,10 +6,11 @@ import { DOC_WIDTH, DOC_HEIGHT, DOC_PADDING, DOC_USABLE_HEIGHT } from '../../con
 interface DocumentPreviewProps {
   formData: FormData;
   sidebarItems?: SidebarItem[];
+  currentPage: number;
+  onPageCountChange: (count: number) => void;
 }
 
-const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) => {
-  const [pages, setPages] = useState<number[]>([]);
+const DocumentPreview = ({ formData, sidebarItems = [], currentPage, onPageCountChange }: DocumentPreviewProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,18 +18,16 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
       if (!contentRef.current) return;
 
       const contentHeight = contentRef.current.scrollHeight;
+      const count = contentHeight <= DOC_USABLE_HEIGHT
+        ? 1
+        : Math.ceil(contentHeight / DOC_USABLE_HEIGHT);
 
-      if (contentHeight <= DOC_USABLE_HEIGHT) {
-        setPages([1]);
-      } else {
-        const numberOfPages = Math.ceil(contentHeight / DOC_USABLE_HEIGHT);
-        setPages(Array.from({ length: numberOfPages }, (_, i) => i + 1));
-      }
+      onPageCountChange(count);
     };
 
     const timeoutId = setTimeout(calculatePages, 100);
     return () => clearTimeout(timeoutId);
-  }, [formData, sidebarItems]);
+  }, [formData, sidebarItems, onPageCountChange]);
 
   const renderContent = () => (
     <div ref={contentRef}>
@@ -46,24 +45,21 @@ const DocumentPreview = ({ formData, sidebarItems = [] }: DocumentPreviewProps) 
       lineHeight: '1.2',
       color: '#000',
     }}>
-      {pages.map((pageNum) => (
-        <div key={pageNum} className="bg-white" style={{
-          width: DOC_WIDTH,
-          height: DOC_HEIGHT,
-          padding: DOC_PADDING,
-          pageBreakAfter: pageNum < pages.length ? 'always' : 'avoid',
+      <div className="bg-white" style={{
+        width: DOC_WIDTH,
+        height: DOC_HEIGHT,
+        padding: DOC_PADDING,
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{
+          height: '100%',
           overflow: 'hidden',
-          position: 'relative',
+          transform: `translateY(-${(currentPage - 1) * DOC_USABLE_HEIGHT}px)`,
         }}>
-          <div style={{
-            height: '100%',
-            overflow: 'hidden',
-            transform: `translateY(-${(pageNum - 1) * DOC_USABLE_HEIGHT}px)`,
-          }}>
-            {pageNum === 1 ? renderContent() : null}
-          </div>
+          {renderContent()}
         </div>
-      ))}
+      </div>
 
       <div style={{
         position: 'absolute',
