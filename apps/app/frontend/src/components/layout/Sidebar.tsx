@@ -1,4 +1,4 @@
-import { Plus, GripVertical } from 'lucide-react';
+import { Plus, GripVertical, X } from 'lucide-react';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import type { SidebarItem } from '../../types/resume';
 
@@ -9,6 +9,7 @@ interface SidebarProps {
   sidebarOpen: boolean;
   onReorderItems: (items: SidebarItem[]) => void;
   onAdditionalSectionClick: () => void;
+  onClose?: () => void;
 }
 
 function Sidebar({
@@ -18,6 +19,7 @@ function Sidebar({
   sidebarOpen,
   onReorderItems,
   onAdditionalSectionClick,
+  onClose,
 }: SidebarProps) {
   const {
     handleDragStart,
@@ -41,11 +43,16 @@ function Sidebar({
 
   return (
     <div className={`
-        ${sidebarOpen ? 'block fixed z-50' : 'hidden'}
-        lg:block
-        w-80 lg:w-1/5 bg-white border-r border-gray-200 min-h-screen
+        ${sidebarOpen ? 'fixed inset-y-0 left-0 z-50' : 'hidden'}
+        lg:block lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto
+        w-72 sm:w-80 lg:w-64 xl:w-72 bg-white border-r border-gray-200
       `}>
-      <div className="p-4 space-y-1">
+      <div className="flex items-center justify-end p-2 lg:hidden">
+        <button onClick={onClose} className="p-1 rounded-md text-gray-500 hover:bg-gray-100">
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="p-4 space-y-1 overflow-y-auto">
         {previewItems.map((item, previewIndex) => {
           const originalIndex = sidebarItems.findIndex((origItem) => origItem.id === item.id);
           const Icon = item.icon;

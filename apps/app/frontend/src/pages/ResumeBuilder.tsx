@@ -146,6 +146,7 @@ function ResumeBuilder() {
           sidebarOpen={sidebarOpen}
           onReorderItems={handleReorderItems}
           onAdditionalSectionClick={handleAdditionalSectionClick}
+          onClose={() => setSidebarOpen(false)}
         />
 
         <div className="flex-1 flex flex-col lg:flex-row items-start">
