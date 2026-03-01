@@ -49,7 +49,10 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
   }, []);
 
   return (
-    <div className="w-full bg-gray-50 lg:border-l border-gray-200 p-3 sm:p-4 lg:p-6">
+    <div
+      className="w-full bg-gray-50 lg:border-l border-gray-200 p-3 sm:p-4 lg:p-6"
+      style={{ maxWidth: `calc((100vh - 104px) * ${DOC_WIDTH / DOC_HEIGHT} + 3rem)` }}
+    >
       <div className="w-full max-w-full flex justify-center">
         <div
           className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"
