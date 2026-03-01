@@ -64,7 +64,7 @@ function AISkillSuggester({
       {/* Toggle Button */}
       <button
         onClick={() => setShowSuggestions(!showSuggestions)}
-        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium text-sm shadow-md"
+        className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium text-sm shadow-md"
       >
         <Sparkles className="w-4 h-4" />
         {showSuggestions ? 'Hide AI Suggestions' : 'Get AI Skill Suggestions'}
@@ -72,7 +72,7 @@ function AISkillSuggester({
 
       {/* Suggestion Panel */}
       {showSuggestions && (
-        <div className="mt-4 p-4 sm:p-6 border border-gray-200 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-sm">
+        <div className="mt-4 p-4 sm:p-6 border border-gray-200 rounded-lg bg-linear-to-br from-gray-50 to-white shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-purple-600" />
             <h3 className="text-lg font-semibold text-gray-900">
@@ -122,7 +122,7 @@ function AISkillSuggester({
           {error && (
             <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-start gap-2">
-                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             </div>
