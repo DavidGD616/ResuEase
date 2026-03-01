@@ -150,7 +150,7 @@ function ResumeBuilder() {
         />
 
         <div className="flex-1 flex flex-col lg:flex-row items-start">
-          <div className={activeTab === 'edit' ? 'block w-full' : 'hidden lg:block'}>
+          <div className={activeTab === 'edit' ? 'flex-1 min-w-0 w-full' : 'hidden lg:block lg:flex-1 lg:min-w-0'}>
             <MainContent
               activeSection={activeSection}
               formData={formData}
@@ -168,7 +168,7 @@ function ResumeBuilder() {
             />
           </div>
 
-          <div className={activeTab === 'preview' ? 'block w-full' : 'hidden lg:flex lg:justify-center'}>
+          <div className={activeTab === 'preview' ? 'block w-full' : 'hidden lg:block lg:flex-none'}>
             <PreviewPanel
               formData={debouncedFormData}
               sidebarItems={sidebarItems}

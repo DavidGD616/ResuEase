@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import HarvardTemplate from '../components/resume/HarvardTemplate';
 import type { FormData, SidebarItem } from '../types/resume';
@@ -37,7 +38,7 @@ export class HtmlGenerator {
 
       // Render React component to HTML string
       const templateHtml = renderToString(
-        TemplateComponent({ formData, sidebarItems })
+        createElement(TemplateComponent, { formData, sidebarItems })
       );
 
       // Get the styles that should be applied
