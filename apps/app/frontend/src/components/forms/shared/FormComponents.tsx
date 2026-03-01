@@ -110,7 +110,7 @@ interface FormGridProps {
 export function FormGrid({ columns = 2, children, className = '' }: FormGridProps) {
   const gridClass =
     columns === 3
-      ? 'grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4'
+      ? 'grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4'
       : 'grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4';
 
   return <div className={`${gridClass} ${className}`}>{children}</div>;
