@@ -218,6 +218,11 @@ function MainContent({
           setShowReorder(false);
           onSectionChange('additional');
         }}
+        activeSection={activeSection}
+        onSectionChange={(id) => {
+          setShowReorder(false);
+          onSectionChange(id);
+        }}
       />
     );
   }

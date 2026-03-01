@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronLeft, GripVertical, Lock, Trash2, Plus } from 'lucide-react';
 import { useDragDrop } from '../../../hooks/useDragDrop';
 import { useDeleteModal } from '../../../hooks/useDeleteModal';
@@ -12,6 +12,8 @@ interface ReorderSectionsFormProps {
   onDone: () => void;
   onDeleteSection: (id: string) => void;
   onAddSectionClick: () => void;
+  activeSection: string;
+  onSectionChange: (id: string) => void;
 }
 
 function ReorderSectionsForm({
@@ -21,7 +23,11 @@ function ReorderSectionsForm({
   onDone,
   onDeleteSection,
   onAddSectionClick,
+  activeSection,
+  onSectionChange,
 }: ReorderSectionsFormProps) {
+  const dragFromHandle = useRef(false);
+
   const [pendingDelete, setPendingDelete] = useState<{ id: string | null; label: string }>({
     id: null,
     label: '',
@@ -93,29 +99,40 @@ function ReorderSectionsForm({
                 key={item.id}
                 data-drop-index={previewIndex}
                 draggable={canDrag}
-                onDragStart={(e) => handleDragStart(e, item, originalIndex)}
+                onDragStart={(e) => {
+                  if (!dragFromHandle.current) { e.preventDefault(); return; }
+                  handleDragStart(e, item, originalIndex);
+                }}
                 onDragOver={(e) => handleDragOver(e, previewIndex)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, previewIndex)}
-                onDragEnd={handleDragEnd}
-                onTouchStart={canDrag ? (e) => handleTouchStart(e, item, originalIndex) : undefined}
+                onDragEnd={() => { dragFromHandle.current = false; handleDragEnd(); }}
+                onTouchStart={canDrag ? (e) => {
+                  if (!(e.target as Element).closest('[data-drag-handle]')) return;
+                  handleTouchStart(e, item, originalIndex);
+                } : undefined}
                 onTouchMove={canDrag ? handleTouchMove : undefined}
                 onTouchEnd={canDrag ? handleTouchEnd : undefined}
+                onClick={() => onSectionChange(item.id)}
                 className={`
-                  flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2
-                  ${item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
+                  flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2 cursor-pointer
+                  ${activeSection === item.id
+                    ? 'bg-blue-50 border border-blue-200'
+                    : item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
                   ${itemIsDragging ? 'opacity-50' : ''}
-                  ${canDrag ? 'cursor-move' : 'cursor-default'}
                   transition-all duration-200
                 `}
-                style={{
-                  userSelect: 'none',
-                  touchAction: canDrag ? 'none' : 'auto',
-                }}
+                style={{ userSelect: 'none', touchAction: 'auto' }}
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   {canDrag ? (
-                    <GripVertical className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                    <GripVertical
+                      data-drag-handle
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 cursor-grab active:cursor-grabbing"
+                      onMouseDown={() => { dragFromHandle.current = true; }}
+                      onMouseUp={() => { dragFromHandle.current = false; }}
+                      style={{ touchAction: 'none' }}
+                    />
                   ) : (
                     <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                   )}
@@ -125,7 +142,7 @@ function ReorderSectionsForm({
 
                 {canDrag && (
                   <button
-                    onClick={() => handleDeleteClick(item.id, item.label)}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteClick(item.id, item.label); }}
                     className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />

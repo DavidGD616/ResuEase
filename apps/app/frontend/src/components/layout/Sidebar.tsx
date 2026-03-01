@@ -69,7 +69,10 @@ function Sidebar({
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, previewIndex)}
               onDragEnd={handleDragEnd}
-              onTouchStart={canDrag ? (e) => handleTouchStart(e, item, originalIndex) : undefined}
+              onTouchStart={canDrag ? (e) => {
+                if (!(e.target as Element).closest('[data-drag-handle]')) return;
+                handleTouchStart(e, item, originalIndex);
+              } : undefined}
               onTouchMove={canDrag ? handleTouchMove : undefined}
               onTouchEnd={canDrag ? handleTouchEnd : undefined}
               className={`
@@ -77,10 +80,7 @@ function Sidebar({
                 ${itemIsDragging ? 'opacity-50 scale-95' : ''}
                 ${itemIsDragging ? 'transition-all duration-200' : 'transition-all duration-300'}
               `}
-              style={{
-                userSelect: 'none',
-                touchAction: canDrag ? 'none' : 'auto',
-              }}
+              style={{ userSelect: 'none', touchAction: 'auto' }}
             >
               <button
                 onClick={() => setActiveSection(item.id)}
@@ -91,7 +91,11 @@ function Sidebar({
                 }`}
               >
                 {canDrag ? (
-                  <GripVertical className="w-4 h-4 text-gray-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <GripVertical
+                    data-drag-handle
+                    className="w-4 h-4 text-gray-400 opacity-50 group-hover:opacity-100 transition-opacity"
+                    style={{ touchAction: 'none' }}
+                  />
                 ) : (
                   <div className="w-4 h-4" />
                 )}
