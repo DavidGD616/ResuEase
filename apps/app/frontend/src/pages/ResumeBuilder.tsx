@@ -28,6 +28,7 @@ function ResumeBuilder() {
   const debouncedFormData = useDebounce(formData, 300);
   const [activeSection, setActiveSection] = useState<string>(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
   const [showAdditional, setShowAdditional] = useState(false);
   const [customSectionCounter, setCustomSectionCounter] = useState(1);
 
@@ -115,6 +116,28 @@ function ResumeBuilder() {
         onMenuClick={() => setSidebarOpen((open) => !open)}
       />
 
+      <div className="flex lg:hidden border-b border-gray-200 bg-white sticky top-0 z-10">
+        <button
+          onClick={() => setActiveTab('edit')}
+          className={`flex-1 py-3 text-sm font-medium ${activeTab === 'edit' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => setActiveTab('preview')}
+          className={`flex-1 py-3 text-sm font-medium ${activeTab === 'preview' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+        >
+          Preview
+        </button>
+      </div>
+
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       <div className="flex flex-col lg:flex-row w-full mx-auto">
         <Sidebar
           sidebarItems={sidebarItems}
@@ -125,24 +148,26 @@ function ResumeBuilder() {
           onAdditionalSectionClick={handleAdditionalSectionClick}
         />
 
-        <div className="flex-1 flex flex-col lg:flex-row items-center lg:items-start">
-          <MainContent
-            activeSection={activeSection}
-            formData={formData}
-            handleInputChange={updateField}
-            showAdditional={showAdditional}
-            setShowAdditional={setShowAdditional}
-            sidebarItems={sidebarItems}
-            onAddSection={handleAddSection}
-            onSectionChange={handleSectionChange}
-            onDeleteSection={handleDeleteSection}
-            onReorderItems={handleReorderItems}
-            addSectionItem={addSectionItem}
-            updateSectionItem={updateSectionItem}
-            removeSectionItem={removeSectionItem}
-          />
+        <div className="flex-1 flex flex-col lg:flex-row items-start">
+          <div className={activeTab === 'edit' ? 'block w-full' : 'hidden lg:block'}>
+            <MainContent
+              activeSection={activeSection}
+              formData={formData}
+              handleInputChange={updateField}
+              showAdditional={showAdditional}
+              setShowAdditional={setShowAdditional}
+              sidebarItems={sidebarItems}
+              onAddSection={handleAddSection}
+              onSectionChange={handleSectionChange}
+              onDeleteSection={handleDeleteSection}
+              onReorderItems={handleReorderItems}
+              addSectionItem={addSectionItem}
+              updateSectionItem={updateSectionItem}
+              removeSectionItem={removeSectionItem}
+            />
+          </div>
 
-          <div className="order-last lg:order-0 flex justify-center">
+          <div className={activeTab === 'preview' ? 'block w-full' : 'hidden lg:flex lg:justify-center'}>
             <PreviewPanel
               formData={debouncedFormData}
               sidebarItems={sidebarItems}
