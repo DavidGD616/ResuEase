@@ -41,7 +41,7 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
 
   return (
     <div
-      className="sticky sm:static bottom-0 z-10 flex justify-between items-center py-3 sm:pt-8 sm:mt-8 sm:bg-transparent shadow-[0_-1px_4px_0_rgba(0,0,0,0.04)] sm:shadow-none -mx-4 sm:mx-0 px-4 sm:px-0"
+      className="fixed sm:static bottom-0 left-0 right-0 z-10 flex justify-between items-center py-3 sm:pt-8 sm:mt-8 sm:bg-transparent shadow-[0_-1px_4px_0_rgba(0,0,0,0.04)] sm:shadow-none px-4 sm:px-0"
       style={{
         background: 'var(--surface)',
         borderTop: '1px solid var(--border)',
