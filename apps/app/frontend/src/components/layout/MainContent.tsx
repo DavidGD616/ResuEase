@@ -239,7 +239,7 @@ function MainContent({
   };
 
   return (
-    <div className="flex-1 p-6 max-w-2xl">
+    <div className="w-full p-4 sm:p-6 lg:px-8 xl:px-12 pb-20 sm:pb-6">
       {renderer?.(sectionProps) ?? null}
       <BottomNavigation
         activeSection={activeSection}
