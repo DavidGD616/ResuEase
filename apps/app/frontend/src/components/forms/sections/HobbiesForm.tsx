@@ -59,7 +59,7 @@ function HobbiesForm({
 
       <FormSection>
         {hobbies.map((hobby) => (
-          <div key={hobby.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={hobby.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={hobby.hobbyName || 'Untitled'}
               isExpanded={expandedItems[hobby.id]}

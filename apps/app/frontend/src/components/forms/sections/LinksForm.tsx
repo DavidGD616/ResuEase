@@ -59,7 +59,7 @@ function LinksForm({
 
       <FormSection>
         {links.map((link) => (
-          <div key={link.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={link.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={link.linkTitle || 'Untitled'}
               isExpanded={expandedItems[link.id]}

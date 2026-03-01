@@ -64,29 +64,50 @@ function AISkillSuggester({
       {/* Toggle Button */}
       <button
         onClick={() => setShowSuggestions(!showSuggestions)}
-        className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium text-sm shadow-md"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-200"
+        style={{
+          background: 'var(--surface)',
+          border: '1px solid var(--border-strong)',
+          color: 'var(--ink-2)',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = '#c4b5fd';
+          e.currentTarget.style.color = '#7c3aed';
+          e.currentTarget.style.backgroundColor = 'rgba(139,92,246,0.05)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = 'var(--border-strong)';
+          e.currentTarget.style.color = 'var(--ink-2)';
+          e.currentTarget.style.backgroundColor = 'var(--surface)';
+        }}
       >
-        <Sparkles className="w-4 h-4" />
+        <Sparkles className="w-4 h-4 text-purple-400" />
         {showSuggestions ? 'Hide AI Suggestions' : 'Get AI Skill Suggestions'}
       </button>
 
       {/* Suggestion Panel */}
       {showSuggestions && (
-        <div className="mt-4 p-4 sm:p-6 border border-gray-200 rounded-lg bg-linear-to-br from-gray-50 to-white shadow-sm">
+        <div
+          className="mt-4 p-4 sm:p-6 rounded-lg bg-white shadow-sm"
+          style={{ border: '1px solid var(--border)' }}
+        >
           <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 text-purple-600" />
-            <h3 className="text-lg font-semibold text-gray-900">
+            <Sparkles className="w-5 h-5 text-purple-500" />
+            <h3 className="text-base font-semibold" style={{ color: 'var(--ink)' }}>
               AI {skillType === 'technical' ? 'Technical' : 'Soft'} Skill Suggestions
             </h3>
           </div>
 
           {/* Job Title Display */}
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-gray-700">
-              Job Title: <span className="font-semibold text-gray-900">{jobTitle || 'Not set'}</span>
+          <div
+            className="mb-4 p-3 rounded-lg"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+          >
+            <p className="text-sm" style={{ color: 'var(--ink-2)' }}>
+              Job Title: <span className="font-semibold" style={{ color: 'var(--ink)' }}>{jobTitle || 'Not set'}</span>
             </p>
             {!jobTitle && (
-              <div className="flex items-center gap-2 mt-2 text-sm text-red-600">
+              <div className="flex items-center gap-2 mt-2 text-sm" style={{ color: 'var(--danger)' }}>
                 <AlertCircle className="w-4 h-4" />
                 <span>Please set your job title in the Personal Details section first</span>
               </div>
@@ -100,10 +121,17 @@ function AISkillSuggester({
             className={`
               flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200
               ${isLoading || !jobTitle
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700 shadow-sm hover:shadow-md'
+                ? 'cursor-not-allowed'
+                : 'text-white hover:bg-blue-700 shadow-sm hover:shadow-md'
               }
             `}
+            style={isLoading || !jobTitle ? {
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--ink-3)',
+            } : {
+              background: 'var(--accent)',
+            }}
           >
             {isLoading ? (
               <>
@@ -131,7 +159,7 @@ function AISkillSuggester({
           {/* Suggested Skills */}
           {suggestedSkills.length > 0 && (
             <div className="mt-4">
-              <p className="text-sm font-medium text-gray-700 mb-3">
+              <p className="text-sm font-medium mb-3" style={{ color: 'var(--ink-2)' }}>
                 Click to add skills to your resume:
               </p>
               <div className="flex flex-wrap gap-2">

@@ -59,7 +59,7 @@ function ReferencesForm({
 
       <FormSection>
         {references.map((reference) => (
-          <div key={reference.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={reference.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={reference.referentName || reference.referentCompany || 'Untitled'}
               isExpanded={expandedItems[reference.id]}

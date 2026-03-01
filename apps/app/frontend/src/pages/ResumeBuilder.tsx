@@ -109,23 +109,25 @@ function ResumeBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ background: 'var(--surface)' }}>
       <TopNavigation
         formData={formData}
         sidebarItems={sidebarItems}
         onMenuClick={() => setSidebarOpen((open) => !open)}
       />
 
-      <div className="flex lg:hidden border-b border-gray-200 bg-white sticky top-0 z-10">
+      <div className="flex lg:hidden sticky top-0 z-10" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
         <button
           onClick={() => setActiveTab('edit')}
-          className={`flex-1 py-3 text-sm font-medium ${activeTab === 'edit' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'edit' ? 'border-b-2 border-blue-600' : ''}`}
+          style={{ color: activeTab === 'edit' ? 'var(--accent)' : 'var(--ink-3)' }}
         >
           Edit
         </button>
         <button
           onClick={() => setActiveTab('preview')}
-          className={`flex-1 py-3 text-sm font-medium ${activeTab === 'preview' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'preview' ? 'border-b-2 border-blue-600' : ''}`}
+          style={{ color: activeTab === 'preview' ? 'var(--accent)' : 'var(--ink-3)' }}
         >
           Preview
         </button>

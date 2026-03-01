@@ -59,7 +59,7 @@ function EmploymentHistoryForm({
 
       <FormSection>
         {experiences.map((experience) => (
-          <div key={experience.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={experience.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={experience.jobTitle || experience.company || 'Untitled'}
               isExpanded={expandedItems[experience.id]}

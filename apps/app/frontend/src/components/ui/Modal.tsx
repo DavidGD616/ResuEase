@@ -98,21 +98,24 @@ const Modal: ModalType = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div
-        className="fixed inset-0 bg-black opacity-30 transition-opacity"
+        className="fixed inset-0 bg-black/40 transition-opacity"
         onClick={handleOverlayClick}
       />
 
       <div className="flex min-h-full items-center justify-center p-4">
         <div
           className={`
-            relative w-full ${sizes[size]} bg-white rounded-2xl sm:rounded-3xl shadow-xl
+            relative w-full ${sizes[size]} bg-white rounded-xl shadow-xl
             transform transition-all ${className}
           `}
         >
           {showCloseButton && (
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute top-6 right-6 p-2 transition-colors"
+              style={{ color: 'var(--ink-3)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
             >
               <X className="w-6 h-6" />
             </button>
@@ -120,9 +123,9 @@ const Modal: ModalType = ({
 
           <div className="p-6 pt-10 sm:p-8 sm:pt-12 text-center">
             {icon && (
-              <div className="mx-auto mb-8">
-                <div className={`w-20 h-20 ${iconBgColor} rounded-full flex items-center justify-center mx-auto`}>
-                  <div className={`w-8 h-8 ${iconColor}`}>
+              <div className="mx-auto mb-4">
+                <div className={`w-14 h-14 ${iconBgColor} rounded-full flex items-center justify-center mx-auto`}>
+                  <div className={`w-7 h-7 ${iconColor}`}>
                     {icon}
                   </div>
                 </div>
@@ -130,7 +133,7 @@ const Modal: ModalType = ({
             )}
 
             {title && (
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--ink)' }}>
                 {title}
               </h3>
             )}
@@ -150,7 +153,7 @@ const ModalHeader: FC<ChildrenClassNameProps> = ({ children, className = '' }) =
 );
 
 const ModalBody: FC<ChildrenClassNameProps> = ({ children, className = '' }) => (
-  <div className={`text-center mb-8 text-gray-600 ${className}`}>
+  <div className={`text-center mb-8 ${className}`} style={{ color: 'var(--ink-3)' }}>
     {children}
   </div>
 );
@@ -185,13 +188,14 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
     <Modal.Footer>
       <button
         onClick={onClose}
-        className="px-8 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors min-w-30"
+        className="px-8 py-3 bg-white rounded-lg font-medium hover:bg-gray-50 transition-colors min-w-30"
+        style={{ border: '1px solid var(--border-strong)', color: 'var(--ink-2)' }}
       >
         {cancelText}
       </button>
       <button
         onClick={onConfirm}
-        className="px-8 py-3 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors min-w-30"
+        className="px-8 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors min-w-30"
       >
         {confirmText}
       </button>
@@ -217,7 +221,8 @@ const HintModal: FC<HintModalProps> = ({
     <Modal.Footer>
       <button
         onClick={onClose}
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+        className="px-6 py-2 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+        style={{ background: 'var(--accent)' }}
       >
         Got it
       </button>

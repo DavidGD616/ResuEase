@@ -1,6 +1,36 @@
 @import "tailwindcss";
 
+:root {
+  /* Text hierarchy */
+  --ink:   #1a1a1a;
+  --ink-2: #4a4a4a;
+  --ink-3: #8a8a8a;
+
+  /* Surface elevation */
+  --surface: #fafaf8;
+  --paper:   #ffffff;
+
+  /* Borders */
+  --border:        rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.18);
+
+  /* Brand / semantic */
+  --accent:     #2563eb;
+  --accent-dim: #dbeafe;
+  --danger:     #dc2626;
+}
+
 html {
   /* Reserve space for the scrollbar even when it's hidden */
   scrollbar-gutter: stable both-edges;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--ink);
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+::selection {
+  background: var(--accent-dim);
 }

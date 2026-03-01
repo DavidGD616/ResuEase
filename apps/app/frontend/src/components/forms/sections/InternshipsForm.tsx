@@ -59,7 +59,7 @@ function InternshipsForm({
 
       <FormSection>
         {internships.map((internship) => (
-          <div key={internship.id} className="border border-gray-200 rounded-md sm:rounded-lg">
+          <div key={internship.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
               title={internship.jobTitle || internship.company || 'Untitled'}
               isExpanded={expandedItems[internship.id]}

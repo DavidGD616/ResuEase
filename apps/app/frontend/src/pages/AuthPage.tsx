@@ -13,7 +13,7 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--surface)' }}>
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <img
@@ -21,15 +21,15 @@ function AuthPage() {
             alt="ResuEase Logo"
             className="w-12 h-12 mx-auto"
           />
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-2xl font-semibold tracking-tight" style={{ color: 'var(--ink)' }}>
             Welcome to ResuEase
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign in to build your professional resume
+          <p className="mt-2 text-sm" style={{ color: 'var(--ink-3)' }}>
+            Build and download your professional resume
           </p>
         </div>
 
-        <div className="bg-white py-8 px-6 shadow rounded-lg">
+        <div className="bg-white py-8 px-6 rounded-lg" style={{ border: '1px solid var(--border)' }}>
           <Auth
             supabaseClient={supabase}
             appearance={{

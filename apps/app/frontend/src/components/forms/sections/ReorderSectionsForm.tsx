@@ -69,10 +69,13 @@ function ReorderSectionsForm({
     <div className="flex-1 p-4 sm:p-6 w-full sm:max-w-2xl mx-auto">
       <div className="bg-white rounded-md sm:rounded-lg shadow-sm">
         {/* Header */}
-        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-3 sm:p-4" style={{ borderBottom: '1px solid var(--border)' }}>
           <button
             onClick={onBack}
-            className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-900 text-sm sm:text-base"
+            className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base transition-colors"
+            style={{ color: 'var(--ink-2)' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--ink)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-2)')}
           >
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>Back</span>
@@ -80,7 +83,8 @@ function ReorderSectionsForm({
 
           <button
             onClick={onDone}
-            className="px-4 sm:px-6 py-1.5 sm:py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 font-medium text-sm sm:text-base"
+            className="px-4 sm:px-6 py-1.5 sm:py-2 text-white rounded-lg hover:bg-blue-700 font-medium text-sm sm:text-base"
+            style={{ background: 'var(--accent)' }}
           >
             Done
           </button>
@@ -116,34 +120,42 @@ function ReorderSectionsForm({
                 onClick={() => onSectionChange(item.id)}
                 className={`
                   flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2 cursor-pointer
-                  ${activeSection === item.id
-                    ? 'bg-blue-50 border border-blue-200'
-                    : item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
                   ${itemIsDragging ? 'opacity-50' : ''}
                   transition-all duration-200
                 `}
-                style={{ userSelect: 'none', touchAction: 'auto' }}
+                style={{
+                  userSelect: 'none',
+                  touchAction: 'auto',
+                  ...(activeSection === item.id
+                    ? { border: '1px solid rgba(37,99,235,0.3)', backgroundColor: 'var(--accent-dim)' }
+                    : item.fixed
+                    ? { backgroundColor: 'var(--surface)' }
+                    : { border: '1px solid var(--border)', backgroundColor: 'white' }),
+                }}
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   {canDrag ? (
                     <GripVertical
                       data-drag-handle
-                      className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 cursor-grab active:cursor-grabbing"
+                      className="w-4 h-4 sm:w-5 sm:h-5 cursor-grab active:cursor-grabbing"
+                      style={{ color: 'var(--ink-3)', touchAction: 'none' }}
                       onMouseDown={() => { dragFromHandle.current = true; }}
                       onMouseUp={() => { dragFromHandle.current = false; }}
-                      style={{ touchAction: 'none' }}
                     />
                   ) : (
-                    <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                    <Lock className="w-3 h-3 sm:w-4 sm:h-4" style={{ color: 'var(--ink-3)' }} />
                   )}
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                  <span className="text-gray-900 font-medium text-sm sm:text-base">{item.label}</span>
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'var(--ink-2)' }} />
+                  <span className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>{item.label}</span>
                 </div>
 
                 {canDrag && (
                   <button
                     onClick={(e) => { e.stopPropagation(); handleDeleteClick(item.id, item.label); }}
-                    className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+                    className="p-1.5 sm:p-2 rounded transition-colors"
+                    style={{ color: 'var(--ink-3)' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--danger)'; e.currentTarget.style.backgroundColor = '#fef2f2'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--ink-3)'; e.currentTarget.style.backgroundColor = ''; }}
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
@@ -155,10 +167,13 @@ function ReorderSectionsForm({
           {/* Add section button */}
           <button
             onClick={onAddSectionClick}
-            className="w-full flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-md sm:rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors mt-2"
+            className="flex items-center gap-1.5 p-2 text-sm font-medium transition-colors mt-2"
+            style={{ color: 'var(--ink-3)' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
           >
-            <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
-            <span className="text-gray-600 text-sm sm:text-base">Add section</span>
+            <Plus className="w-4 h-4" />
+            <span>Add section</span>
           </button>
         </div>
       </div>

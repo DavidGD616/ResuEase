@@ -26,10 +26,15 @@ export function HintIcon({ title, description, className = '' }: HintIconProps) 
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className={`inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 hover:text-gray-700 transition-colors ${className}`}
+        className={`inline-flex items-center justify-center w-5 h-5 rounded-full transition-colors ${className}`}
+        style={{
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          color: 'var(--ink-3)',
+        }}
         aria-label="Show hint"
       >
-        <HelpCircle className="w-4 h-4" />
+        <HelpCircle className="w-3.5 h-3.5" />
       </button>
 
       <Modal.Hint
@@ -53,11 +58,14 @@ interface FormHeaderProps {
 export function FormHeader({ title, onDelete, showDelete = false }: FormHeaderProps) {
   return (
     <div className="flex items-center justify-between mb-1 sm:mb-2">
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{title}</h1>
+      <h1 className="text-xl sm:text-2xl font-semibold" style={{ color: 'var(--ink)' }}>{title}</h1>
       {showDelete && (
         <button
           onClick={onDelete}
-          className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+          className="p-1.5 sm:p-2 rounded transition-colors hover:bg-red-50"
+          style={{ color: 'var(--ink-3)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
         >
           <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -72,7 +80,7 @@ interface FormDescriptionProps {
 
 export function FormDescription({ children }: FormDescriptionProps) {
   return (
-    <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
+    <p className="text-sm sm:text-base mb-6 sm:mb-8" style={{ color: 'var(--ink-3)' }}>
       {children}
     </p>
   );
@@ -128,14 +136,21 @@ export function FormInput({ label, hint, ...props }: FormInputProps) {
     <div>
       {label && (
         <div className="flex items-center gap-2 mb-1 sm:mb-2">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+          <label
+            className="block text-xs font-medium uppercase tracking-wide"
+            style={{ color: 'var(--ink-2)' }}
+          >
             {label}
           </label>
           {hint && <HintIcon title={hint.title} description={hint.description} />}
         </div>
       )}
       <input
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+        className="w-full px-2 sm:px-3 py-2 sm:py-3 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base bg-white disabled:cursor-not-allowed transition-colors"
+        style={{
+          border: '1px solid var(--border-strong)',
+          color: 'var(--ink)',
+        }}
         {...props}
       />
     </div>
@@ -158,14 +173,21 @@ export function FormTextarea({ label, hint, aiTransform, ...props }: FormTextare
     <div>
       {label && (
         <div className="flex items-center gap-2 mb-1 sm:mb-2">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+          <label
+            className="block text-xs font-medium uppercase tracking-wide"
+            style={{ color: 'var(--ink-2)' }}
+          >
             {label}
           </label>
           {hint && <HintIcon title={hint.title} description={hint.description} />}
         </div>
       )}
       <textarea
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base resize-none"
+        className="w-full px-2 sm:px-3 py-2 sm:py-3 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base resize-none bg-white disabled:cursor-not-allowed transition-colors"
+        style={{
+          border: '1px solid var(--border-strong)',
+          color: 'var(--ink)',
+        }}
         {...props}
       />
       {aiTransform && (
@@ -192,7 +214,10 @@ export function FormSelect({ label, options, hint, ...props }: FormSelectProps) 
     <div>
       {label && (
         <div className="flex items-center gap-2 mb-1 sm:mb-2">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700">
+          <label
+            className="block text-xs font-medium uppercase tracking-wide"
+            style={{ color: 'var(--ink-2)' }}
+          >
             {label}
           </label>
           {hint && <HintIcon title={hint.title} description={hint.description} />}
@@ -200,7 +225,11 @@ export function FormSelect({ label, options, hint, ...props }: FormSelectProps) 
       )}
       <div className="relative">
         <select
-          className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base appearance-none bg-white"
+          className="w-full px-2 sm:px-3 py-2 sm:py-3 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base appearance-none bg-white disabled:cursor-not-allowed transition-colors"
+          style={{
+            border: '1px solid var(--border-strong)',
+            color: 'var(--ink)',
+          }}
           {...props}
         >
           {options.map((option) => (
@@ -209,7 +238,7 @@ export function FormSelect({ label, options, hint, ...props }: FormSelectProps) 
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-400 pointer-events-none" />
+        <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 pointer-events-none" style={{ color: 'var(--ink-3)' }} />
       </div>
     </div>
   );
@@ -228,15 +257,34 @@ interface FormButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 export function FormButton({ variant = 'secondary', icon: Icon, children, ...props }: FormButtonProps) {
   const baseClasses = 'flex items-center gap-1 sm:gap-2 font-medium transition-colors text-sm sm:text-base';
 
-  const variants: Record<ButtonVariant, string> = {
+  const variantClasses: Record<ButtonVariant, string> = {
     primary: 'px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-md sm:rounded-lg hover:bg-blue-700',
-    secondary: 'px-4 sm:px-6 py-2 sm:py-3 bg-gray-200 text-gray-700 rounded-md sm:rounded-lg hover:bg-gray-300',
-    ghost: 'text-gray-700 hover:text-gray-900',
-    panel: 'bg-gray-50 rounded-md sm:rounded-lg p-3 sm:p-4 w-full justify-start hover:bg-gray-100',
+    secondary: 'px-4 sm:px-6 py-2 sm:py-3 bg-white rounded-md sm:rounded-lg hover:bg-gray-50',
+    ghost: 'hover:opacity-70',
+    panel: 'bg-white rounded-md sm:rounded-lg p-3 sm:p-4 w-full justify-start hover:bg-gray-50',
+  };
+
+  const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
+    primary: {},
+    secondary: {
+      border: '1px solid var(--border-strong)',
+      color: 'var(--ink-2)',
+    },
+    ghost: {
+      color: 'var(--ink-3)',
+    },
+    panel: {
+      border: '1px solid var(--border)',
+      color: 'var(--ink-2)',
+    },
   };
 
   return (
-    <button className={`${baseClasses} ${variants[variant]}`} {...props}>
+    <button
+      className={`${baseClasses} ${variantClasses[variant]}`}
+      style={variantStyles[variant]}
+      {...props}
+    >
       {Icon && <Icon className="w-4 h-4 sm:w-5 sm:h-5" />}
       {children}
     </button>
@@ -252,7 +300,8 @@ interface FormToggleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
 export function FormToggleButton({ isOpen, icon: Icon, children, ...props }: FormToggleButtonProps) {
   return (
     <button
-      className="flex items-center gap-1 sm:gap-2 text-gray-700 hover:text-gray-900 font-medium text-sm sm:text-base"
+      className="flex items-center gap-1 sm:gap-2 font-medium text-sm sm:text-base transition-colors hover:opacity-70"
+      style={{ color: 'var(--ink-2)' }}
       {...props}
     >
       {isOpen ? (
@@ -277,13 +326,15 @@ interface FormEntryHeaderProps {
 export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
   return (
     <div
-      className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+      className="flex items-center justify-between p-3 sm:p-4 cursor-pointer transition-colors hover:bg-gray-50/50"
+      style={{ borderBottom: '1px solid var(--border)' }}
       onClick={onToggleExpanded}
     >
       <div className="flex items-center gap-2 sm:gap-3">
         <button
           type="button"
-          className="text-gray-400 hover:text-gray-600"
+          className="transition-colors hover:opacity-70"
+          style={{ color: 'var(--ink-3)' }}
           onClick={(e) => {
             e.stopPropagation();
             onToggleExpanded();
@@ -295,7 +346,7 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
             <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
           )}
         </button>
-        <h3 className="font-medium text-sm sm:text-base text-gray-900">
+        <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
           {title || 'Untitled'}
         </h3>
       </div>
@@ -306,7 +357,10 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
           e.stopPropagation();
           onRemove();
         }}
-        className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+        className="p-1.5 sm:p-2 rounded transition-colors hover:bg-red-50"
+        style={{ color: 'var(--ink-3)' }}
+        onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
+        onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
       >
         <X className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
@@ -322,9 +376,12 @@ interface FormEntryBulletProps {
 
 export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps) {
   return (
-    <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
+    <div
+      className="flex items-center justify-between p-3 sm:p-4"
+      style={{ borderBottom: '1px solid var(--border)' }}
+    >
       <div className="flex items-center gap-2 sm:gap-3">
-        <h3 className="font-medium text-sm sm:text-base text-gray-900">
+        <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
           {title || 'Untitled'}
         </h3>
         {hint && <HintIcon title={hint.title} description={hint.description} />}
@@ -334,7 +391,10 @@ export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps)
         <button
           type="button"
           onClick={onRemove}
-          className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
+          className="p-1.5 sm:p-2 rounded transition-colors hover:bg-red-50"
+          style={{ color: 'var(--ink-3)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-3)')}
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -352,7 +412,8 @@ export function AddEntryButton({ onClick, label }: AddEntryButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full py-2 sm:py-3 border-2 border-dashed border-gray-300 rounded-md sm:rounded-lg hover:border-gray-400 text-sm sm:text-base text-gray-600 hover:text-gray-700 transition-colors flex items-center justify-center gap-1 sm:gap-2"
+      className="flex items-center gap-1.5 py-2 text-sm font-medium transition-colors hover:text-blue-600"
+      style={{ color: 'var(--ink-3)' }}
     >
       <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
       {label}

@@ -57,19 +57,31 @@ function CreateDropdown({ isOpen, onClose }: CreateDropdownProps) {
     { id: 'resignation-letter', icon: FileX, label: 'New resignation letter' },
   ];
 
+  const comingSoon = new Set(['cover-letter', 'resignation-letter']);
+
   return (
-    <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+    <div
+      className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg py-2 z-50"
+      style={{ boxShadow: '0 10px 20px rgba(0,0,0,0.10)', border: '1px solid var(--border)' }}
+    >
       <div ref={dropdownRef}>
         {items.map((item) => {
           const Icon = item.icon;
+          const disabled = comingSoon.has(item.id);
           return (
             <button
               key={item.id}
               onClick={() => handleItemClick(item.id)}
-              className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+              disabled={disabled}
+              className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
+              onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--accent-dim)'; }}
+              onMouseLeave={e => { if (!disabled) (e.currentTarget as HTMLButtonElement).style.backgroundColor = ''; }}
             >
-              <Icon className="w-5 h-5 text-gray-500" />
-              <span className="text-sm text-gray-700">{item.label}</span>
+              <Icon className="w-5 h-5" style={{ color: 'var(--ink-3)' }} />
+              <div>
+                <span className="text-sm" style={{ color: 'var(--ink-2)' }}>{item.label}</span>
+                {disabled && <p className="text-xs mt-0.5" style={{ color: 'var(--ink-3)' }}>Coming soon</p>}
+              </div>
             </button>
           );
         })}

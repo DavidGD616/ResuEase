@@ -36,19 +36,27 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 px-2 sm:px-4 py-3">
+    <div
+      className="px-2 sm:px-4 py-3"
+      style={{
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--border)',
+      }}
+    >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <button
             onClick={onMenuClick}
-            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg lg:hidden transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg lg:hidden transition-colors hover:bg-(--accent-dim) hover:text-(--accent)"
+            style={{ color: 'var(--ink-2)' }}
           >
             <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           <button
             onClick={handleHomeButton}
-            className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg transition-colors hover:bg-(--accent-dim) hover:text-(--accent)"
+            style={{ color: 'var(--ink-2)' }}
           >
             <Home className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -59,7 +67,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
               alt="ResuEase Logo"
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
-            <h1 className="hidden sm:block text-lg font-semibold text-gray-900">ResuEase</h1>
+            <h1 className="text-sm sm:text-lg font-semibold" style={{ color: 'var(--ink)' }}>ResuEase</h1>
           </div>
         </div>
 
@@ -69,11 +77,13 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
             disabled={isDownloading}
             className={`
               px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2
-              ${isDownloading
-                ? 'bg-gray-400 text-white cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-              }
+              ${isDownloading ? 'cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}
             `}
+            style={isDownloading ? {
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--ink-3)',
+            } : {}}
           >
             <FileDown className={`w-4 h-4 ${isDownloading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">
