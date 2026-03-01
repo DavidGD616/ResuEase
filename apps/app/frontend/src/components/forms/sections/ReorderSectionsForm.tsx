@@ -12,6 +12,8 @@ interface ReorderSectionsFormProps {
   onDone: () => void;
   onDeleteSection: (id: string) => void;
   onAddSectionClick: () => void;
+  activeSection: string;
+  onSectionChange: (id: string) => void;
 }
 
 function ReorderSectionsForm({
@@ -21,6 +23,8 @@ function ReorderSectionsForm({
   onDone,
   onDeleteSection,
   onAddSectionClick,
+  activeSection,
+  onSectionChange,
 }: ReorderSectionsFormProps) {
   const dragFromHandle = useRef(false);
 
@@ -109,11 +113,13 @@ function ReorderSectionsForm({
                 } : undefined}
                 onTouchMove={canDrag ? handleTouchMove : undefined}
                 onTouchEnd={canDrag ? handleTouchEnd : undefined}
+                onClick={() => onSectionChange(item.id)}
                 className={`
-                  flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2
-                  ${item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
+                  flex items-center justify-between p-3 sm:p-4 rounded-md sm:rounded-lg mb-2 cursor-pointer
+                  ${activeSection === item.id
+                    ? 'bg-blue-50 border border-blue-200'
+                    : item.fixed ? 'bg-gray-50' : 'bg-white border border-gray-200'}
                   ${itemIsDragging ? 'opacity-50' : ''}
-                  ${canDrag ? 'cursor-default' : 'cursor-default'}
                   transition-all duration-200
                 `}
                 style={{ userSelect: 'none', touchAction: 'auto' }}
@@ -136,7 +142,7 @@ function ReorderSectionsForm({
 
                 {canDrag && (
                   <button
-                    onClick={() => handleDeleteClick(item.id, item.label)}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteClick(item.id, item.label); }}
                     className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 transition-colors"
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
