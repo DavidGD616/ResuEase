@@ -59,7 +59,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
               alt="ResuEase Logo"
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
-            <h1 className="text-lg font-semibold text-gray-900">ResuEase</h1>
+            <h1 className="hidden sm:block text-lg font-semibold text-gray-900">ResuEase</h1>
           </div>
         </div>
 

@@ -119,7 +119,7 @@ function AiTextActions({
       {error && (
         <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <p className="text-sm text-red-800">{error}</p>
           </div>
         </div>
@@ -127,7 +127,7 @@ function AiTextActions({
 
       {/* Preview panel */}
       {preview !== null && (
-        <div className="mt-3 p-4 bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm">
+        <div className="mt-3 p-4 bg-linear-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-purple-600" />
             <h4 className="text-sm font-semibold text-gray-900">

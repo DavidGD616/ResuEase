@@ -9,7 +9,7 @@ interface FormEntryHeaderProps {
 
 function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
   return (
-    <div className="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
+    <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 border-b border-gray-200">
       <div className="flex items-center gap-3">
         <h3 className="font-medium text-gray-900">
           {title || 'Untitled'}

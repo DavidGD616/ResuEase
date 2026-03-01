@@ -28,7 +28,7 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
         const scaleX = containerWidth / documentWidth;
         const scaleY = containerHeight / documentHeight;
 
-        const newScale = Math.max(scaleX, scaleY);
+        const newScale = Math.min(scaleX, scaleY);
         setScale(newScale);
       }
     };
@@ -48,7 +48,7 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
   }, []);
 
   return (
-    <div className="w-96 sm:w-md bg-gray-50 lg:border-l border-gray-200 p-6">
+    <div className="w-full bg-gray-50 lg:border-l border-gray-200 p-3 sm:p-4 lg:p-6">
       <div className="w-full max-w-full flex justify-center">
         <div
           className="relative bg-white overflow-hidden rounded-lg shadow-lg inset-shadow-sm w-full"

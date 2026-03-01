@@ -105,7 +105,7 @@ const Modal: ModalType = ({
       <div className="flex min-h-full items-center justify-center p-4">
         <div
           className={`
-            relative w-full ${sizes[size]} bg-white rounded-3xl shadow-xl
+            relative w-full ${sizes[size]} bg-white rounded-2xl sm:rounded-3xl shadow-xl
             transform transition-all ${className}
           `}
         >
@@ -118,7 +118,7 @@ const Modal: ModalType = ({
             </button>
           )}
 
-          <div className="p-8 pt-12 text-center">
+          <div className="p-6 pt-10 sm:p-8 sm:pt-12 text-center">
             {icon && (
               <div className="mx-auto mb-8">
                 <div className={`w-20 h-20 ${iconBgColor} rounded-full flex items-center justify-center mx-auto`}>
@@ -185,13 +185,13 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
     <Modal.Footer>
       <button
         onClick={onClose}
-        className="px-8 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors min-w-[120px]"
+        className="px-8 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors min-w-30"
       >
         {cancelText}
       </button>
       <button
         onClick={onConfirm}
-        className="px-8 py-3 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors min-w-[120px]"
+        className="px-8 py-3 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors min-w-30"
       >
         {confirmText}
       </button>

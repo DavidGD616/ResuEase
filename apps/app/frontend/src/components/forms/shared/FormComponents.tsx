@@ -110,7 +110,7 @@ interface FormGridProps {
 export function FormGrid({ columns = 2, children, className = '' }: FormGridProps) {
   const gridClass =
     columns === 3
-      ? 'grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4'
+      ? 'grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4'
       : 'grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4';
 
   return <div className={`${gridClass} ${className}`}>{children}</div>;
@@ -135,7 +135,7 @@ export function FormInput({ label, hint, ...props }: FormInputProps) {
         </div>
       )}
       <input
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
         {...props}
       />
     </div>
@@ -165,7 +165,7 @@ export function FormTextarea({ label, hint, aiTransform, ...props }: FormTextare
         </div>
       )}
       <textarea
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base resize-none"
+        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base resize-none"
         {...props}
       />
       {aiTransform && (
@@ -200,7 +200,7 @@ export function FormSelect({ label, options, hint, ...props }: FormSelectProps) 
       )}
       <div className="relative">
         <select
-          className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base appearance-none bg-white"
+          className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-300 rounded-md sm:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base appearance-none bg-white"
           {...props}
         >
           {options.map((option) => (

@@ -40,7 +40,7 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
   };
 
   return (
-    <div className="flex justify-between items-center pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-gray-200">
+    <div className="sticky sm:static bottom-0 z-10 flex justify-between items-center py-3 sm:pt-8 sm:mt-8 bg-white sm:bg-transparent border-t border-gray-200 shadow-[0_-1px_4px_0_rgba(0,0,0,0.04)] sm:shadow-none -mx-4 sm:mx-0 px-4 sm:px-0">
       <div>
         {(!isFirstSection || isAdditionalSection) && (
           <button
