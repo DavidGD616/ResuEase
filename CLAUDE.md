@@ -1,122 +1,99 @@
-# ResuEase — Project Context
+# CLAUDE.md
 
-## What is ResuEase?
+## Commands
 
-A resume builder web application. Users authenticate, fill out structured forms, get AI-powered skill suggestions, preview their resume live, and export to PDF.
-
-## Repository Structure
-
-Informal monorepo — no workspace linking. Each app has its own `package.json` and runs independently.
-`packages/types` is referenced via pnpm `link:` from both apps — no workspace root required.
-
-```
-ResuEase/
-├── apps/app/
-│   ├── backend/       # Express 5 API (port 3001)
-│   ├── frontend/      # React 19 SPA via Vite 7 (port 5173)
-│   └── web/           # Empty placeholder
-├── packages/
-│   └── types/         # @resuease/types — shared API contract types (frontend + backend)
-└── docs/              # Architecture review
+### Frontend (`apps/app/frontend`)
+```bash
+pnpm dev          # Start Vite dev server at http://localhost:5173
+pnpm build        # Production build
+pnpm lint         # Run ESLint
+pnpm test         # Run tests once
+pnpm test:watch   # Run tests in watch mode
 ```
 
-## Tech Stack
+### Backend (`apps/app/backend`)
+```bash
+pnpm dev          # Start with tsx watch (hot reload)
+pnpm start        # Start production server
+pnpm build        # tsc compile
+pnpm test         # Run tests once
+pnpm test:watch   # Run tests in watch mode
+```
 
-### Frontend (`apps/app/frontend/`)
-- **React 19** + **Vite 7** + **Tailwind CSS 4**
-- **React Router DOM 7** — 3 routes: `/auth`, `/`, `/resume-builder`
-- **Supabase** — Auth only (email/password + Google + GitHub OAuth)
-- **Lucide React** — Icons
-- **pnpm** — Package manager
+### Running a single test file
+```bash
+# From the relevant app directory
+pnpm vitest run src/__tests__/controllers/aiController.test.ts
+```
 
-### Backend (`apps/app/backend/`)
-- **Express 5** (Node.js)
-- **Google Gemini API** (`gemini-2.5-flash-lite` via `@google/genai`) — AI skill suggestions
-- **Puppeteer-core** — HTML-to-PDF via Browserless (`BROWSER_WS_ENDPOINT`) or local Chrome fallback
-- **pnpm** — Package manager
-- **Nixpacks** — Railway deployment
+## Environment Variables
 
-## API Endpoints (Backend)
+**Backend** (`.env` in `apps/app/backend`):
+- `SUPABASE_URL` — Supabase project URL
+- `SUPABASE_ANON_KEY` — Supabase anonymous key
+- `GOOGLE_GEMINI_API_KEY` — Google Gemini API key (model: `gemini-2.5-flash-lite`)
+- `CORS_ALLOWED_ORIGINS` — Comma-separated allowed origins (defaults to `http://localhost:5173`)
+- `BROWSER_WS_ENDPOINT` — Optional: Browserless WebSocket URL; omit to use local Chrome for PDF generation
 
-| Method | Route                      | Purpose                        |
-|--------|----------------------------|--------------------------------|
-| GET    | `/`                        | Health check                   |
-| GET    | `/api/test`                | Server info                    |
-| POST   | `/api/ai/generate`         | Gemini connectivity test       |
-| POST   | `/api/ai/soft-skills`      | AI soft skill suggestions      |
-| POST   | `/api/ai/technical-skills` | AI technical skill suggestions |
-| GET    | `/api/generate-test-pdf`   | Test PDF generation            |
-| POST   | `/api/html-to-pdf`         | Convert HTML string to PDF     |
+**Frontend** (`.env` in `apps/app/frontend`):
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_API_BASE_URL` — e.g. `http://localhost:3001/api`
 
-## Frontend Architecture
+## Architecture
 
-### Pages
-- **AuthPage** (`/auth`) — Supabase Auth UI, public
-- **HomePage** (`/`) — Dashboard, protected
-- **ResumeBuilder** (`/resume-builder`) — Main editor, protected
+### Monorepo Structure
+- `apps/app/frontend` — React 19 + Vite + TypeScript + Tailwind CSS v4
+- `apps/app/backend` — Express 5 + TypeScript (ESM), runs with `tsx`
+- `packages/types` — Shared TypeScript interfaces consumed by both apps via `@resuease/types`
 
-### Key Directories
-- `src/components/forms/sections/` — 17 section-level form components
-- `src/components/forms/entries/` — 13 entry-level form components
-- `src/components/forms/shared/` — Reusable: RichTextEditor, AiSkillSuggester, FormComponents
-- `src/components/layout/` — TopNav, Sidebar, MainContent, PreviewPanel, BottomNav
-- `src/components/resume/` — Resume templates (currently only HarvardTemplate)
-- `src/hooks/` — useFormData, useSidebarStorage, useAuth, useDragDrop, useBulletPoints, useDeleteModal, useDebounce
-- `src/services/` — AiService.ts, PdfService.ts
-- `src/context/` — AuthContext (Supabase)
-- `src/data/` — formFields.ts (initial data + schemas), sidebarItems.ts
+### Frontend Architecture
 
-### State Management
-- **AuthContext** — Supabase user session
-- **useFormData** — All resume data; auto-saves to localStorage with 2s debounce
-- **useSidebarStorage** — Section ordering; persisted to localStorage
-- No Redux or external state library
+**Pages & Routing** (`App.tsx`): Three routes — `/auth`, `/` (home, protected), `/resume-builder` (protected). `AuthProvider` wraps the entire tree.
 
-### Resume Data Shape (from `formFields.js`)
+**`ResumeBuilder` page** is the main feature. It composes:
+- `Sidebar` — section navigation with drag-and-drop reordering; sidebar state persisted to `localStorage` per user via `useSidebarStorage`
+- `MainContent` — renders the active section's form
+- `PreviewPanel` — live resume preview using `HarvardTemplate` with debounced updates (300ms)
+- `TopNavigation` — PDF export trigger
+
+**Form data flow**: `useFormData(userId)` centralizes all resume state. Data auto-saves to `localStorage` with a 2-second debounce under the key `resumeBuilder_formData_<userId>`. Section items are managed via `addSectionItem` / `updateSectionItem` / `removeSectionItem`.
+
+**Section system**: Sections are defined in `data/sidebarItems.ts`. Fixed sections (`personal`, `contact`) cannot be removed. Additional sections (summary, internships, references, languages, links, custom) can be added. Custom sections use IDs like `custom-1`, `custom-2` and store data under `customEntries_custom-<N>` in `formData`.
+
+**Forms**: Each resume section has a `*Form.tsx` in `components/forms/sections/` backed by individual `*EntryForm.tsx` components in `components/forms/entries/`. AI features are in `components/forms/shared/` — `AiTextActions` (text transform) and `AiSkillSuggester` (skill suggestions).
+
+**Resume template**: A single `HarvardTemplate.tsx` is the only template. It consumes `FormData` + `SidebarItem[]` and renders sections in sidebar order. Data is preprocessed by `utils/resumeDataProcessors.ts` before rendering; HTML for PDF export is generated by `utils/htmlGenerator.ts`.
+
+**Auth**: `AuthContext` provides `user`, `signIn`, `signOut`, `signUp` via Supabase. The `useAuth` hook reads from context. `ProtectedRoute` redirects to `/auth` if unauthenticated.
+
+### Backend Architecture
+
+**Server** (`server.ts`): Express 5 app. Validates required env vars on startup (exits immediately if any are missing — see `src/lib/validateConfig.ts`). Rate limits: AI endpoints 20 req/min, PDF endpoints 10 req/min. All AI and PDF endpoints require `requireAuth` middleware.
+
+**Auth middleware** (`src/middleware/auth.ts`): Verifies Supabase JWT from `Authorization: Bearer <token>` header. Attaches the decoded user to `req.user`.
+
+**AI controller** (`src/controllers/aiController.ts`): Uses `@google/genai` with `gemini-2.5-flash-lite`. Provides `softSkills`, `technicalSkills`, and `textTransform` endpoints. Text transform prompts are built per-section by `src/lib/textTransformPrompts.ts` to provide context-aware AI instructions.
+
+**PDF controller** (`src/controllers/pdfController.ts`): Uses `puppeteer-core` via the shared `src/lib/browserManager.ts` singleton. In production, connects to Browserless via `BROWSER_WS_ENDPOINT`; locally uses Chrome at `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`.
+
+**API routes**:
+- `POST /api/ai/soft-skills` — AI soft skill suggestions
+- `POST /api/ai/technical-skills` — AI technical skill suggestions
+- `POST /api/ai/text-transform` — Rewrite / add-metrics / make-stronger text transforms
+- `POST /api/html-to-pdf` — Convert rendered HTML to PDF download
+- `GET /api/generate-test-pdf` — Dev/diagnostic PDF test (no auth)
+
+### Shared Types (`packages/types`)
+All request/response interfaces for AI and PDF endpoints live in `packages/types/src/index.ts` and are imported as `@resuease/types` in both frontend services and backend controllers.
+
+### Testing
+Both apps use **Vitest**. Frontend uses `jsdom` environment with `@testing-library/react`. Backend uses `node` environment with `supertest` for HTTP integration tests. Test files live in `src/__tests__/` subdirectories mirroring the source structure.
+
+### Resume Data Shape (from `formFields.ts`)
 Top-level fields: `firstName`, `lastName`, `jobTitle`, `email`, `phone`, `location`, `portfolio`, `about`
 Array sections: `projects`, `skills`, `technologiesSkills`, `education`, `employment`, `languages`, `internships`, `courses`, `references`, `links`, `hobbies`
-Dynamic: `custom-{id}` sections
-
-## External Services
-
-### Frontend env vars (`apps/app/frontend/.env`)
-| Service      | Purpose              | Env Variable              |
-|--------------|----------------------|---------------------------|
-| Supabase     | Authentication UI    | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
-| Backend API  | AI + PDF proxy       | `VITE_API_BASE_URL`       |
-
-### Backend env vars (`apps/app/backend/.env`)
-| Service      | Purpose              | Env Variable              |
-|--------------|----------------------|---------------------------|
-| Supabase     | JWT verification     | `SUPABASE_URL`, `SUPABASE_ANON_KEY` |
-| Google Gemini| AI skill suggestions | `GOOGLE_GEMINI_API_KEY`   |
-| Browserless  | Headless Chrome PDF  | `BROWSER_WS_ENDPOINT`     |
-| Express      | CORS allowlist       | `CORS_ALLOWED_ORIGINS`    |
-
-## Running Locally
-
-```bash
-# Backend
-cd apps/app/backend
-pnpm install
-pnpm start          # or: node --import tsx server.ts
-
-# Frontend
-cd apps/app/frontend
-pnpm install
-pnpm dev            # Vite dev server
-```
-
-## Important Notes
-
-- **No database for resume data** — Resumes live in localStorage scoped to `user.id`. No server-side persistence yet.
-- **Supabase is auth-only** — Used for JWT verification on the backend and Auth UI on the frontend. Not used as a database.
-- **Backend is stateless** — Pure proxy to Gemini and Puppeteer. No DB, no sessions.
-- **Single resume template** — Only `HarvardTemplate` exists.
-- **Rate limiting** — `aiLimiter` (20 req/min) on AI routes, `pdfLimiter` (10 req/min) on PDF route.
-- **CORS** — Restricted to `CORS_ALLOWED_ORIGINS` env var (comma-separated allowlist).
-- **Body limit** — 10MB for JSON payloads (needed for HTML-to-PDF).
-- **Startup validation** — `validateConfig.ts` checks all required backend env vars at boot and exits with a full list if any are missing.
+Dynamic: `customEntries_custom-{id}` keys for custom sections
 
 ## Git Conventions
 
@@ -124,37 +101,6 @@ pnpm dev            # Vite dev server
 
 ## Conventions
 
-- Always use context7 when I need code generation, setup or configuration steps, or library/API documentation
+- Always use context7 when you need code generation, setup or configuration steps, or library/API documentation
 - Frontend uses `.tsx` extensions for all React components
 - Tailwind utility classes for all styling (no CSS modules)
-- Components are organized by feature domain, not by type
-- Custom hooks encapsulate all stateful logic
-- Services are static-method classes that call the backend API
-- Brand color: blue (`#2563eb` / `#1d4ed8`)
-
-## Testing Rules (Vitest)
-
-Use **Vitest** for all tests (shares Vite config, ESM-native, Jest-compatible API).
-
-### Write tests for:
-
-- **`useFormData`** — localStorage merge logic, debounce behavior, per-user scoping (`user.id` key), section add/remove/reorder
-- **`useSidebarStorage`** — section ordering persistence, read/write to localStorage
-- **`useDragDrop`** — drag state transitions, reorder output
-- **`useBulletPoints`** — bullet parsing, add/remove/edit logic
-- **`AiService.ts` / `PdfService.ts`** — request construction, error handling, response parsing (mock `fetch`)
-- **Backend route handlers** — input validation (missing fields, wrong types), correct response shape, rate limiter config, CORS header presence
-- **`validateConfig.ts`** — exits when env vars are missing, passes when all are present
-- **`packages/types`** — any type guards or runtime validators added to the shared types package
-- **Regression cases** — any bug that is fixed must get a test to prevent recurrence
-
-### Do NOT write tests for:
-
-- **Layout/presentational components** — `TopNav`, `Sidebar`, `MainContent`, `PreviewPanel`, `BottomNav`, `BottomNav` — pure Tailwind markup with no logic
-- **Form section/entry components** (`src/components/forms/sections/`, `src/components/forms/entries/`) — they are thin wrappers that delegate all logic to hooks; test the hooks instead
-- **`AuthContext`** — wraps Supabase Auth UI directly; testing it means testing Supabase, not our code
-- **`AuthPage`** — renders Supabase's `<Auth>` component; no custom logic to verify
-- **`HarvardTemplate`** — resume rendering is visual; correctness is verified by eye or snapshot, not unit tests
-- **Health-check / test routes** (`GET /`, `GET /api/test`) — no logic, not worth the overhead
-- **External service integrations directly** — do not test Gemini API responses or Puppeteer PDF output; mock at the service boundary instead
-- **`formFields.ts` initial data** — static config, not logic
