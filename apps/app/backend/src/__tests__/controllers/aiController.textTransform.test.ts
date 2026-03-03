@@ -150,20 +150,33 @@ describe('textTransform handler', () => {
     expect(json).toHaveBeenCalledWith(expect.objectContaining({ success: false }));
   });
 
-  it('returns 500 when Gemini response exceeds 3x the input length', async () => {
+  // The guard is Math.max(safeText.length, 300) * 3.
+  // Short inputs hit the 300-char floor, so the ceiling is always at least 900.
+
+  it('returns 500 when a short input produces a response exceeding the 300-char floor ceiling', async () => {
+    // input is 6 chars → floor kicks in → ceiling = Math.max(6, 300) * 3 = 900
     const input = 'Short.';
-    geminiReturns('x'.repeat(input.length * 3 + 1));
+    geminiReturns('x'.repeat(901));
     const { res, status } = makeRes();
     await textTransform(makeReq({ text: input, mode: 'rewrite' }), res);
     expect(status).toHaveBeenCalledWith(500);
   });
 
-  it('accepts a Gemini response exactly at the 3x limit', async () => {
+  it('accepts a short-input response exactly at the 300-char floor ceiling (900 chars)', async () => {
     const input = 'Short.';
-    geminiReturns('x'.repeat(input.length * 3));
+    geminiReturns('x'.repeat(900));
     const { res, status } = makeRes();
     await textTransform(makeReq({ text: input, mode: 'rewrite' }), res);
     expect(status).not.toHaveBeenCalledWith(500);
+  });
+
+  it('returns 500 when a long input produces a response exceeding 3x its own length', async () => {
+    // input is 400 chars → floor does NOT kick in → ceiling = 400 * 3 = 1200
+    const input = 'a'.repeat(400);
+    geminiReturns('x'.repeat(1201));
+    const { res, status } = makeRes();
+    await textTransform(makeReq({ text: input, mode: 'rewrite' }), res);
+    expect(status).toHaveBeenCalledWith(500);
   });
 
   // --- Sanitization ---
