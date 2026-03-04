@@ -1,3 +1,4 @@
+import './i18n'; // must be first — initializes i18next before React renders
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
