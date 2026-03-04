@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileDown, Menu, Home } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { PdfService } from '../../services/PdfService';
 import type { FormData, SidebarItem } from '../../types/resume';
 
@@ -13,6 +14,7 @@ interface TopNavigationProps {
 function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleHomeButton = () => {
     navigate('/');
@@ -67,7 +69,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
               alt="ResuEase Logo"
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
-            <h1 className="text-sm sm:text-lg font-semibold" style={{ color: 'var(--ink)' }}>ResuEase</h1>
+            <h1 className="text-sm sm:text-lg font-semibold" style={{ color: 'var(--ink)' }}>{t('nav.brand')}</h1>
           </div>
         </div>
 
@@ -87,7 +89,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
           >
             <FileDown className={`w-4 h-4 ${isDownloading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">
-              {isDownloading ? 'Generating...' : 'Download'}
+              {isDownloading ? t('nav.downloading') : t('nav.download')}
             </span>
           </button>
         </div>

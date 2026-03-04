@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function NavigationTabs() {
   const [activeTab, setActiveTab] = useState('resumes');
+  const { t } = useTranslation();
 
   const tabs = [
-    { id: 'resumes', label: 'Resumes' },
-    { id: 'cover-letters', label: 'Cover letters' },
-    { id: 'resignation-letters', label: 'Resignation letters' },
+    { id: 'resumes', label: t('home.tabs.resumes') },
+    { id: 'cover-letters', label: t('home.tabs.coverLetters') },
+    { id: 'resignation-letters', label: t('home.tabs.resignationLetters') },
   ];
 
   return (

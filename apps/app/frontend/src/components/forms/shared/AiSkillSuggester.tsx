@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, Loader2, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { AIService } from '../../../services/AiService';
 import type { SkillItem, TechSkillItem } from '../../../types/resume';
 
@@ -16,6 +17,7 @@ function AISkillSuggester({
   onAddSkill,
   skillType = 'soft',
 }: AISkillSuggesterProps) {
+  const { t } = useTranslation();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedSkills, setSuggestedSkills] = useState<string[]>([]);
@@ -23,7 +25,7 @@ function AISkillSuggester({
 
   const handleGetSuggestions = async () => {
     if (!jobTitle?.trim()) {
-      setError('Please set your job title in the Personal Details section first');
+      setError(t('ai.skillSuggester.jobTitleRequired'));
       return;
     }
 
@@ -45,7 +47,7 @@ function AISkillSuggester({
     if (result.success) {
       setSuggestedSkills(result.data.suggestedSkills || []);
       if (result.data.suggestedSkills?.length === 0) {
-        setError('No new skills could be suggested. You may already have comprehensive skills listed.');
+        setError(t('ai.skillSuggester.noNewSkills'));
       }
     } else {
       setError(result.error || 'Failed to get suggestions');
@@ -82,7 +84,7 @@ function AISkillSuggester({
         }}
       >
         <Sparkles className="w-4 h-4 text-purple-400" />
-        {showSuggestions ? 'Hide AI Suggestions' : 'Get AI Skill Suggestions'}
+        {showSuggestions ? t('ai.skillSuggester.hide') : t('ai.skillSuggester.show')}
       </button>
 
       {/* Suggestion Panel */}
@@ -94,7 +96,7 @@ function AISkillSuggester({
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-purple-500" />
             <h3 className="text-base font-semibold" style={{ color: 'var(--ink)' }}>
-              AI {skillType === 'technical' ? 'Technical' : 'Soft'} Skill Suggestions
+              {skillType === 'technical' ? t('ai.skillSuggester.headerTechnical') : t('ai.skillSuggester.headerSoft')}
             </h3>
           </div>
 
@@ -104,12 +106,12 @@ function AISkillSuggester({
             style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
           >
             <p className="text-sm" style={{ color: 'var(--ink-2)' }}>
-              Job Title: <span className="font-semibold" style={{ color: 'var(--ink)' }}>{jobTitle || 'Not set'}</span>
+              {t('ai.skillSuggester.jobTitleLabel')} <span className="font-semibold" style={{ color: 'var(--ink)' }}>{jobTitle || t('ai.skillSuggester.jobTitleNotSet')}</span>
             </p>
             {!jobTitle && (
               <div className="flex items-center gap-2 mt-2 text-sm" style={{ color: 'var(--danger)' }}>
                 <AlertCircle className="w-4 h-4" />
-                <span>Please set your job title in the Personal Details section first</span>
+                <span>{t('ai.skillSuggester.jobTitleRequired')}</span>
               </div>
             )}
           </div>
@@ -136,12 +138,12 @@ function AISkillSuggester({
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Generating suggestions...
+                {t('ai.skillSuggester.generating')}
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                Get Suggestions
+                {t('ai.skillSuggester.getSuggestions')}
               </>
             )}
           </button>
@@ -160,7 +162,7 @@ function AISkillSuggester({
           {suggestedSkills.length > 0 && (
             <div className="mt-4">
               <p className="text-sm font-medium mb-3" style={{ color: 'var(--ink-2)' }}>
-                Click to add skills to your resume:
+                {t('ai.skillSuggester.clickToAdd')}
               </p>
               <div className="flex flex-wrap gap-2">
                 {suggestedSkills.map((skill, index) => (

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import CreateDropdown from './CreateDropdown';
 import { useAuth } from '../../hooks/useAuth';
 
 function HeroSection() {
   const { user, signOut } = useAuth();
+  const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('resumes');
 
@@ -17,9 +19,9 @@ function HeroSection() {
   };
 
   const tabs = [
-    { id: 'resumes', label: 'Resumes' },
-    { id: 'cover-letters', label: 'Cover letters' },
-    { id: 'resignation-letters', label: 'Resignation letters' },
+    { id: 'resumes', label: t('home.tabs.resumes') },
+    { id: 'cover-letters', label: t('home.tabs.coverLetters') },
+    { id: 'resignation-letters', label: t('home.tabs.resignationLetters') },
   ];
 
   return (
@@ -33,7 +35,7 @@ function HeroSection() {
                 alt="ResuEase Logo"
                 className="w-6 h-6 sm:w-8 sm:h-8"
               />
-              <h1 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>ResuEase</h1>
+              <h1 className="text-lg font-semibold" style={{ color: 'var(--ink)' }}>{t('nav.brand')}</h1>
             </div>
           </div>
 
@@ -78,7 +80,7 @@ function HeroSection() {
                     className="block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50"
                     style={{ color: 'var(--ink-2)' }}
                   >
-                    Sign Out
+                    {t('home.signOut')}
                   </button>
                 </div>
               </div>
@@ -90,7 +92,7 @@ function HeroSection() {
                 className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 style={{ background: 'var(--accent)' }}
               >
-                <span className="text-sm font-medium">Create</span>
+                <span className="text-sm font-medium">{t('home.create')}</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
 

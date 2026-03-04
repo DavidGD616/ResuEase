@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, Loader2, AlertCircle, Check, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { AIService } from '../../../services/AiService';
 import type { TextTransformMode } from '@resuease/types';
 
@@ -12,18 +13,6 @@ interface AiTextActionsProps {
   disabled?: boolean;
 }
 
-const ACTIONS: { mode: TextTransformMode; label: string; loadingLabel: string }[] = [
-  { mode: 'rewrite', label: 'Rewrite', loadingLabel: 'Rewriting…' },
-  { mode: 'add-metrics', label: 'Add metrics', loadingLabel: 'Adding metrics…' },
-  { mode: 'make-stronger', label: 'Make stronger', loadingLabel: 'Making stronger…' },
-];
-
-const MODE_DISPLAY: Record<TextTransformMode, string> = {
-  rewrite: 'Rewrite',
-  'add-metrics': 'Add metrics',
-  'make-stronger': 'Make stronger',
-};
-
 function AiTextActions({
   text,
   jobTitle,
@@ -32,9 +21,22 @@ function AiTextActions({
   onAccept,
   disabled = false,
 }: AiTextActionsProps) {
+  const { t } = useTranslation();
   const [activeMode, setActiveMode] = useState<TextTransformMode | null>(null);
   const [preview, setPreview] = useState<{ text: string; mode: TextTransformMode } | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const ACTIONS: { mode: TextTransformMode; label: string; loadingLabel: string }[] = [
+    { mode: 'rewrite', label: t('ai.textActions.rewrite'), loadingLabel: t('ai.textActions.rewriting') },
+    { mode: 'add-metrics', label: t('ai.textActions.addMetrics'), loadingLabel: t('ai.textActions.addingMetrics') },
+    { mode: 'make-stronger', label: t('ai.textActions.makeStronger'), loadingLabel: t('ai.textActions.makingStronger') },
+  ];
+
+  const MODE_DISPLAY: Record<TextTransformMode, string> = {
+    rewrite: t('ai.textActions.rewrite'),
+    'add-metrics': t('ai.textActions.addMetrics'),
+    'make-stronger': t('ai.textActions.makeStronger'),
+  };
 
   const isTextEmpty = text.length === 0;
   const isTextTooLong = text.length > 2000;
@@ -56,7 +58,7 @@ function AiTextActions({
     if (result.success) {
       setPreview({ text: result.data.transformedText, mode });
     } else {
-      setError(result.error || 'Failed to transform text. Please try again.');
+      setError(result.error || t('ai.textActions.error'));
     }
 
     setActiveMode(null);
@@ -147,7 +149,7 @@ function AiTextActions({
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-purple-600" />
             <h4 className="text-sm font-semibold" style={{ color: 'var(--ink)' }}>
-              AI Suggestion — {MODE_DISPLAY[preview.mode]}
+              {t('ai.textActions.suggestionHeader', { mode: MODE_DISPLAY[preview.mode] })}
             </h4>
           </div>
 
@@ -160,7 +162,7 @@ function AiTextActions({
               className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-full transition-colors duration-150"
             >
               <Check className="w-3 h-3" />
-              Accept
+              {t('ai.textActions.accept')}
             </button>
             <button
               type="button"
@@ -172,7 +174,7 @@ function AiTextActions({
               }}
             >
               <X className="w-3 h-3" />
-              Discard
+              {t('ai.textActions.discard')}
             </button>
           </div>
         </div>

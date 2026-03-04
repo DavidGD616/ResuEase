@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription } from '../shared/FormComponents';
 import { SIDEBAR_ITEMS, ADDITIONAL_SECTION } from '../../../data/sidebarItems';
 import type { SidebarItem } from '../../../types/resume';
@@ -9,6 +10,8 @@ interface AdditionalSectionsFormProps {
 }
 
 function AdditionalSectionsForm({ sidebarItems, onAddSection }: AdditionalSectionsFormProps) {
+  const { t } = useTranslation();
+
   const allAvailableSections = [
     ...SIDEBAR_ITEMS.filter((item) => !item.fixed),
     ...ADDITIONAL_SECTION,
@@ -28,15 +31,16 @@ function AdditionalSectionsForm({ sidebarItems, onAddSection }: AdditionalSectio
 
   return (
     <div>
-      <FormHeader title="Additional section" />
+      <FormHeader title={t('forms.additional.header')} />
 
       <FormDescription>
-        You should only add resume categories if they are relevant and you can list a few things in each section. Pick the most impactful categories first.
+        {t('forms.additional.description')}
       </FormDescription>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         {availableSections.map((section) => {
           const Icon = section.icon;
+          const sectionLabel = section.labelKey ? t(section.labelKey) : section.label;
           return (
             <button
               key={section.id}
@@ -48,7 +52,7 @@ function AdditionalSectionsForm({ sidebarItems, onAddSection }: AdditionalSectio
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'var(--ink-3)' }} />
-                <span className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>{section.label}</span>
+                <span className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>{sectionLabel}</span>
               </div>
               <svg className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'var(--ink-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

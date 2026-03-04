@@ -1,4 +1,5 @@
 import { Menu, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { SidebarItem } from '../../types/resume';
 
 interface BottomNavigationProps {
@@ -9,6 +10,8 @@ interface BottomNavigationProps {
 }
 
 function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReorderClick }: BottomNavigationProps) {
+  const { t } = useTranslation();
+
   const sectionOrder = sidebarItems
     .sort((a, b) => a.order - b.order)
     .map((item) => item.id);
@@ -58,7 +61,7 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
             }}
           >
             <ChevronLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back</span>
+            <span className="hidden sm:inline">{t('bottomNav.back')}</span>
           </button>
         )}
       </div>
@@ -69,8 +72,8 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
         style={{ color: 'var(--ink-3)' }}
       >
         <Menu className="w-4 h-4" />
-        <span className="hidden sm:inline">Reorder sections</span>
-        <span className="sm:hidden">Reorder</span>
+        <span className="hidden sm:inline">{t('bottomNav.reorderDesktop')}</span>
+        <span className="sm:hidden">{t('bottomNav.reorderMobile')}</span>
       </button>
 
       {!isAdditionalSection && (
@@ -78,7 +81,7 @@ function BottomNavigation({ activeSection, onSectionChange, sidebarItems, onReor
           onClick={handleNext}
           className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center gap-1 sm:gap-2 transition-colors text-sm sm:text-base"
         >
-          <span className="hidden sm:inline">Next</span>
+          <span className="hidden sm:inline">{t('bottomNav.next')}</span>
           <ChevronRight className="w-4 h-4" />
         </button>
       )}

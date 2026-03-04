@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 function EmptyState() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleBuildResume = () => {
     navigate('/resume-builder');
@@ -20,7 +22,7 @@ function EmptyState() {
 
       <div className="max-w-lg mx-auto">
         <h1 className="text-xl font-medium mb-4" style={{ color: 'var(--ink-2)' }}>
-          Create your first resume
+          {t('home.emptyState.title')}
         </h1>
 
         <button
@@ -29,7 +31,7 @@ function EmptyState() {
           style={{ background: 'var(--accent)' }}
         >
           <Plus className="w-5 h-5" />
-          <span>Build my resume</span>
+          <span>{t('home.emptyState.cta')}</span>
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { FC, ReactNode, MouseEvent } from 'react';
 import { X, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
   isOpen: boolean;
@@ -208,27 +209,30 @@ const HintModal: FC<HintModalProps> = ({
   onClose,
   title,
   description,
-}) => (
-  <Modal
-    isOpen={isOpen}
-    onClose={onClose}
-    size="sm"
-    title={title}
-  >
-    <Modal.Body className='text-left'>
-      {description}
-    </Modal.Body>
-    <Modal.Footer>
-      <button
-        onClick={onClose}
-        className="px-6 py-2 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        style={{ background: 'var(--accent)' }}
-      >
-        Got it
-      </button>
-    </Modal.Footer>
-  </Modal>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="sm"
+      title={title}
+    >
+      <Modal.Body className='text-left'>
+        {description}
+      </Modal.Body>
+      <Modal.Footer>
+        <button
+          onClick={onClose}
+          className="px-6 py-2 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          style={{ background: 'var(--accent)' }}
+        >
+          {t('common.gotIt')}
+        </button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 Modal.Header = ModalHeader;
 Modal.Body = ModalBody;
