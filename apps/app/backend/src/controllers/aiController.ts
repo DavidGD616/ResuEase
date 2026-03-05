@@ -60,6 +60,7 @@ export const softSkills = async (req: Request<{}, {}, SoftSkillsBody>, res: Resp
       currentSkills = [],
       experienceLevel = "mid-level",
       count = 8,
+      locale = "en",
     } = req.body;
 
     // Validate required fields
@@ -70,8 +71,12 @@ export const softSkills = async (req: Request<{}, {}, SoftSkillsBody>, res: Resp
       });
     }
 
+    const localePreamble = locale === 'es'
+      ? "Responde en español latinoamericano (México/América Latina). Usa lenguaje profesional y accesible. "
+      : "";
+
     // Build the prompt
-    const prompt = `You are a career advisor helping to build a resume skills section. This section should showcase key soft skills and abilities that give employers a quick overview of your strengths and how they fit with the job. Note: Technical skills like programming languages, frameworks, and tools are covered in a separate section.
+    const prompt = `${localePreamble}You are a career advisor helping to build a resume skills section. This section should showcase key soft skills and abilities that give employers a quick overview of your strengths and how they fit with the job. Note: Technical skills like programming languages, frameworks, and tools are covered in a separate section.
 
 **Role Details:**
 - Job Title: ${jobTitle}
@@ -156,6 +161,7 @@ export const technicalSkills = async (req: Request<{}, {}, TechnicalSkillsBody>,
       currentSkills = [],
       experienceLevel = "mid-level",
       count = 8,
+      locale = "en",
     } = req.body;
 
     // Validate required fields - at least one of jobTitle or currentSkills must be provided
@@ -170,10 +176,14 @@ export const technicalSkills = async (req: Request<{}, {}, TechnicalSkillsBody>,
       });
     }
 
+    const localePreamble = locale === 'es'
+      ? "Responde en español latinoamericano (México/América Latina). Usa lenguaje profesional y accesible. "
+      : "";
+
     // Build the prompt
     let prompt: string;
     if (jobTitle && jobTitle.trim().length >= 2) {
-      prompt = `You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
+      prompt = `${localePreamble}You are a career advisor helping to build a resume technical skills section. This section should list technical skills, programming languages, frameworks, tools, and technologies that help employers quickly identify technical capabilities.
 
 **Role Details:**
 - Job Title: ${jobTitle}
@@ -197,7 +207,7 @@ Return exactly ${count} technical skills as a comma-separated list with no addit
 Example format: Python, React, Docker, AWS, PostgreSQL, Git, TypeScript, Kubernetes`;
     } else {
       // If no job title, suggest complementary skills based on current skills
-      prompt = `You are a career advisor helping to build a resume technical skills section. Based on the user's current technical skills, suggest complementary technologies and tools that would enhance their technical profile.
+      prompt = `${localePreamble}You are a career advisor helping to build a resume technical skills section. Based on the user's current technical skills, suggest complementary technologies and tools that would enhance their technical profile.
 
 **Current Technical Skills:**
 ${currentSkills.join(", ")}
@@ -292,7 +302,7 @@ export const textTransform = async (
   res: Response
 ) => {
   try {
-    const { text, mode, jobTitle, sectionName, fieldLabel } = req.body;
+    const { text, mode, jobTitle, sectionName, fieldLabel, locale = "en" } = req.body;
 
     // --- Validate required fields ---
     if (!text || typeof text !== "string" || text.trim().length === 0) {
@@ -321,12 +331,14 @@ export const textTransform = async (
     const safeFieldLabel = fieldLabel ? truncate(stripHtml(fieldLabel.trim()), 100) : null;
 
     // --- Build section-specific prompt ---
+    const safeLocale = locale === 'es' ? 'es' : 'en';
     const prompt = buildTextTransformPrompt(
       mode,
       safeSectionName ?? "",
       safeFieldLabel ?? "",
       safeText,
-      safeJobTitle
+      safeJobTitle,
+      safeLocale
     );
 
     console.log(`Text transform: mode=${mode}, originalLength=${safeText.length}`);

@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import i18n from '../i18n';
 import type { SkillSuggestionData, SkillSuggestionResult, TextTransformRequest, TextTransformResult } from '@resuease/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
@@ -17,7 +18,7 @@ export class AIService {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session?.access_token}`,
         },
-        body: JSON.stringify({ jobTitle, currentSkills, count }),
+        body: JSON.stringify({ jobTitle, currentSkills, count, locale: i18n.language }),
       });
 
       if (!response.ok) {
@@ -48,7 +49,7 @@ export class AIService {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session?.access_token}`,
         },
-        body: JSON.stringify({ jobTitle, currentSkills, count }),
+        body: JSON.stringify({ jobTitle, currentSkills, count, locale: i18n.language }),
       });
 
       if (!response.ok) {
@@ -81,7 +82,7 @@ export class AIService {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session?.access_token}`,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, locale: i18n.language }),
         signal: controller.signal,
       });
 

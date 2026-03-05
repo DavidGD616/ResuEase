@@ -24,7 +24,11 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
     setIsDownloading(true);
 
     try {
-      const result = await PdfService.downloadResumePDF(formData, sidebarItems, 'harvard');
+      const translatedSidebarItems = sidebarItems.map(item => ({
+        ...item,
+        label: item.labelKey ? t(item.labelKey) : item.label,
+      }));
+      const result = await PdfService.downloadResumePDF(formData, translatedSidebarItems, 'harvard');
 
       if (!result.success) {
         alert(`PDF generation failed: ${result.error}`);
