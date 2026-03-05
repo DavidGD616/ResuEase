@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import LanguageEntryForm from '../entries/LanguageEntryForm';
@@ -22,6 +23,7 @@ function LanguagesForm({
   updateSectionItem,
   removeSectionItem,
 }: LanguagesFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function LanguagesForm({
 
   return (
     <div>
-      <FormHeader title="Languages" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.languages.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Include languages you speak and your proficiency level. This can be valuable for positions requiring multilingual communication.
+        {t('forms.languages.description')}
       </FormDescription>
 
       <FormSection>
         {languages.map((language) => (
           <div key={language.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={language.language || 'Untitled'}
+              title={language.language || t('common.untitled')}
               isExpanded={expandedItems[language.id]}
               onToggleExpanded={() => toggleExpanded(language.id)}
               onRemove={() => removeLanguage(language.id)}
@@ -73,17 +75,13 @@ function LanguagesForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addLanguage} label="Add one more language" />
+        <AddEntryButton onClick={addLanguage} label={t('forms.languages.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

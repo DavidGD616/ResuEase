@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import CourseEntryForm from '../entries/CourseEntryForm';
@@ -22,6 +23,7 @@ function CoursesForm({
   updateSectionItem,
   removeSectionItem,
 }: CoursesFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function CoursesForm({
 
   return (
     <div>
-      <FormHeader title="Courses" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.courses.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Include relevant courses, certifications, and training programs that demonstrate your commitment to professional development and skill enhancement.
+        {t('forms.courses.description')}
       </FormDescription>
 
       <FormSection>
         {courses.map((course) => (
           <div key={course.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={course.courseName || 'Untitled'}
+              title={course.courseName || t('common.untitled')}
               isExpanded={expandedItems[course.id]}
               onToggleExpanded={() => toggleExpanded(course.id)}
               onRemove={() => removeCourse(course.id)}
@@ -73,17 +75,13 @@ function CoursesForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addCourse} label="Add course" />
+        <AddEntryButton onClick={addCourse} label={t('forms.courses.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

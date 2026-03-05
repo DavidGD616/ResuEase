@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import EducationEntryForm from '../entries/EducationEntryForm';
@@ -22,6 +23,7 @@ function EducationForm({
   updateSectionItem,
   removeSectionItem,
 }: EducationFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function EducationForm({
 
   return (
     <div>
-      <FormHeader title="Education" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.education.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Add the name of your school, where it is located, what degree you obtained, your field of study, and your graduation year.
+        {t('forms.education.description')}
       </FormDescription>
 
       <FormSection>
         {educationEntries.map((education) => (
           <div key={education.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={education.institution || education.degree || 'Untitled'}
+              title={education.institution || education.degree || t('common.untitled')}
               isExpanded={expandedItems[education.id]}
               onToggleExpanded={() => toggleExpanded(education.id)}
               onRemove={() => removeEducation(education.id)}
@@ -77,17 +79,13 @@ function EducationForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addEducation} label="Add education" />
+        <AddEntryButton onClick={addEducation} label={t('forms.education.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

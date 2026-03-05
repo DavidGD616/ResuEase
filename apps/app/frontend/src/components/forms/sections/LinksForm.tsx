@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import LinkEntryForm from '../entries/LinkEntryForm';
@@ -22,6 +23,7 @@ function LinksForm({
   updateSectionItem,
   removeSectionItem,
 }: LinksFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function LinksForm({
 
   return (
     <div>
-      <FormHeader title="Links" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.links.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Add relevant links: personal website, socials, LinkedIn profile, etc.
+        {t('forms.links.description')}
       </FormDescription>
 
       <FormSection>
         {links.map((link) => (
           <div key={link.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={link.linkTitle || 'Untitled'}
+              title={link.linkTitle || t('common.untitled')}
               isExpanded={expandedItems[link.id]}
               onToggleExpanded={() => toggleExpanded(link.id)}
               onRemove={() => removeLink(link.id)}
@@ -73,17 +75,13 @@ function LinksForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addLink} label="Add one more link" />
+        <AddEntryButton onClick={addLink} label={t('forms.links.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

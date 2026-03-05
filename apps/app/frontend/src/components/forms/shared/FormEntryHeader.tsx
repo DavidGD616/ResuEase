@@ -1,4 +1,5 @@
 import { ChevronUp, ChevronDown, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface FormEntryHeaderProps {
   title: string;
@@ -8,6 +9,7 @@ interface FormEntryHeaderProps {
 }
 
 function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="flex items-center justify-between p-3 sm:p-4 bg-white hover:bg-gray-50/50 transition-colors"
@@ -15,7 +17,7 @@ function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: Form
     >
       <div className="flex items-center gap-3">
         <h3 className="font-medium" style={{ color: 'var(--ink)' }}>
-          {title || 'Untitled'}
+          {title || t('common.untitled')}
         </h3>
         <button
           onClick={onToggleExpanded}

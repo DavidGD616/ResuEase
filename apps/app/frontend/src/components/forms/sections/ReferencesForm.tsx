@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import ReferenceEntryForm from '../entries/ReferenceEntryForm';
@@ -22,6 +23,7 @@ function ReferencesForm({
   updateSectionItem,
   removeSectionItem,
 }: ReferencesFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function ReferencesForm({
 
   return (
     <div>
-      <FormHeader title="References" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.references.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Include professional references who can vouch for your work experience, skills, and character. Make sure to ask for their permission before listing them.
+        {t('forms.references.description')}
       </FormDescription>
 
       <FormSection>
         {references.map((reference) => (
           <div key={reference.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={reference.referentName || reference.referentCompany || 'Untitled'}
+              title={reference.referentName || reference.referentCompany || t('common.untitled')}
               isExpanded={expandedItems[reference.id]}
               onToggleExpanded={() => toggleExpanded(reference.id)}
               onRemove={() => removeReference(reference.id)}
@@ -73,17 +75,13 @@ function ReferencesForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addReference} label="Add one more reference" />
+        <AddEntryButton onClick={addReference} label={t('forms.references.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

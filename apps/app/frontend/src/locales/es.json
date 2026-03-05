@@ -46,7 +46,8 @@
     "addAdditionalSection": "Sección adicional"
   },
   "common": {
-    "gotIt": "Entendido"
+    "gotIt": "Entendido",
+    "untitled": "Sin título"
   },
   "modal": {
     "deleteSection": {

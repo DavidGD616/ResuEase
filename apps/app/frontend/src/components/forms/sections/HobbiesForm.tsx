@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -22,6 +23,7 @@ function HobbiesForm({
   updateSectionItem,
   removeSectionItem,
 }: HobbiesFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function HobbiesForm({
 
   return (
     <div>
-      <FormHeader title="Hobbies" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.hobbies.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        This small section is a chance to add some personality to your resume. Share a few hobbies or interests that give employers a glimpse of who you are outside of work.
+        {t('forms.hobbies.description')}
       </FormDescription>
 
       <FormSection>
         {hobbies.map((hobby) => (
           <div key={hobby.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={hobby.hobbyName || 'Untitled'}
+              title={hobby.hobbyName || t('common.untitled')}
               isExpanded={expandedItems[hobby.id]}
               onToggleExpanded={() => toggleExpanded(hobby.id)}
               onRemove={() => removeHobby(hobby.id)}
@@ -73,18 +75,13 @@ function HobbiesForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addHobby} label="Add hobby" />
+        <AddEntryButton onClick={addHobby} label={t('forms.hobbies.addEntry')} />
       </FormSection>
 
-      {/* Delete Section Modal */}
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

@@ -169,40 +169,43 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  title = "Are you sure you want to delete this section?",
-  message = "You can't undo this action.",
-  confirmText = "Delete",
-  cancelText = "Cancel",
-}) => (
-  <Modal
-    isOpen={isOpen}
-    onClose={onClose}
-    size="sm"
-    icon={<Trash2 className="w-8 h-8" />}
-    iconBgColor="bg-red-100"
-    iconColor="text-red-600"
-    title={title}
-  >
-    <Modal.Body>
-      {message}
-    </Modal.Body>
-    <Modal.Footer>
-      <button
-        onClick={onClose}
-        className="px-8 py-3 bg-white rounded-lg font-medium hover:bg-gray-50 transition-colors min-w-30"
-        style={{ border: '1px solid var(--border-strong)', color: 'var(--ink-2)' }}
-      >
-        {cancelText}
-      </button>
-      <button
-        onClick={onConfirm}
-        className="px-8 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors min-w-30"
-      >
-        {confirmText}
-      </button>
-    </Modal.Footer>
-  </Modal>
-);
+  title,
+  message,
+  confirmText,
+  cancelText,
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="sm"
+      icon={<Trash2 className="w-8 h-8" />}
+      iconBgColor="bg-red-100"
+      iconColor="text-red-600"
+      title={title ?? t('modal.deleteSection.title')}
+    >
+      <Modal.Body>
+        {message ?? t('modal.deleteSection.message')}
+      </Modal.Body>
+      <Modal.Footer>
+        <button
+          onClick={onClose}
+          className="px-8 py-3 bg-white rounded-lg font-medium hover:bg-gray-50 transition-colors min-w-30"
+          style={{ border: '1px solid var(--border-strong)', color: 'var(--ink-2)' }}
+        >
+          {cancelText ?? t('modal.deleteSection.cancel')}
+        </button>
+        <button
+          onClick={onConfirm}
+          className="px-8 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors min-w-30"
+        >
+          {confirmText ?? t('modal.deleteSection.confirm')}
+        </button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const HintModal: FC<HintModalProps> = ({
   isOpen,

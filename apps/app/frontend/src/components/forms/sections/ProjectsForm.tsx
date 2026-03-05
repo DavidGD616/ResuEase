@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ProjectEntryForm from '../entries/ProjectEntryForm';
 import { FormHeader, FormDescription, FormSection, FormEntryHeader, AddEntryButton } from '../shared/FormComponents';
 import Modal from '../../ui/Modal';
@@ -20,6 +21,7 @@ function ProjectsForm({
   updateSectionItem,
   removeSectionItem,
 }: ProjectsFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -49,17 +51,17 @@ function ProjectsForm({
 
   return (
     <div>
-      <FormHeader title="Projects" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.projects.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        This section is optional, and it's mainly useful for students or recent grads. You can list school projects or even personal projects here to give your resume more depth and show practical experience.
+        {t('forms.projects.description')}
       </FormDescription>
 
       <FormSection>
         {projects.map((project) => (
           <div key={project.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={project.name || 'Untitled'}
+              title={project.name || t('common.untitled')}
               isExpanded={expandedItems[project.id]}
               onToggleExpanded={() => toggleExpanded(project.id)}
               onRemove={() => removeProject(project.id)}
@@ -75,17 +77,13 @@ function ProjectsForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addProject} label="Add Project" />
+        <AddEntryButton onClick={addProject} label={t('forms.projects.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

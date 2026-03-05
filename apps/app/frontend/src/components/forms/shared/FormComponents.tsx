@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Plus, Trash2, ChevronDown, ChevronUp, X, HelpCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/Modal';
 import AiTextActions from './AiTextActions';
 
@@ -324,6 +325,7 @@ interface FormEntryHeaderProps {
 }
 
 export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="flex items-center justify-between p-3 sm:p-4 cursor-pointer transition-colors hover:bg-gray-50/50"
@@ -347,7 +349,7 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
           )}
         </button>
         <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
-          {title || 'Untitled'}
+          {title || t('common.untitled')}
         </h3>
       </div>
 
@@ -375,6 +377,7 @@ interface FormEntryBulletProps {
 }
 
 export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="flex items-center justify-between p-3 sm:p-4"
@@ -382,7 +385,7 @@ export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps)
     >
       <div className="flex items-center gap-2 sm:gap-3">
         <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
-          {title || 'Untitled'}
+          {title || t('common.untitled')}
         </h3>
         {hint && <HintIcon title={hint.title} description={hint.description} />}
       </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import CustomSectionEntryForm from '../entries/CustomSectionEntryForm';
@@ -24,6 +25,7 @@ function CustomSectionForm({
   removeSectionItem,
   sectionId,
 }: CustomSectionFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -54,17 +56,17 @@ function CustomSectionForm({
 
   return (
     <div>
-      <FormHeader title="Custom section" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.custom.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        You can add anything you want in the custom section.
+        {t('forms.custom.description')}
       </FormDescription>
 
       <FormSection>
         {customEntries.map((entry) => (
           <div key={entry.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={entry.header || 'Untitled'}
+              title={entry.header || t('common.untitled')}
               isExpanded={expandedItems[entry.id]}
               onToggleExpanded={() => toggleExpanded(entry.id)}
               onRemove={() => removeCustomEntry(entry.id)}
@@ -76,17 +78,13 @@ function CustomSectionForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addCustomEntry} label="Add entry" />
+        <AddEntryButton onClick={addCustomEntry} label={t('forms.custom.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

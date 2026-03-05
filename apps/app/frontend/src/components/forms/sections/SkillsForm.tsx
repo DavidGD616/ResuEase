@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -23,6 +24,7 @@ function SkillsForm({
   updateSectionItem,
   removeSectionItem,
 }: SkillsFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -57,10 +59,10 @@ function SkillsForm({
 
   return (
     <div>
-      <FormHeader title="Skills" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.skills.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        This section is for summarizing your key abilities. Include both hard skills (like technical knowledge) and soft skills (like communication or problem-solving). It gives employers a quick overview of your strengths and how they fit with the job.
+        {t('forms.skills.description')}
       </FormDescription>
 
       {/* AI Skill Suggester Component */}
@@ -75,7 +77,7 @@ function SkillsForm({
         {skills.map((skill) => (
           <div key={skill.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={skill.skillName || 'Untitled'}
+              title={skill.skillName || t('common.untitled')}
               isExpanded={expandedItems[skill.id]}
               onToggleExpanded={() => toggleExpanded(skill.id)}
               onRemove={() => removeSkill(skill.id)}
@@ -87,17 +89,13 @@ function SkillsForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addSkill} label="Add skill" />
+        <AddEntryButton onClick={addSkill} label={t('forms.skills.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

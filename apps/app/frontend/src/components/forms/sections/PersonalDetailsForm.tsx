@@ -1,4 +1,5 @@
 import { Camera } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import {
   FormHeader,
   FormDescription,
@@ -16,61 +17,62 @@ interface PersonalDetailsFormProps {
 }
 
 function PersonalDetailsForm({ formData, handleInputChange }: PersonalDetailsFormProps) {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <FormHeader title="Personal details" />
+      <FormHeader title={t('forms.personal.header')} />
 
       <FormDescription>
-        Personal details such as name and job title are essential in a resume to
-        give the recruiter a quick overview of the candidate.
+        {t('forms.personal.description')}
       </FormDescription>
 
       <FormSection>
         <FormGrid columns={2}>
           <FormInput
-            label="First name"
+            label={t('forms.personal.firstName')}
             type="text"
             value={formData.firstName}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
-            placeholder="David"
+            placeholder={t('forms.personal.firstNamePlaceholder')}
           />
           <FormInput
-            label="Last name"
+            label={t('forms.personal.lastName')}
             type="text"
             value={formData.lastName}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
-            placeholder="Guerrero Diaz"
+            placeholder={t('forms.personal.lastNamePlaceholder')}
           />
         </FormGrid>
 
         <FormInput
-          label="Job title (optional)"
+          label={t('forms.personal.jobTitle')}
           type="text"
           value={formData.jobTitle}
           onChange={(e) => handleInputChange('jobTitle', e.target.value)}
-          placeholder="Frontend developer"
+          placeholder={t('forms.personal.jobTitlePlaceholder')}
         />
 
         <div>
           <div className="flex items-center gap-2 mb-1 sm:mb-2">
             <p className="text-xs sm:text-sm font-medium text-gray-700">
-              Include photo (generally NOT recommended!)
+              {t('forms.personal.includePhoto')}
             </p>
             <HintIcon
-              title="Including Photos on Resumes"
+              title={t('forms.personal.photoHint.title')}
               description={
                 <div>
                   <p className="text-red-600 font-medium mb-4">
-                    ⚠️ ONLY include a photo if photos are standard practice in your country
+                    {t('forms.personal.photoHint.warning')}
                   </p>
                   <p className="mb-4">
-                    <strong>When photos are common:</strong> Some countries (like Germany, parts of Europe) expect photos on resumes.
+                    <strong>{t('forms.personal.photoHint.whenCommon')}</strong> {t('forms.personal.photoHint.whenCommonText')}
                   </p>
                   <p className="mb-4">
-                    <strong>When photos are NOT recommended:</strong> In the US, Canada, UK, and most countries, photos can lead to discrimination and are generally discouraged or even illegal for employers to require.
+                    <strong>{t('forms.personal.photoHint.whenNotRecommended')}</strong> {t('forms.personal.photoHint.whenNotRecommendedText')}
                   </p>
                   <p>
-                    If you're unsure whether photos are normal in your country, DO NOT include one. When in doubt, leave it out.
+                    {t('forms.personal.photoHint.unsure')}
                   </p>
                 </div>
               }
@@ -84,7 +86,7 @@ function PersonalDetailsForm({ formData, handleInputChange }: PersonalDetailsFor
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border-strong)')}
           >
             <Camera className="w-4 h-4" />
-            Add photo <span style={{ color: 'var(--ink-3)', fontWeight: 400 }}>(Optional)</span>
+            {t('forms.personal.addPhoto')} <span style={{ color: 'var(--ink-3)', fontWeight: 400 }}>{t('forms.personal.addPhotoOptional')}</span>
           </button>
         </div>
       </FormSection>
