@@ -124,6 +124,45 @@ describe('buildTextTransformPrompt — modes', () => {
   });
 });
 
+// ─── Locale-aware language instructions ───────────────────────────────────────
+
+describe('buildTextTransformPrompt — locale', () => {
+  const SECTION = 'Employment History';
+  const FIELD = 'Responsibility / Achievement';
+
+  it('defaults to English instruction when no locale is provided', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null);
+    expect(prompt).toContain('Respond in English.');
+  });
+
+  it('uses English instruction when locale is "en"', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null, 'en');
+    expect(prompt).toContain('Respond in English.');
+  });
+
+  it('uses Spanish instruction when locale is "es"', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null, 'es');
+    expect(prompt).toContain('Respond in Latin American Spanish');
+  });
+
+  it('Spanish prompt does not contain the English instruction', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null, 'es');
+    expect(prompt).not.toContain('Respond in English.');
+  });
+
+  it('English prompt does not contain the Spanish instruction', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null, 'en');
+    expect(prompt).not.toContain('Respond in Latin American Spanish');
+  });
+
+  it('Spanish prompt still includes user text between boundary markers', () => {
+    const prompt = buildTextTransformPrompt('rewrite', SECTION, FIELD, TEXT, null, 'es');
+    expect(prompt).toContain('--- BEGIN USER TEXT ---');
+    expect(prompt).toContain(TEXT);
+    expect(prompt).toContain('--- END USER TEXT ---');
+  });
+});
+
 // ─── min-word counts per section ─────────────────────────────────────────────
 
 describe('buildTextTransformPrompt — minimum word counts', () => {

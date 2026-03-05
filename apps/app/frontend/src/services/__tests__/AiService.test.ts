@@ -62,7 +62,8 @@ describe('AIService.transformText', () => {
     expect(init.method).toBe('POST');
     expect(init.headers['Authorization']).toBe(`Bearer ${VALID_TOKEN}`);
     expect(init.headers['Content-Type']).toBe('application/json');
-    expect(JSON.parse(init.body)).toEqual(VALID_PAYLOAD);
+    // locale is appended by AiService using the active i18n language
+    expect(JSON.parse(init.body)).toEqual(expect.objectContaining(VALID_PAYLOAD));
   });
 
   it('returns { success: true, data } on a 200 response', async () => {
@@ -159,6 +160,7 @@ describe('AIService.transformText', () => {
     await AIService.transformText(fullPayload);
 
     const [, init] = mockFetch.mock.calls[0];
-    expect(JSON.parse(init.body)).toEqual(fullPayload);
+    // locale is appended by AiService using the active i18n language
+    expect(JSON.parse(init.body)).toEqual(expect.objectContaining(fullPayload));
   });
 });
