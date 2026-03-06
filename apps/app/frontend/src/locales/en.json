@@ -113,6 +113,25 @@
       "noNewSkills": "No new skills could be suggested. You may already have comprehensive skills listed."
     }
   },
+  "resume": {
+    "sections": {
+      "summary": "Professional Summary",
+      "employment": "Professional Experience",
+      "internships": "Internship Experience",
+      "education": "Education",
+      "projects": "Projects",
+      "links": "Portfolio & Links",
+      "references": "References",
+      "custom": "Custom Section"
+    },
+    "skillGroups": {
+      "courses": "Certifications",
+      "skills": "Skills",
+      "technologiesSkills": "Technologies",
+      "languages": "Languages",
+      "hobbies": "Interests"
+    }
+  },
   "forms": {
     "personal": {
       "header": "Personal details",

@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { processHeaderData, processSectionData } from '../../utils/resumeDataProcessors';
 import type { FormData, SidebarItem } from '../../types/resume';
 
@@ -345,16 +346,18 @@ const ListSection = ({ data, sectionId }: { data: ProcessedData; sectionId: stri
 const CombinedSkillsSection = ({
   formData,
   availableSections,
+  t,
 }: {
   formData: FormData;
   availableSections: string[];
+  t: (key: string) => string;
 }) => {
-  const sectionMap: Record<string, { title: string; key: string }> = {
-    courses: { title: 'CERTIFICATIONS', key: 'courses' },
-    skills: { title: 'SKILLS', key: 'skills' },
-    technologiesSkills: { title: 'TECHNOLOGIES', key: 'technologiesSkills' },
-    languages: { title: 'LANGUAGES', key: 'languages' },
-    hobbies: { title: 'INTERESTS', key: 'hobbies' },
+  const sectionMap: Record<string, { titleKey: string; key: string }> = {
+    courses: { titleKey: 'resume.skillGroups.courses', key: 'courses' },
+    skills: { titleKey: 'resume.skillGroups.skills', key: 'skills' },
+    technologiesSkills: { titleKey: 'resume.skillGroups.technologiesSkills', key: 'technologiesSkills' },
+    languages: { titleKey: 'resume.skillGroups.languages', key: 'languages' },
+    hobbies: { titleKey: 'resume.skillGroups.hobbies', key: 'hobbies' },
   };
 
   const sectionsWithData: string[] = [];
@@ -366,7 +369,7 @@ const CombinedSkillsSection = ({
       if (processor) {
         const data = processor(formData);
         if (!data.isEmpty) {
-          sectionsWithData.push(sectionMap[sectionId].title);
+          sectionsWithData.push(t(sectionMap[sectionId].titleKey));
           sectionData[sectionId] = data;
         }
       }
@@ -392,7 +395,7 @@ const CombinedSkillsSection = ({
       case 'courses':
         return (
           <>
-            <strong>Certifications:</strong>{' '}
+            <strong>{t('resume.skillGroups.courses')}:</strong>{' '}
             {items.map((course, index) => (
               <span key={course.id ?? index}>
                 {course.courseName}
@@ -405,7 +408,7 @@ const CombinedSkillsSection = ({
       case 'skills':
         return (
           <>
-            <strong>Skills:</strong>{' '}
+            <strong>{t('resume.skillGroups.skills')}:</strong>{' '}
             {items.map((skill, index) => (
               <span key={skill.id ?? index}>
                 {skill.skillName}
@@ -418,7 +421,7 @@ const CombinedSkillsSection = ({
       case 'technologiesSkills':
         return (
           <>
-            <strong>Technologies:</strong>{' '}
+            <strong>{t('resume.skillGroups.technologiesSkills')}:</strong>{' '}
             {items.map((tech, index) => (
               <span key={tech.id ?? index}>
                 {tech.technologiesSkillName}
@@ -431,7 +434,7 @@ const CombinedSkillsSection = ({
       case 'languages':
         return (
           <>
-            <strong>Languages:</strong>{' '}
+            <strong>{t('resume.skillGroups.languages')}:</strong>{' '}
             {items.map((language, index) => {
               const languageText =
                 language.language && language.proficiency && language.proficiency !== 'Not applicable'
@@ -451,7 +454,7 @@ const CombinedSkillsSection = ({
       case 'hobbies':
         return (
           <>
-            <strong>Interests:</strong>{' '}
+            <strong>{t('resume.skillGroups.hobbies')}:</strong>{' '}
             {items.map((hobby, index) => (
               <span key={hobby.id ?? index}>
                 {hobby.hobbyName}
@@ -539,6 +542,7 @@ interface HarvardTemplateProps {
 }
 
 export const HarvardTemplate = memo(({ formData, sidebarItems }: HarvardTemplateProps) => {
+  const { t } = useTranslation();
   const headerData = processHeaderData(formData);
 
   const combinedSkillsSections = ['courses', 'skills', 'technologiesSkills', 'languages', 'hobbies'];
@@ -556,7 +560,13 @@ export const HarvardTemplate = memo(({ formData, sidebarItems }: HarvardTemplate
   const renderSection = (sectionId: string) => {
     if (sectionId.startsWith('custom-')) {
       const sectionData = processSectionData.custom(formData, sectionId);
-      return <CustomSection key={sectionId} data={sectionData as ProcessedData} />;
+      // Use the sidebar item's label for custom section title
+      const customItem = sidebarItems.find((item) => item.id === sectionId);
+      const translatedData = {
+        ...sectionData,
+        title: customItem ? customItem.label : t('resume.sections.custom'),
+      };
+      return <CustomSection key={sectionId} data={translatedData as ProcessedData} />;
     }
 
     const processor = (processSectionData as unknown as Record<string, SectionProcessor | undefined>)[sectionId];
@@ -565,10 +575,18 @@ export const HarvardTemplate = memo(({ formData, sidebarItems }: HarvardTemplate
     const sectionData = processor(formData);
     if (sectionData.isEmpty) return null;
 
+    // Override the hardcoded English title with the translated one
+    const titleKey = `resume.sections.${sectionId}`;
+    const translatedTitle = t(titleKey);
+    const translatedData = {
+      ...sectionData,
+      title: translatedTitle !== titleKey ? translatedTitle : sectionData.title,
+    };
+
     if (sectionId === 'summary') {
-      return <TextSection key={sectionId} data={sectionData} />;
+      return <TextSection key={sectionId} data={translatedData} />;
     } else {
-      return <ListSection key={sectionId} data={sectionData} sectionId={sectionId} />;
+      return <ListSection key={sectionId} data={translatedData} sectionId={sectionId} />;
     }
   };
 
@@ -582,6 +600,7 @@ export const HarvardTemplate = memo(({ formData, sidebarItems }: HarvardTemplate
         <CombinedSkillsSection
           formData={formData}
           availableSections={availableCombinedSections}
+          t={t}
         />
       )}
     </div>

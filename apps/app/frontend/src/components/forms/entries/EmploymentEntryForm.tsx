@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton, HintIcon } from '../shared/FormComponents';
 import type { EmploymentItem } from '../../../types/resume';
@@ -9,6 +10,7 @@ interface EmploymentEntryFormProps {
 }
 
 function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntryFormProps) {
+  const { t } = useTranslation();
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(experience.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -34,77 +36,67 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
     <FormContainer>
       <FormGrid columns={2}>
         <FormInput
-          label="Job title"
+          label={t('forms.employment.jobTitle')}
           hint={{
-            title: 'About this field',
+            title: t('forms.employment.jobTitleHint.title'),
             description: (
               <div className="text-left">
-                <p className="mb-4">
-                  It's okay to adjust your job title on your resume so it lines up better with the role you're applying for, as long as it's still true to what you actually did. Recruiters won't care, and it can make a big difference in how your application is received.
-                </p>
-                <p className="mb-4">
-                  For example, if your official title was "Data Analyst" but your work included engineering tasks, you could list it as "Data Analytics Engineer" when applying to a "Data Engineer" role. That small change makes your experience look like a closer match.
-                </p>
-                <p>
-                  And don't feel bad about it—job titles aren't some universal standard. Companies make them up, and sometimes they even use vague ones on purpose so their people don't get poached on LinkedIn.
-                </p>
+                <p className="mb-4">{t('forms.employment.jobTitleHint.p1')}</p>
+                <p className="mb-4">{t('forms.employment.jobTitleHint.p2')}</p>
+                <p>{t('forms.employment.jobTitleHint.p3')}</p>
               </div>
             ),
           }}
           type="text"
           value={experience.jobTitle}
           onChange={(e) => handleChange('jobTitle', e.target.value)}
-          placeholder="Product Designer"
+          placeholder={t('forms.employment.jobTitlePlaceholder')}
         />
         <FormInput
-          label="Company name"
+          label={t('forms.employment.company')}
           type="text"
           value={experience.company}
           onChange={(e) => handleChange('company', e.target.value)}
-          placeholder="Apple Inc."
+          placeholder={t('forms.employment.companyPlaceholder')}
         />
       </FormGrid>
 
       <FormGrid columns={3}>
         <FormInput
-          label="Start date"
+          label={t('forms.employment.startDate')}
           type="text"
           value={experience.startDate}
           onChange={(e) => handleChange('startDate', e.target.value)}
-          placeholder="Jan 2016"
+          placeholder={t('forms.employment.startDatePlaceholder')}
         />
         <FormInput
-          label="End date"
+          label={t('forms.employment.endDate')}
           hint={{
-            title: 'Date Start - Date End',
+            title: t('forms.employment.endDateHint.title'),
             description: (
               <div className="text-left">
-                <p className="mb-4">
-                  Try to keep your work history clean without big overlaps or long gaps. It's fine to polish the way you present dates, but don't stretch the truth if it's obvious you weren't working for a while.
-                </p>
-                <p className="mb-4">
-                  One way to make gaps less noticeable is to list only years instead of months. For example, "2019–2021" looks smoother than "May 2019–January 2021." This works especially well for people with 10+ years of experience, where exact months don't matter as much anyway.
-                </p>
+                <p className="mb-4">{t('forms.employment.endDateHint.p1')}</p>
+                <p className="mb-4">{t('forms.employment.endDateHint.p2')}</p>
               </div>
             ),
           }}
           type="text"
-          value={experience.isCurrentJob ? 'Present' : experience.endDate}
+          value={experience.isCurrentJob ? t('forms.employment.present') : experience.endDate}
           onChange={(e) => handleChange('endDate', e.target.value)}
-          placeholder={experience.isCurrentJob ? 'Present' : 'Feb 2019'}
+          placeholder={experience.isCurrentJob ? t('forms.employment.present') : t('forms.employment.endDatePlaceholder')}
           disabled={experience.isCurrentJob}
         />
         <FormInput
-          label="Location (City, State)"
+          label={t('forms.employment.location')}
           type="text"
           value={experience.location}
           onChange={(e) => handleChange('location', e.target.value)}
-          placeholder="San Francisco, CA"
+          placeholder={t('forms.employment.locationPlaceholder')}
         />
       </FormGrid>
 
       <div className="mb-3 sm:mb-4">
-        <label className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-[var(--ink-2)] cursor-pointer">
+        <label className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-(--ink-2) cursor-pointer">
           <input
             type="checkbox"
             checked={experience.isCurrentJob || false}
@@ -118,20 +110,20 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
             }}
             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
           />
-          I currently work here
+          {t('forms.employment.currentlyWork')}
         </label>
       </div>
 
       <div>
         <div className="flex items-center gap-2 mb-1 sm:mb-2">
-          <label className="block text-xs sm:text-sm font-medium text-[var(--ink-2)]">
-            Company Description
+          <label className="block text-xs sm:text-sm font-medium text-(--ink-2)">
+            {t('forms.employment.companyDescription')}
           </label>
           <HintIcon
-            title="About this Section"
+            title={t('forms.employment.companyDescriptionHint.title')}
             description={
               <p className="text-left font-medium">
-                This section helps employers understand the company you worked for. Keep the description short, but include key details that add weight. For example, mention if the company is a Fortune 500 or Fortune 100, if they've raised major funding, or if they bring in significant revenue (over $100M) or have a large market cap (over $1B). Those details give context and make your experience stand out more.
+                {t('forms.employment.companyDescriptionHint.description')}
               </p>
             }
           />
@@ -139,7 +131,7 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
         <FormTextarea
           value={experience.description}
           onChange={(e) => handleChange('description', e.target.value)}
-          placeholder="Brief summary of role and impact."
+          placeholder={t('forms.employment.companyDescriptionPlaceholder')}
           rows={3}
           aiTransform={{
             jobTitle,
@@ -150,31 +142,26 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
         />
       </div>
 
-      {/* Responsibilities / Achievements */}
       {bulletPoints.map((bullet, index) => (
         <div key={index} className="border border-gray-300 rounded-lg mt-3">
           <FormEntryBullet
             hint={{
-              title: 'About this field',
+              title: t('forms.employment.responsibilitiesHint.title'),
               description: (
                 <div className="text-left">
-                  <p className="mb-4">
-                    This is the spot to highlight what you did at the company your key responsibilities or the achievements you're most proud of.
-                  </p>
-                  <p>
-                    Example: Led the full product development lifecycle from concept to launch, making sure it matched both market needs and company goals.
-                  </p>
+                  <p className="mb-4">{t('forms.employment.responsibilitiesHint.p1')}</p>
+                  <p>{t('forms.employment.responsibilitiesHint.example')}</p>
                 </div>
               ),
             }}
-            title="Responsibilities / Achievements"
+            title={t('forms.employment.responsibilities')}
             onRemove={() => handleRemoveBulletPoint(index)}
           />
           <div className="p-3 sm:p-4">
             <FormTextarea
               value={bullet}
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
-              placeholder="• Led cross-functional teams to deliver product improvements."
+              placeholder={t('forms.employment.bulletPlaceholder')}
               rows={3}
               aiTransform={{
                 jobTitle,
@@ -188,7 +175,7 @@ function EmploymentEntryForm({ experience, onUpdate, jobTitle }: EmploymentEntry
       ))}
 
       <div className="mt-3">
-        <AddEntryButton onClick={handleAddBulletPoint} label="Add Bullet Point" />
+        <AddEntryButton onClick={handleAddBulletPoint} label={t('forms.employment.addBullet')} />
       </div>
     </FormContainer>
   );

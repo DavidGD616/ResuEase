@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormContainer } from '../shared/FormComponents';
 import type { SkillItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface SkillEntryFormProps {
 }
 
 function SkillEntryForm({ skill, onUpdate }: SkillEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(skill.id, field, value);
   };
@@ -14,11 +17,11 @@ function SkillEntryForm({ skill, onUpdate }: SkillEntryFormProps) {
   return (
     <FormContainer>
       <FormInput
-        label="Skill name"
+        label={t('forms.skills.skillName')}
         type="text"
         value={skill.skillName}
         onChange={(e) => handleChange('skillName', e.target.value)}
-        placeholder="Project Management"
+        placeholder={t('forms.skills.skillNamePlaceholder')}
       />
     </FormContainer>
   );

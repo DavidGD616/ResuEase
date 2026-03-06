@@ -113,6 +113,25 @@
       "noNewSkills": "No se pudieron sugerir nuevas habilidades. Es posible que ya tengas una lista completa de habilidades."
     }
   },
+  "resume": {
+    "sections": {
+      "summary": "Resumen Profesional",
+      "employment": "Experiencia Laboral",
+      "internships": "Prácticas Profesionales",
+      "education": "Educación",
+      "projects": "Proyectos",
+      "links": "Portafolio y Vínculos",
+      "references": "Referencias",
+      "custom": "Sección Personalizada"
+    },
+    "skillGroups": {
+      "courses": "Certificaciones",
+      "skills": "Habilidades",
+      "technologiesSkills": "Tecnologías",
+      "languages": "Idiomas",
+      "hobbies": "Intereses"
+    }
+  },
   "forms": {
     "personal": {
       "header": "Datos personales",

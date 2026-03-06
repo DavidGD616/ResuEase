@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
 import type { InternshipItem } from '../../../types/resume';
@@ -9,6 +10,7 @@ interface InternshipEntryFormProps {
 }
 
 function InternshipEntryForm({ internship, onUpdate, jobTitle }: InternshipEntryFormProps) {
+  const { t } = useTranslation();
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(internship.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -34,53 +36,53 @@ function InternshipEntryForm({ internship, onUpdate, jobTitle }: InternshipEntry
     <FormContainer>
       <FormGrid columns={2}>
         <FormInput
-          label="Job title"
+          label={t('forms.internships.jobTitle')}
           type="text"
           value={internship.jobTitle}
           onChange={(e) => handleChange('jobTitle', e.target.value)}
-          placeholder="Product Design Intern"
+          placeholder={t('forms.internships.jobTitlePlaceholder')}
         />
         <FormInput
-          label="Company name"
+          label={t('forms.internships.company')}
           type="text"
           value={internship.company}
           onChange={(e) => handleChange('company', e.target.value)}
-          placeholder="Apple Inc."
+          placeholder={t('forms.internships.companyPlaceholder')}
         />
       </FormGrid>
 
       <FormGrid columns={3}>
         <FormInput
-          label="Start date"
+          label={t('forms.internships.startDate')}
           type="text"
           value={internship.startDate}
           onChange={(e) => handleChange('startDate', e.target.value)}
-          placeholder="Jun 2020"
+          placeholder={t('forms.internships.startDatePlaceholder')}
         />
         <FormInput
-          label="End date"
+          label={t('forms.internships.endDate')}
           type="text"
           value={internship.endDate}
           onChange={(e) => handleChange('endDate', e.target.value)}
-          placeholder="Aug 2020"
+          placeholder={t('forms.internships.endDatePlaceholder')}
         />
         <FormInput
-          label="Location"
+          label={t('forms.internships.location')}
           type="text"
           value={internship.location}
           onChange={(e) => handleChange('location', e.target.value)}
-          placeholder="San Francisco, CA"
+          placeholder={t('forms.internships.locationPlaceholder')}
         />
       </FormGrid>
 
       <div>
-        <label className="block text-xs sm:text-sm font-medium text-[var(--ink-2)] mb-1 sm:mb-2">
-          Company / Role Description
+        <label className="block text-xs sm:text-sm font-medium text-(--ink-2) mb-1 sm:mb-2">
+          {t('forms.internships.roleDescription')}
         </label>
         <FormTextarea
           value={internship.description}
           onChange={(e) => handleChange('description', e.target.value)}
-          placeholder="Brief summary of role and impact."
+          placeholder={t('forms.internships.descriptionPlaceholder')}
           rows={3}
           aiTransform={{
             jobTitle,
@@ -91,18 +93,17 @@ function InternshipEntryForm({ internship, onUpdate, jobTitle }: InternshipEntry
         />
       </div>
 
-      {/* Responsibilities / Achievements */}
       {bulletPoints.map((bullet, index) => (
         <div key={index} className="border border-gray-300 rounded-lg mt-3">
           <FormEntryBullet
-            title="Responsibilities / Achievements"
+            title={t('forms.internships.responsibilities')}
             onRemove={() => handleRemoveBulletPoint(index)}
           />
           <div className="p-3 sm:p-4">
             <FormTextarea
               value={bullet}
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
-              placeholder="• Worked with teams to improve product features and overall user experience."
+              placeholder={t('forms.internships.bulletPlaceholder')}
               rows={3}
               aiTransform={{
                 jobTitle,
@@ -116,7 +117,7 @@ function InternshipEntryForm({ internship, onUpdate, jobTitle }: InternshipEntry
       ))}
 
       <div className="mt-3">
-        <AddEntryButton onClick={handleAddBulletPoint} label="Add Bullet Point" />
+        <AddEntryButton onClick={handleAddBulletPoint} label={t('forms.internships.addBullet')} />
       </div>
     </FormContainer>
   );

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormContainer } from '../shared/FormComponents';
 import type { TechSkillItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface TechnologiesSkillsEntryFormProps {
 }
 
 function TechnologiesSkillsEntryForm({ technologiesSkill, onUpdate }: TechnologiesSkillsEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(technologiesSkill.id, field, value);
   };
@@ -14,11 +17,11 @@ function TechnologiesSkillsEntryForm({ technologiesSkill, onUpdate }: Technologi
   return (
     <FormContainer>
       <FormInput
-        label="Technology/Skill name"
+        label={t('forms.technologies.skillName')}
         type="text"
         value={technologiesSkill.technologiesSkillName}
         onChange={(e) => handleChange('technologiesSkillName', e.target.value)}
-        placeholder="React"
+        placeholder={t('forms.technologies.skillNamePlaceholder')}
       />
     </FormContainer>
   );

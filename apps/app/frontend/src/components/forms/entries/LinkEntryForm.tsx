@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormGrid, FormContainer } from '../shared/FormComponents';
 import type { LinkItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface LinkEntryFormProps {
 }
 
 function LinkEntryForm({ link, onUpdate }: LinkEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(link.id, field, value);
   };
@@ -15,18 +18,18 @@ function LinkEntryForm({ link, onUpdate }: LinkEntryFormProps) {
     <FormContainer>
       <FormGrid columns={2}>
         <FormInput
-          label="Link title"
+          label={t('forms.links.linkTitle')}
           type="text"
           value={link.linkTitle}
           onChange={(e) => handleChange('linkTitle', e.target.value)}
-          placeholder="My Website"
+          placeholder={t('forms.links.linkTitlePlaceholder')}
         />
         <FormInput
-          label="URL"
+          label={t('forms.links.url')}
           type="url"
           value={link.url}
           onChange={(e) => handleChange('url', e.target.value)}
-          placeholder="www.example.com"
+          placeholder={t('forms.links.urlPlaceholder')}
         />
       </FormGrid>
     </FormContainer>
