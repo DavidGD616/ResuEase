@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useFormData } from '../hooks/useFormData';
 import { useSidebarStorage } from '../hooks/useSidebarStorage';
@@ -12,6 +13,7 @@ import MainContent from '../components/layout/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const userId = user?.id ?? '';
 
@@ -122,14 +124,14 @@ function ResumeBuilder() {
           className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'edit' ? 'border-b-2 border-blue-600' : ''}`}
           style={{ color: activeTab === 'edit' ? 'var(--accent)' : 'var(--ink-3)' }}
         >
-          Edit
+          {t('builder.editTab')}
         </button>
         <button
           onClick={() => setActiveTab('preview')}
           className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'preview' ? 'border-b-2 border-blue-600' : ''}`}
           style={{ color: activeTab === 'preview' ? 'var(--accent)' : 'var(--ink-3)' }}
         >
-          Preview
+          {t('builder.previewTab')}
         </button>
       </div>
 
