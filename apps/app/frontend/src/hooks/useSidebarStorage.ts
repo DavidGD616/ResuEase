@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { SIDEBAR_ITEMS } from '../data/sidebarItems';
+import { SIDEBAR_ITEMS, ADDITIONAL_SECTION } from '../data/sidebarItems';
 import {
   User, Phone, FileDown, Briefcase, GraduationCap, Award,
   MessageSquare, Globe, Link, Gamepad2, Code, FolderKanban, Cpu,
@@ -33,11 +33,17 @@ const serializeItems = (items: SidebarItem[]): SerializedSidebarItem[] => {
   }));
 };
 
+const ALL_KNOWN_SECTIONS = [...SIDEBAR_ITEMS, ...ADDITIONAL_SECTION];
+
 const deserializeItems = (items: SerializedSidebarItem[]): SidebarItem[] => {
-  return items.map((item) => ({
-    ...item,
-    icon: ICON_MAP[item.iconName] ?? Code,
-  }));
+  return items.map((item) => {
+    const known = ALL_KNOWN_SECTIONS.find((s) => s.id === item.id);
+    return {
+      ...item,
+      icon: ICON_MAP[item.iconName] ?? Code,
+      labelKey: item.labelKey ?? known?.labelKey,
+    };
+  });
 };
 
 export const useSidebarStorage = (userId: string) => {
