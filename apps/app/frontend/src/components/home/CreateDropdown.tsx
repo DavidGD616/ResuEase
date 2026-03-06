@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Mail, FileX } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { LucideIcon } from 'lucide-react';
 
 interface CreateDropdownProps {
@@ -17,6 +18,7 @@ interface DropdownItem {
 function CreateDropdown({ isOpen, onClose }: CreateDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,9 +54,9 @@ function CreateDropdown({ isOpen, onClose }: CreateDropdownProps) {
   if (!isOpen) return null;
 
   const items: DropdownItem[] = [
-    { id: 'resume', icon: FileText, label: 'New resume' },
-    { id: 'cover-letter', icon: Mail, label: 'New cover letter' },
-    { id: 'resignation-letter', icon: FileX, label: 'New resignation letter' },
+    { id: 'resume', icon: FileText, label: t('home.createDropdown.newResume') },
+    { id: 'cover-letter', icon: Mail, label: t('home.createDropdown.newCoverLetter') },
+    { id: 'resignation-letter', icon: FileX, label: t('home.createDropdown.newResignationLetter') },
   ];
 
   const comingSoon = new Set(['cover-letter', 'resignation-letter']);
@@ -80,7 +82,7 @@ function CreateDropdown({ isOpen, onClose }: CreateDropdownProps) {
               <Icon className="w-5 h-5" style={{ color: 'var(--ink-3)' }} />
               <div>
                 <span className="text-sm" style={{ color: 'var(--ink-2)' }}>{item.label}</span>
-                {disabled && <p className="text-xs mt-0.5" style={{ color: 'var(--ink-3)' }}>Coming soon</p>}
+                {disabled && <p className="text-xs mt-0.5" style={{ color: 'var(--ink-3)' }}>{t('home.createDropdown.comingSoon')}</p>}
               </div>
             </button>
           );

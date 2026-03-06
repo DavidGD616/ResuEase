@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Plus, Trash2, ChevronDown, ChevronUp, X, HelpCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/Modal';
 import AiTextActions from './AiTextActions';
 
@@ -203,9 +204,14 @@ export function FormTextarea({ label, hint, aiTransform, ...props }: FormTextare
   );
 }
 
+interface FormSelectOption {
+  value: string;
+  label: string;
+}
+
 interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  options: string[];
+  options: (string | FormSelectOption)[];
   hint?: HintConfig;
 }
 
@@ -232,11 +238,15 @@ export function FormSelect({ label, options, hint, ...props }: FormSelectProps) 
           }}
           {...props}
         >
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          {options.map((option) => {
+            const value = typeof option === 'string' ? option : option.value;
+            const label = typeof option === 'string' ? option : option.label;
+            return (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            );
+          })}
         </select>
         <ChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 pointer-events-none" style={{ color: 'var(--ink-3)' }} />
       </div>
@@ -324,6 +334,7 @@ interface FormEntryHeaderProps {
 }
 
 export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove }: FormEntryHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="flex items-center justify-between p-3 sm:p-4 cursor-pointer transition-colors hover:bg-gray-50/50"
@@ -347,7 +358,7 @@ export function FormEntryHeader({ title, isExpanded, onToggleExpanded, onRemove 
           )}
         </button>
         <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
-          {title || 'Untitled'}
+          {title || t('common.untitled')}
         </h3>
       </div>
 
@@ -375,6 +386,7 @@ interface FormEntryBulletProps {
 }
 
 export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="flex items-center justify-between p-3 sm:p-4"
@@ -382,7 +394,7 @@ export function FormEntryBullet({ title, onRemove, hint }: FormEntryBulletProps)
     >
       <div className="flex items-center gap-2 sm:gap-3">
         <h3 className="font-medium text-sm sm:text-base" style={{ color: 'var(--ink)' }}>
-          {title || 'Untitled'}
+          {title || t('common.untitled')}
         </h3>
         {hint && <HintIcon title={hint.title} description={hint.description} />}
       </div>

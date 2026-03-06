@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormContainer } from '../shared/FormComponents';
 import type { HobbyItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface HobbyEntryFormProps {
 }
 
 function HobbyEntryForm({ hobby, onUpdate }: HobbyEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(hobby.id, field, value);
   };
@@ -14,11 +17,11 @@ function HobbyEntryForm({ hobby, onUpdate }: HobbyEntryFormProps) {
   return (
     <FormContainer>
       <FormInput
-        label="Hobby name"
+        label={t('forms.hobbies.hobbyName')}
         type="text"
         value={hobby.hobbyName}
         onChange={(e) => handleChange('hobbyName', e.target.value)}
-        placeholder="Photography"
+        placeholder={t('forms.hobbies.hobbyNamePlaceholder')}
       />
     </FormContainer>
   );

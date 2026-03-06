@@ -1,5 +1,6 @@
 import { Check, Loader2, AlertCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type SaveStatusValue = 'saving' | 'saved' | 'error';
 
@@ -15,14 +16,16 @@ interface StatusConfig {
 }
 
 function SaveStatus({ status }: SaveStatusProps) {
+  const { t } = useTranslation();
+
   const getStatusConfig = (): StatusConfig | null => {
     switch (status) {
       case 'saving':
-        return { icon: Loader2, text: 'Saving...', color: 'var(--ink-3)', spin: true };
+        return { icon: Loader2, text: t('status.saving'), color: 'var(--ink-3)', spin: true };
       case 'saved':
-        return { icon: Check, text: 'Saved', color: '#16a34a' };
+        return { icon: Check, text: t('status.saved'), color: '#16a34a' };
       case 'error':
-        return { icon: AlertCircle, text: 'Error saving', color: 'var(--danger)' };
+        return { icon: AlertCircle, text: t('status.errorSaving'), color: 'var(--danger)' };
       default:
         return null;
     }

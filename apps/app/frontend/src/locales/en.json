@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "brand": "ResuEase",
+    "download": "Download",
+    "downloading": "Generating..."
+  },
+  "auth": {
+    "title": "Welcome to ResuEase",
+    "subtitle": "Build and download your professional resume"
+  },
+  "home": {
+    "tabs": {
+      "resumes": "Resumes",
+      "coverLetters": "Cover letters",
+      "resignationLetters": "Resignation letters"
+    },
+    "signOut": "Sign Out",
+    "create": "Create",
+    "createDropdown": {
+      "newResume": "New resume",
+      "newCoverLetter": "New cover letter",
+      "newResignationLetter": "New resignation letter",
+      "comingSoon": "Coming soon"
+    },
+    "emptyState": {
+      "title": "Create your first resume",
+      "cta": "Build my resume"
+    }
+  },
+  "sidebar": {
+    "personalDetails": "Personal details",
+    "contactInformation": "Contact information",
+    "employmentHistory": "Employment history",
+    "education": "Education",
+    "projects": "Projects",
+    "courses": "Courses",
+    "skills": "Skills",
+    "technologies": "Technologies",
+    "hobbies": "Hobbies",
+    "professionalSummary": "Professional summary",
+    "internships": "Internships",
+    "references": "References",
+    "languages": "Languages",
+    "links": "Links",
+    "customSection": "Custom section",
+    "addAdditionalSection": "Additional section"
+  },
+  "common": {
+    "gotIt": "Got it",
+    "untitled": "Untitled"
+  },
+  "modal": {
+    "deleteSection": {
+      "title": "Are you sure you want to delete this section?",
+      "message": "You can't undo this action.",
+      "confirm": "Delete Section",
+      "cancel": "Cancel"
+    },
+    "deleteEntry": {
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "status": {
+    "saving": "Saving...",
+    "saved": "Saved",
+    "errorSaving": "Error saving"
+  },
+  "bottomNav": {
+    "back": "Back",
+    "next": "Next",
+    "reorderMobile": "Reorder",
+    "reorderDesktop": "Reorder sections"
+  },
+  "reorder": {
+    "back": "Back",
+    "done": "Done",
+    "addSection": "Add section",
+    "deleteTitle": "Delete {{sectionLabel}}?",
+    "deleteMessage": "This will permanently remove this section and all its content.",
+    "deleteConfirm": "Delete Section",
+    "deleteCancel": "Cancel"
+  },
+  "builder": {
+    "editTab": "Edit",
+    "previewTab": "Preview",
+    "customSectionName": "Custom section {{counter}}"
+  },
+  "ai": {
+    "textActions": {
+      "rewrite": "Rewrite",
+      "addMetrics": "Add metrics",
+      "makeStronger": "Make stronger",
+      "rewriting": "Rewriting…",
+      "addingMetrics": "Adding metrics…",
+      "makingStronger": "Making stronger…",
+      "suggestionHeader": "AI Suggestion — {{mode}}",
+      "accept": "Accept",
+      "discard": "Discard",
+      "error": "Failed to transform text. Please try again."
+    },
+    "skillSuggester": {
+      "show": "Get AI Skill Suggestions",
+      "hide": "Hide AI Suggestions",
+      "headerTechnical": "AI Technical Skill Suggestions",
+      "headerSoft": "AI Soft Skill Suggestions",
+      "jobTitleLabel": "Job Title:",
+      "jobTitleNotSet": "Not set",
+      "jobTitleRequired": "Please set your job title in the Personal Details section first",
+      "getSuggestions": "Get Suggestions",
+      "generating": "Generating suggestions...",
+      "clickToAdd": "Click to add skills to your resume:",
+      "noNewSkills": "No new skills could be suggested. You may already have comprehensive skills listed."
+    }
+  },
+  "resume": {
+    "sections": {
+      "summary": "Professional Summary",
+      "employment": "Professional Experience",
+      "internships": "Internship Experience",
+      "education": "Education",
+      "projects": "Projects",
+      "links": "Portfolio & Links",
+      "references": "References",
+      "custom": "Custom Section"
+    },
+    "skillGroups": {
+      "courses": "Certifications",
+      "skills": "Skills",
+      "technologiesSkills": "Technologies",
+      "languages": "Languages",
+      "hobbies": "Interests"
+    }
+  },
+  "forms": {
+    "personal": {
+      "header": "Personal details",
+      "description": "Personal details such as name and job title are essential in a resume to give the recruiter a quick overview of the candidate.",
+      "firstName": "First name",
+      "firstNamePlaceholder": "David",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Guerrero Diaz",
+      "jobTitle": "Job title (optional)",
+      "jobTitlePlaceholder": "Frontend developer",
+      "includePhoto": "Include photo (generally NOT recommended!)",
+      "addPhoto": "Add photo",
+      "addPhotoOptional": "(Optional)",
+      "photoHint": {
+        "title": "Including Photos on Resumes",
+        "warning": "⚠️ ONLY include a photo if photos are standard practice in your country",
+        "whenCommon": "When photos are common:",
+        "whenCommonText": "Some countries (like Germany, parts of Europe) expect photos on resumes.",
+        "whenNotRecommended": "When photos are NOT recommended:",
+        "whenNotRecommendedText": "In the US, Canada, UK, and most countries, photos can lead to discrimination and are generally discouraged or even illegal for employers to require.",
+        "unsure": "If you're unsure whether photos are normal in your country, DO NOT include one. When in doubt, leave it out."
+      }
+    },
+    "contact": {
+      "header": "Contact information",
+      "description": "Including your contacts in your resume is crucial so potential employers can easily get in touch with you.",
+      "email": "Email",
+      "emailPlaceholder": "john@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 999 888 7777",
+      "location": "Location",
+      "locationPlaceholder": "San Diego, CA",
+      "locationHint": {
+        "title": "Location (City, State)",
+        "description": "We recommend putting the closest big city vs smaller towns that people likely won't recognize."
+      },
+      "portfolio": "Portfolio",
+      "portfolioPlaceholder": "https://davidguerrero.co/",
+      "portfolioHint": {
+        "title": "Portfolio Link",
+        "description": "We don't recommend linking your LinkedIn because it opens you up to screeners' visual biases and possible discrimination, and the information on your LinkedIn should match your resume anyway – be sure to update your LI though after this process, so when you apply for roles on LinkedIn, it's just as impressive as your resume."
+      }
+    },
+    "summary": {
+      "header": "Professional summary",
+      "description": "Include your professional title, years of experience, and your most impressive achievements. Each achievement should be measurable and expressed in numbers.",
+      "label": "Summary",
+      "placeholder": "e.g. Passionate frontend developer with 3+ years of experience..."
+    },
+    "employment": {
+      "header": "Employment history",
+      "description": "Show employers your past experience and what you have accomplished. Include simple, clear examples with action verbs to demonstrate your skills.",
+      "addEntry": "Add work experience",
+      "jobTitle": "Job title",
+      "jobTitleHint": {
+        "title": "About this field",
+        "p1": "It's okay to adjust your job title on your resume so it lines up better with the role you're applying for, as long as it's still true to what you actually did. Recruiters won't care, and it can make a big difference in how your application is received.",
+        "p2": "For example, if your official title was \"Data Analyst\" but your work included engineering tasks, you could list it as \"Data Analytics Engineer\" when applying to a \"Data Engineer\" role. That small change makes your experience look like a closer match.",
+        "p3": "And don't feel bad about it—job titles aren't some universal standard. Companies make them up, and sometimes they even use vague ones on purpose so their people don't get poached on LinkedIn."
+      },
+      "jobTitlePlaceholder": "Product Designer",
+      "company": "Company name",
+      "companyPlaceholder": "Apple Inc.",
+      "startDate": "Start date",
+      "startDatePlaceholder": "Jan 2016",
+      "endDate": "End date",
+      "endDateHint": {
+        "title": "Date Start - Date End",
+        "p1": "Try to keep your work history clean without big overlaps or long gaps. It's fine to polish the way you present dates, but don't stretch the truth if it's obvious you weren't working for a while.",
+        "p2": "One way to make gaps less noticeable is to list only years instead of months. For example, \"2019–2021\" looks smoother than \"May 2019–January 2021.\" This works especially well for people with 10+ years of experience, where exact months don't matter as much anyway."
+      },
+      "endDatePlaceholder": "Feb 2019",
+      "present": "Present",
+      "location": "Location (City, State)",
+      "locationPlaceholder": "San Francisco, CA",
+      "currentlyWork": "I currently work here",
+      "companyDescription": "Company Description",
+      "companyDescriptionHint": {
+        "title": "About this Section",
+        "description": "This section helps employers understand the company you worked for. Keep the description short, but include key details that add weight. For example, mention if the company is a Fortune 500 or Fortune 100, if they've raised major funding, or if they bring in significant revenue (over $100M) or have a large market cap (over $1B). Those details give context and make your experience stand out more."
+      },
+      "companyDescriptionPlaceholder": "Brief summary of role and impact.",
+      "responsibilities": "Responsibilities / Achievements",
+      "responsibilitiesHint": {
+        "title": "About this field",
+        "p1": "This is the spot to highlight what you did at the company your key responsibilities or the achievements you're most proud of.",
+        "example": "Example: Led the full product development lifecycle from concept to launch, making sure it matched both market needs and company goals."
+      },
+      "bulletPlaceholder": "• Led cross-functional teams to deliver product improvements.",
+      "addBullet": "Add Bullet Point"
+    },
+    "education": {
+      "header": "Education",
+      "description": "Add the name of your school, where it is located, what degree you obtained, your field of study, and your graduation year.",
+      "addEntry": "Add education",
+      "institution": "Institution",
+      "institutionPlaceholder": "Harvard University",
+      "degree": "Degree",
+      "degreeHint": {
+        "title": "Note",
+        "description": "If you graduated, list your degree here. If not, list your major."
+      },
+      "degreePlaceholder": "Bachelor's Degree in Design",
+      "dateRange": "Date Start - Date End",
+      "dateRangeHint": {
+        "title": "Note",
+        "p1": "List your graduation or completion date here. If it's recent, include the month and year (for example, May 2023). If it's something you finished more than a few years ago, just the year is enough (like 2018).",
+        "p2": "If you didn't finish the program but still want to show the education, you can just list the years you attended (for example, 2016–2018). That way it still adds value without drawing attention to the fact that you didn't graduate."
+      },
+      "dateRangePlaceholder": "Feb 2018 - Jun 2022",
+      "location": "Location (City, State)",
+      "locationPlaceholder": "Washington, D.C.",
+      "details": "Education Details",
+      "detailsHint": {
+        "title": "About this field",
+        "p1": "This section is a good place to point out any coursework, projects, or achievements from your education that are worth showing off.",
+        "example": "Example: Relevant Coursework: Data Structures, Algorithms, Machine Learning, Database Systems",
+        "p2": "If you want to add extra detail under one of these points, you can use a sub-bullet by clicking the three dots on the right."
+      },
+      "detailsPlaceholder": "• Graduated with honors, recognized for outstanding achievement in Product Design.",
+      "addBullet": "Add Bullet Point"
+    },
+    "skills": {
+      "header": "Skills",
+      "description": "This section is for summarizing your key abilities. Include both hard skills (like technical knowledge) and soft skills (like communication or problem-solving). It gives employers a quick overview of your strengths and how they fit with the job.",
+      "addEntry": "Add skill",
+      "skillName": "Skill name",
+      "skillNamePlaceholder": "Project Management"
+    },
+    "technologies": {
+      "header": "Technologies",
+      "description": "List your technical skills, programming languages, frameworks, tools, and technologies you're proficient in. This helps employers quickly identify your technical capabilities.",
+      "addEntry": "Add technology",
+      "skillName": "Technology/Skill name",
+      "skillNamePlaceholder": "React"
+    },
+    "projects": {
+      "header": "Projects",
+      "description": "This section is optional, and it's mainly useful for students or recent grads. You can list school projects or even personal projects here to give your resume more depth and show practical experience.",
+      "addEntry": "Add Project",
+      "name": "Project Name",
+      "namePlaceholder": "Superawesome App",
+      "url": "Project URL (optional)",
+      "urlPlaceholder": "https://github.com/username/project",
+      "dateRange": "Date Range (optional)",
+      "dateRangePlaceholder": "March 2024 - July 2025",
+      "detail": "Description/Achievement",
+      "detailHint": {
+        "title": "About this field",
+        "p1": "This is where you can tell the employer about your responsibilities or achievements for this project.",
+        "example": "Example: Developed Devsboard, a job aggregator web app that scrapes and displays real-time job listings across the U.S."
+      },
+      "bulletPlaceholder": "• Developed Devsboard, a job aggregator web app that scrapes and displays real-time job listings across the U.S.",
+      "addBullet": "Add Bullet Point"
+    },
+    "courses": {
+      "header": "Courses",
+      "description": "Include relevant courses, certifications, and training programs that demonstrate your commitment to professional development and skill enhancement.",
+      "addEntry": "Add course",
+      "courseName": "Course",
+      "courseNamePlaceholder": "Advanced Product Design"
+    },
+    "references": {
+      "header": "References",
+      "description": "Include professional references who can vouch for your work experience, skills, and character. Make sure to ask for their permission before listing them.",
+      "addEntry": "Add one more reference",
+      "referentName": "Referent name",
+      "referentNamePlaceholder": "John Smith",
+      "referentCompany": "Referent company",
+      "referentCompanyPlaceholder": "Apple Inc.",
+      "referentEmail": "Referent email",
+      "referentEmailPlaceholder": "john@example.com",
+      "referentPhone": "Referent phone",
+      "referentPhonePlaceholder": "999 888 7777"
+    },
+    "languages": {
+      "header": "Languages",
+      "description": "Include languages you speak and your proficiency level. This can be valuable for positions requiring multilingual communication.",
+      "addEntry": "Add one more language",
+      "language": "Language",
+      "languagePlaceholder": "English",
+      "proficiency": "Proficiency",
+      "proficiencyLevels": {
+        "notApplicable": "Not applicable",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "native": "Native"
+      }
+    },
+    "links": {
+      "header": "Links",
+      "description": "Add relevant links: personal website, socials, LinkedIn profile, etc.",
+      "addEntry": "Add one more link",
+      "linkTitle": "Link title",
+      "linkTitlePlaceholder": "My Website",
+      "url": "URL",
+      "urlPlaceholder": "www.example.com"
+    },
+    "hobbies": {
+      "header": "Hobbies",
+      "description": "This small section is a chance to add some personality to your resume. Share a few hobbies or interests that give employers a glimpse of who you are outside of work.",
+      "addEntry": "Add hobby",
+      "hobbyName": "Hobby name",
+      "hobbyNamePlaceholder": "Photography"
+    },
+    "internships": {
+      "header": "Internships",
+      "description": "Include internships and temporary positions that demonstrate your skills and experience. Focus on what you learned and accomplished during these roles.",
+      "addEntry": "Add internship",
+      "jobTitle": "Job title",
+      "jobTitlePlaceholder": "Product Design Intern",
+      "company": "Company name",
+      "companyPlaceholder": "Apple Inc.",
+      "startDate": "Start date",
+      "startDatePlaceholder": "Jun 2020",
+      "endDate": "End date",
+      "endDatePlaceholder": "Aug 2020",
+      "location": "Location",
+      "locationPlaceholder": "San Francisco, CA",
+      "roleDescription": "Company / Role Description",
+      "descriptionPlaceholder": "Brief summary of role and impact.",
+      "responsibilities": "Responsibilities / Achievements",
+      "bulletPlaceholder": "• Worked with teams to improve product features and overall user experience.",
+      "addBullet": "Add Bullet Point"
+    },
+    "custom": {
+      "header": "Custom section",
+      "description": "You can add anything you want in the custom section.",
+      "addEntry": "Add entry",
+      "entryHeader": "Header",
+      "entryHeaderPlaceholder": "Foundation",
+      "entrySubheader": "Subheader",
+      "entrySubheaderPlaceholder": "Isaac Asimov",
+      "entryDescription": "Custom Description",
+      "entryDescriptionPlaceholder": "Write any custom data",
+      "entryDetail": "Custom Section Details",
+      "entryBulletPlaceholder": "• Custom bulletpoint",
+      "addBullet": "Add Bullet Point"
+    },
+    "additional": {
+      "header": "Additional section",
+      "description": "You should only add resume categories if they are relevant and you can list a few things in each section. Pick the most impactful categories first."
+    }
+  }
+}

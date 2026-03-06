@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormContainer } from '../shared/FormComponents';
 import type { CourseItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface CourseEntryFormProps {
 }
 
 function CourseEntryForm({ course, onUpdate }: CourseEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(course.id, field, value);
   };
@@ -14,11 +17,11 @@ function CourseEntryForm({ course, onUpdate }: CourseEntryFormProps) {
   return (
     <FormContainer>
       <FormInput
-        label="Course"
+        label={t('forms.courses.courseName')}
         type="text"
         value={course.courseName}
         onChange={(e) => handleChange('courseName', e.target.value)}
-        placeholder="Advanced Product Design"
+        placeholder={t('forms.courses.courseNamePlaceholder')}
       />
     </FormContainer>
   );

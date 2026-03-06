@@ -5,6 +5,7 @@ export interface SoftSkillsBody {
   currentSkills?: string[];
   experienceLevel?: string;
   count?: number;
+  locale?: 'en' | 'es';
 }
 
 export interface TechnicalSkillsBody {
@@ -12,6 +13,7 @@ export interface TechnicalSkillsBody {
   currentSkills?: string[];
   experienceLevel?: string;
   count?: number;
+  locale?: 'en' | 'es';
 }
 
 export interface SkillSuggestionMetadata {
@@ -41,6 +43,7 @@ export interface TextTransformRequest {
   jobTitle?: string;
   sectionName?: string;
   fieldLabel?: string;
+  locale?: 'en' | 'es';
 }
 
 export interface TextTransformMetadata {

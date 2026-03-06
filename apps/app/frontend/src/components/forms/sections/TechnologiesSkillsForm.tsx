@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import AddEntryButton from '../shared/AddEntryButton';
@@ -23,6 +24,7 @@ function TechnologiesSkillsForm({
   updateSectionItem,
   removeSectionItem,
 }: TechnologiesSkillsFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -57,10 +59,10 @@ function TechnologiesSkillsForm({
 
   return (
     <div>
-      <FormHeader title="Technologies" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.technologies.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        List your technical skills, programming languages, frameworks, tools, and technologies you're proficient in. This helps employers quickly identify your technical capabilities.
+        {t('forms.technologies.description')}
       </FormDescription>
 
       {/* AI Skill Suggester Component */}
@@ -75,7 +77,7 @@ function TechnologiesSkillsForm({
         {technologiesSkills.map((technologiesSkill) => (
           <div key={technologiesSkill.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={technologiesSkill.technologiesSkillName || 'Untitled'}
+              title={technologiesSkill.technologiesSkillName || t('common.untitled')}
               isExpanded={expandedItems[technologiesSkill.id]}
               onToggleExpanded={() => toggleExpanded(technologiesSkill.id)}
               onRemove={() => removeTechnologiesSkill(technologiesSkill.id)}
@@ -90,17 +92,13 @@ function TechnologiesSkillsForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addTechnologiesSkill} label="Add technology" />
+        <AddEntryButton onClick={addTechnologiesSkill} label={t('forms.technologies.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );

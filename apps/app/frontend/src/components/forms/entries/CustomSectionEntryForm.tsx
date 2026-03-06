@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormTextarea, FormEntryBullet, AddEntryButton } from '../shared/FormComponents';
 import type { CustomEntryItem } from '../../../types/resume';
@@ -9,6 +10,7 @@ interface CustomSectionEntryFormProps {
 }
 
 function CustomSectionEntryForm({ entry, onUpdate, jobTitle }: CustomSectionEntryFormProps) {
+  const { t } = useTranslation();
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } = useBulletPoints(entry.bulletPoints || []);
 
   const handleChange = (field: string, value: unknown) => {
@@ -32,48 +34,46 @@ function CustomSectionEntryForm({ entry, onUpdate, jobTitle }: CustomSectionEntr
 
   return (
     <FormContainer>
-      {/* Header and Subheader */}
       <FormGrid columns={2}>
         <FormInput
-          label="Header"
+          label={t('forms.custom.entryHeader')}
           type="text"
           value={entry.header}
           onChange={(e) => handleChange('header', e.target.value)}
-          placeholder="Foundation"
+          placeholder={t('forms.custom.entryHeaderPlaceholder')}
         />
         <FormInput
-          label="Subheader"
+          label={t('forms.custom.entrySubheader')}
           type="text"
           value={entry.subheader}
           onChange={(e) => handleChange('subheader', e.target.value)}
-          placeholder="Isaac Asimov"
+          placeholder={t('forms.custom.entrySubheaderPlaceholder')}
         />
       </FormGrid>
 
       <div>
-        <label className="block text-xs sm:text-sm font-medium text-[var(--ink-2)] mb-1 sm:mb-2">
-          Custom Description
+        <label className="block text-xs sm:text-sm font-medium text-(--ink-2) mb-1 sm:mb-2">
+          {t('forms.custom.entryDescription')}
         </label>
         <FormTextarea
           value={entry.description}
           onChange={(e) => handleChange('description', e.target.value)}
-          placeholder="Write any custom data"
+          placeholder={t('forms.custom.entryDescriptionPlaceholder')}
           rows={3}
         />
       </div>
 
-      {/* Custom Bulletpoints */}
       {bulletPoints.map((bullet, index) => (
         <div key={index} className="border border-gray-300 rounded-lg">
           <FormEntryBullet
-            title="Custom Section Details"
+            title={t('forms.custom.entryDetail')}
             onRemove={() => handleRemoveBulletPoint(index)}
           />
           <div className="p-3 sm:p-4">
             <FormTextarea
               value={bullet}
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
-              placeholder="• Custom bulletpoint"
+              placeholder={t('forms.custom.entryBulletPlaceholder')}
               rows={3}
               aiTransform={{
                 jobTitle,
@@ -86,7 +86,7 @@ function CustomSectionEntryForm({ entry, onUpdate, jobTitle }: CustomSectionEntr
         </div>
       ))}
 
-      <AddEntryButton onClick={handleAddBulletPoint} label="Add Bullet Point" />
+      <AddEntryButton onClick={handleAddBulletPoint} label={t('forms.custom.addBullet')} />
     </FormContainer>
   );
 }

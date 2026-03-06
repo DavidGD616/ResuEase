@@ -127,6 +127,7 @@ export interface SidebarItem {
   id: string;
   icon: LucideIcon;
   label: string;
+  labelKey?: string;
   order: number;
   fixed: boolean;
 }

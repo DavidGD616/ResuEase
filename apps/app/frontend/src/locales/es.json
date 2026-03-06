@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "brand": "ResuEase",
+    "download": "Descargar",
+    "downloading": "Generando..."
+  },
+  "auth": {
+    "title": "Bienvenido a ResuEase",
+    "subtitle": "Crea y descarga tu currículum profesional"
+  },
+  "home": {
+    "tabs": {
+      "resumes": "Currículums",
+      "coverLetters": "Cartas de presentación",
+      "resignationLetters": "Cartas de renuncia"
+    },
+    "signOut": "Cerrar sesión",
+    "create": "Crear",
+    "createDropdown": {
+      "newResume": "Nuevo currículum",
+      "newCoverLetter": "Nueva carta de presentación",
+      "newResignationLetter": "Nueva carta de renuncia",
+      "comingSoon": "Próximamente"
+    },
+    "emptyState": {
+      "title": "Crea tu primer currículum",
+      "cta": "Crear mi currículum"
+    }
+  },
+  "sidebar": {
+    "personalDetails": "Datos personales",
+    "contactInformation": "Información de contacto",
+    "employmentHistory": "Experiencia laboral",
+    "education": "Educación",
+    "projects": "Proyectos",
+    "courses": "Cursos",
+    "skills": "Habilidades",
+    "technologies": "Tecnologías",
+    "hobbies": "Pasatiempos",
+    "professionalSummary": "Resumen profesional",
+    "internships": "Prácticas profesionales",
+    "references": "Referencias",
+    "languages": "Idiomas",
+    "links": "Vínculos",
+    "customSection": "Sección personalizada",
+    "addAdditionalSection": "Sección adicional"
+  },
+  "common": {
+    "gotIt": "Entendido",
+    "untitled": "Sin título"
+  },
+  "modal": {
+    "deleteSection": {
+      "title": "¿Estás seguro de que quieres eliminar esta sección?",
+      "message": "No puedes deshacer esta acción.",
+      "confirm": "Eliminar sección",
+      "cancel": "Cancelar"
+    },
+    "deleteEntry": {
+      "confirm": "Eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "status": {
+    "saving": "Guardando...",
+    "saved": "Guardado",
+    "errorSaving": "Error al guardar"
+  },
+  "bottomNav": {
+    "back": "Atrás",
+    "next": "Siguiente",
+    "reorderMobile": "Reordenar",
+    "reorderDesktop": "Reordenar secciones"
+  },
+  "reorder": {
+    "back": "Atrás",
+    "done": "Listo",
+    "addSection": "Agregar sección",
+    "deleteTitle": "¿Eliminar {{sectionLabel}}?",
+    "deleteMessage": "Esto eliminará permanentemente esta sección y todo su contenido.",
+    "deleteConfirm": "Eliminar sección",
+    "deleteCancel": "Cancelar"
+  },
+  "builder": {
+    "editTab": "Editar",
+    "previewTab": "Vista previa",
+    "customSectionName": "Sección personalizada {{counter}}"
+  },
+  "ai": {
+    "textActions": {
+      "rewrite": "Reescribir",
+      "addMetrics": "Agregar métricas",
+      "makeStronger": "Fortalecer",
+      "rewriting": "Reescribiendo…",
+      "addingMetrics": "Agregando métricas…",
+      "makingStronger": "Fortaleciendo…",
+      "suggestionHeader": "Sugerencia de IA — {{mode}}",
+      "accept": "Aceptar",
+      "discard": "Descartar",
+      "error": "Error al transformar el texto. Por favor intenta de nuevo."
+    },
+    "skillSuggester": {
+      "show": "Obtener sugerencias de habilidades con IA",
+      "hide": "Ocultar sugerencias de IA",
+      "headerTechnical": "Sugerencias de habilidades técnicas con IA",
+      "headerSoft": "Sugerencias de habilidades blandas con IA",
+      "jobTitleLabel": "Puesto de trabajo:",
+      "jobTitleNotSet": "Sin definir",
+      "jobTitleRequired": "Por favor define tu puesto de trabajo en la sección de Datos personales primero",
+      "getSuggestions": "Obtener sugerencias",
+      "generating": "Generando sugerencias...",
+      "clickToAdd": "Haz clic para agregar habilidades a tu currículum:",
+      "noNewSkills": "No se pudieron sugerir nuevas habilidades. Es posible que ya tengas una lista completa de habilidades."
+    }
+  },
+  "resume": {
+    "sections": {
+      "summary": "Resumen Profesional",
+      "employment": "Experiencia Laboral",
+      "internships": "Prácticas Profesionales",
+      "education": "Educación",
+      "projects": "Proyectos",
+      "links": "Portafolio y Vínculos",
+      "references": "Referencias",
+      "custom": "Sección Personalizada"
+    },
+    "skillGroups": {
+      "courses": "Certificaciones",
+      "skills": "Habilidades",
+      "technologiesSkills": "Tecnologías",
+      "languages": "Idiomas",
+      "hobbies": "Intereses"
+    }
+  },
+  "forms": {
+    "personal": {
+      "header": "Datos personales",
+      "description": "Los datos personales como el nombre y el puesto de trabajo son esenciales en un currículum para que el reclutador tenga una visión rápida del candidato.",
+      "firstName": "Nombre(s)",
+      "firstNamePlaceholder": "Carlos",
+      "lastName": "Apellido(s)",
+      "lastNamePlaceholder": "García López",
+      "jobTitle": "Puesto de trabajo (opcional)",
+      "jobTitlePlaceholder": "Desarrollador Frontend",
+      "includePhoto": "Incluir foto (¡generalmente NO recomendado!)",
+      "addPhoto": "Agregar foto",
+      "addPhotoOptional": "(Opcional)",
+      "photoHint": {
+        "title": "Fotos en el currículum",
+        "warning": "⚠️ SOLO incluye una foto si es práctica habitual en tu país",
+        "whenCommon": "Cuando las fotos son comunes:",
+        "whenCommonText": "Algunos países (como Alemania o partes de Europa) esperan fotos en los currículums.",
+        "whenNotRecommended": "Cuando las fotos NO son recomendadas:",
+        "whenNotRecommendedText": "En México, la mayoría de América Latina, EE.UU., Canadá y el Reino Unido, las fotos pueden generar discriminación y generalmente no se recomiendan.",
+        "unsure": "Si no estás seguro de si las fotos son comunes en tu país, NO incluyas ninguna. Ante la duda, mejor omítela."
+      }
+    },
+    "contact": {
+      "header": "Información de contacto",
+      "description": "Incluir tu información de contacto en el currículum es fundamental para que los empleadores potenciales puedan comunicarse contigo fácilmente.",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "juan@ejemplo.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+52 55 1234 5678",
+      "location": "Ubicación",
+      "locationPlaceholder": "Ciudad de México, CDMX",
+      "locationHint": {
+        "title": "Ubicación (Ciudad, Estado)",
+        "description": "Recomendamos poner la ciudad grande más cercana en lugar de ciudades pequeñas que la gente probablemente no reconozca."
+      },
+      "portfolio": "Portafolio",
+      "portfolioPlaceholder": "https://carlosgarcia.mx/",
+      "portfolioHint": {
+        "title": "Enlace al portafolio",
+        "description": "No recomendamos enlazar tu LinkedIn porque te expone a los sesgos visuales de los reclutadores y posible discriminación. La información en tu LinkedIn debe coincidir con tu currículum de todas formas — asegúrate de actualizarlo después de este proceso."
+      }
+    },
+    "summary": {
+      "header": "Resumen profesional",
+      "description": "Incluye tu título profesional, años de experiencia y tus logros más impresionantes. Cada logro debe ser medible y expresado en números.",
+      "label": "Resumen",
+      "placeholder": "p. ej. Desarrollador frontend apasionado con más de 3 años de experiencia..."
+    },
+    "employment": {
+      "header": "Experiencia laboral",
+      "description": "Muestra a los empleadores tu experiencia pasada y lo que has logrado. Incluye ejemplos simples y claros con verbos de acción para demostrar tus habilidades.",
+      "addEntry": "Agregar experiencia laboral",
+      "jobTitle": "Puesto de trabajo",
+      "jobTitleHint": {
+        "title": "Acerca de este campo",
+        "p1": "Está bien ajustar tu puesto de trabajo en el currículum para que se alinee mejor con el rol al que aplicas, siempre y cuando sea fiel a lo que realmente hiciste. A los reclutadores no les importa, y puede marcar una gran diferencia en cómo se recibe tu solicitud.",
+        "p2": "Por ejemplo, si tu título oficial era \"Analista de Datos\" pero tu trabajo incluía tareas de ingeniería, podrías listarlo como \"Ingeniero de Análisis de Datos\" al aplicar a un rol de \"Ingeniero de Datos\". Ese pequeño cambio hace que tu experiencia parezca más cercana al perfil buscado.",
+        "p3": "Y no te sientas mal por eso—los títulos de trabajo no son un estándar universal. Las empresas los inventan, y a veces usan títulos vagos a propósito para que sus empleados no sean reclutados por la competencia."
+      },
+      "jobTitlePlaceholder": "Diseñador de Producto",
+      "company": "Nombre de la empresa",
+      "companyPlaceholder": "Apple Inc.",
+      "startDate": "Fecha de inicio",
+      "startDatePlaceholder": "Ene 2016",
+      "endDate": "Fecha de fin",
+      "endDateHint": {
+        "title": "Fecha inicio - Fecha fin",
+        "p1": "Trata de mantener tu historial laboral limpio, sin grandes traslapes ni largos periodos sin trabajo. Está bien pulir la forma en que presentas las fechas, pero no exageres si es obvio que estuviste sin trabajar por un tiempo.",
+        "p2": "Una forma de hacer que los periodos sin trabajo sean menos notorios es listar solo los años en lugar de los meses. Por ejemplo, \"2019–2021\" se ve más limpio que \"Mayo 2019–Enero 2021\". Esto funciona especialmente bien para personas con más de 10 años de experiencia, donde los meses exactos no importan tanto."
+      },
+      "endDatePlaceholder": "Feb 2019",
+      "present": "Presente",
+      "location": "Ubicación (Ciudad, Estado)",
+      "locationPlaceholder": "Monterrey, NL",
+      "currentlyWork": "Actualmente trabajo aquí",
+      "companyDescription": "Descripción de la empresa",
+      "companyDescriptionHint": {
+        "title": "Acerca de esta sección",
+        "description": "Esta sección ayuda a los empleadores a entender la empresa para la que trabajaste. Mantén la descripción corta, pero incluye detalles clave que den peso. Por ejemplo, menciona si la empresa es de Fortune 500 o Fortune 100, si ha obtenido financiamiento importante, o si genera ingresos significativos (más de $100M) o tiene una capitalización de mercado grande (más de $1B). Esos detalles dan contexto y hacen que tu experiencia destaque más."
+      },
+      "companyDescriptionPlaceholder": "Breve resumen del rol e impacto.",
+      "responsibilities": "Responsabilidades / Logros",
+      "responsibilitiesHint": {
+        "title": "Acerca de este campo",
+        "p1": "Aquí es donde debes destacar lo que hiciste en la empresa: tus responsabilidades clave o los logros de los que más te enorgulleces.",
+        "example": "Ejemplo: Lideré el ciclo completo de desarrollo de producto, desde el concepto hasta el lanzamiento, asegurando que cumpliera con las necesidades del mercado y los objetivos de la empresa."
+      },
+      "bulletPlaceholder": "• Lideré equipos multidisciplinarios para mejorar las funciones del producto.",
+      "addBullet": "Agregar punto"
+    },
+    "education": {
+      "header": "Educación",
+      "description": "Agrega el nombre de tu escuela, su ubicación, el título que obtuviste, tu área de estudio y tu año de graduación.",
+      "addEntry": "Agregar educación",
+      "institution": "Institución",
+      "institutionPlaceholder": "Universidad Nacional Autónoma de México (UNAM)",
+      "degree": "Título",
+      "degreeHint": {
+        "title": "Nota",
+        "description": "Si te graduaste, anota tu título aquí. Si no, anota tu área de estudio."
+      },
+      "degreePlaceholder": "Licenciatura en Diseño",
+      "dateRange": "Fecha inicio - Fecha fin",
+      "dateRangeHint": {
+        "title": "Nota",
+        "p1": "Anota aquí tu fecha de graduación o finalización. Si es reciente, incluye el mes y el año (por ejemplo, Mayo 2023). Si terminaste hace varios años, solo el año es suficiente (como 2018).",
+        "p2": "Si no terminaste el programa pero aún quieres mostrar la educación, puedes listar los años que asististe (por ejemplo, 2016–2018). Así sigue aportando valor sin llamar la atención sobre el hecho de que no te graduaste."
+      },
+      "dateRangePlaceholder": "Feb 2018 - Jun 2022",
+      "location": "Ubicación (Ciudad, Estado)",
+      "locationPlaceholder": "Ciudad de México, CDMX",
+      "details": "Detalles de educación",
+      "detailsHint": {
+        "title": "Acerca de este campo",
+        "p1": "Esta sección es un buen lugar para destacar cursos, proyectos o logros de tu educación que valgan la pena mostrar.",
+        "example": "Ejemplo: Cursos relevantes: Estructuras de Datos, Algoritmos, Aprendizaje Automático, Sistemas de Bases de Datos",
+        "p2": "Si quieres agregar más detalle bajo uno de estos puntos, puedes usar un sub-punto haciendo clic en los tres puntos de la derecha."
+      },
+      "detailsPlaceholder": "• Me gradué con honores, reconocido por logros sobresalientes en Diseño de Producto.",
+      "addBullet": "Agregar punto"
+    },
+    "skills": {
+      "header": "Habilidades",
+      "description": "Esta sección es para resumir tus capacidades clave. Incluye tanto habilidades técnicas (como conocimientos de tecnología) como habilidades blandas (como comunicación o resolución de problemas). Le da a los empleadores una visión rápida de tus fortalezas y cómo encajan con el puesto.",
+      "addEntry": "Agregar habilidad",
+      "skillName": "Nombre de la habilidad",
+      "skillNamePlaceholder": "Gestión de proyectos"
+    },
+    "technologies": {
+      "header": "Tecnologías",
+      "description": "Lista tus habilidades técnicas, lenguajes de programación, frameworks, herramientas y tecnologías en las que tienes dominio. Esto ayuda a los empleadores a identificar rápidamente tus capacidades técnicas.",
+      "addEntry": "Agregar tecnología",
+      "skillName": "Nombre de tecnología/habilidad",
+      "skillNamePlaceholder": "React"
+    },
+    "projects": {
+      "header": "Proyectos",
+      "description": "Esta sección es opcional y es útil principalmente para estudiantes o recién graduados. Puedes listar proyectos escolares o personales para darle más profundidad a tu currículum y mostrar experiencia práctica.",
+      "addEntry": "Agregar proyecto",
+      "name": "Nombre del proyecto",
+      "namePlaceholder": "Aplicación Increíble",
+      "url": "URL del proyecto (opcional)",
+      "urlPlaceholder": "https://github.com/usuario/proyecto",
+      "dateRange": "Rango de fechas (opcional)",
+      "dateRangePlaceholder": "Marzo 2024 - Julio 2025",
+      "detail": "Descripción/Logro",
+      "detailHint": {
+        "title": "Acerca de este campo",
+        "p1": "Aquí es donde puedes contarle al empleador sobre tus responsabilidades o logros en este proyecto.",
+        "example": "Ejemplo: Desarrollé Devsboard, una aplicación web que agrega y muestra listados de empleo en tiempo real."
+      },
+      "bulletPlaceholder": "• Desarrollé Devsboard, una aplicación web que agrega y muestra listados de empleo en tiempo real.",
+      "addBullet": "Agregar punto"
+    },
+    "courses": {
+      "header": "Cursos",
+      "description": "Incluye cursos, certificaciones y programas de capacitación relevantes que demuestren tu compromiso con el desarrollo profesional y la mejora de habilidades.",
+      "addEntry": "Agregar curso",
+      "courseName": "Curso",
+      "courseNamePlaceholder": "Diseño Avanzado de Producto"
+    },
+    "references": {
+      "header": "Referencias",
+      "description": "Incluye referencias profesionales que puedan dar fe de tu experiencia laboral, habilidades y carácter. Asegúrate de pedir su permiso antes de incluirlas.",
+      "addEntry": "Agregar otra referencia",
+      "referentName": "Nombre del referente",
+      "referentNamePlaceholder": "Juan García",
+      "referentCompany": "Empresa del referente",
+      "referentCompanyPlaceholder": "Apple Inc.",
+      "referentEmail": "Correo del referente",
+      "referentEmailPlaceholder": "juan@ejemplo.com",
+      "referentPhone": "Teléfono del referente",
+      "referentPhonePlaceholder": "55 1234 5678"
+    },
+    "languages": {
+      "header": "Idiomas",
+      "description": "Incluye los idiomas que hablas y tu nivel de dominio. Esto puede ser valioso para puestos que requieren comunicación multilingüe.",
+      "addEntry": "Agregar otro idioma",
+      "language": "Idioma",
+      "languagePlaceholder": "Inglés",
+      "proficiency": "Nivel de dominio",
+      "proficiencyLevels": {
+        "notApplicable": "No aplica",
+        "beginner": "Principiante",
+        "intermediate": "Intermedio",
+        "advanced": "Avanzado",
+        "native": "Nativo"
+      }
+    },
+    "links": {
+      "header": "Vínculos",
+      "description": "Agrega vínculos relevantes: sitio web personal, redes sociales, perfil de LinkedIn, etc.",
+      "addEntry": "Agregar otro vínculo",
+      "linkTitle": "Título del vínculo",
+      "linkTitlePlaceholder": "Mi sitio web",
+      "url": "URL",
+      "urlPlaceholder": "www.ejemplo.com"
+    },
+    "hobbies": {
+      "header": "Pasatiempos",
+      "description": "Esta pequeña sección es una oportunidad para agregar personalidad a tu currículum. Comparte algunos pasatiempos o intereses que le den a los empleadores un vistazo de quién eres fuera del trabajo.",
+      "addEntry": "Agregar pasatiempo",
+      "hobbyName": "Nombre del pasatiempo",
+      "hobbyNamePlaceholder": "Fotografía"
+    },
+    "internships": {
+      "header": "Prácticas profesionales",
+      "description": "Incluye prácticas y posiciones temporales que demuestren tus habilidades y experiencia. Enfócate en lo que aprendiste y lograste durante estos roles.",
+      "addEntry": "Agregar práctica",
+      "jobTitle": "Puesto de trabajo",
+      "jobTitlePlaceholder": "Practicante de Diseño de Producto",
+      "company": "Nombre de la empresa",
+      "companyPlaceholder": "Apple Inc.",
+      "startDate": "Fecha de inicio",
+      "startDatePlaceholder": "Jun 2020",
+      "endDate": "Fecha de fin",
+      "endDatePlaceholder": "Ago 2020",
+      "location": "Ubicación",
+      "locationPlaceholder": "Ciudad de México, CDMX",
+      "roleDescription": "Descripción de la empresa / rol",
+      "descriptionPlaceholder": "Breve resumen del rol e impacto.",
+      "responsibilities": "Responsabilidades / Logros",
+      "bulletPlaceholder": "• Colaboré con equipos para mejorar las funciones del producto y la experiencia del usuario.",
+      "addBullet": "Agregar punto"
+    },
+    "custom": {
+      "header": "Sección personalizada",
+      "description": "Puedes agregar lo que quieras en la sección personalizada.",
+      "addEntry": "Agregar entrada",
+      "entryHeader": "Encabezado",
+      "entryHeaderPlaceholder": "Fundación",
+      "entrySubheader": "Subencabezado",
+      "entrySubheaderPlaceholder": "Isaac Asimov",
+      "entryDescription": "Descripción personalizada",
+      "entryDescriptionPlaceholder": "Escribe cualquier dato personalizado",
+      "entryDetail": "Detalles de sección personalizada",
+      "entryBulletPlaceholder": "• Punto personalizado",
+      "addBullet": "Agregar punto"
+    },
+    "additional": {
+      "header": "Sección adicional",
+      "description": "Solo debes agregar categorías al currículum si son relevantes y puedes listar algunas cosas en cada sección. Elige primero las categorías de mayor impacto."
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { Plus, GripVertical, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import type { SidebarItem } from '../../types/resume';
 
@@ -21,6 +22,8 @@ function Sidebar({
   onAdditionalSectionClick,
   onClose,
 }: SidebarProps) {
+  const { t } = useTranslation();
+
   const {
     handleDragStart,
     handleDragOver,
@@ -124,7 +127,7 @@ function Sidebar({
                   className="w-4 h-4"
                   style={{ color: isActive ? 'var(--accent)' : 'var(--ink-3)' }}
                 />
-                {item.label}
+                {item.labelKey ? t(item.labelKey) : item.label}
 
                 {itemIsDragging && (
                   <div
@@ -156,7 +159,7 @@ function Sidebar({
         >
           <div className="w-4 h-4" />
           <Plus className="w-4 h-4" />
-          Additional section
+          {t('sidebar.addAdditionalSection')}
         </button>
       </div>
     </div>

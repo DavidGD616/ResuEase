@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FormInput, FormGrid, FormContainer } from '../shared/FormComponents';
 import type { ReferenceItem } from '../../../types/resume';
 
@@ -7,6 +8,8 @@ interface ReferenceEntryFormProps {
 }
 
 function ReferenceEntryForm({ reference, onUpdate }: ReferenceEntryFormProps) {
+  const { t } = useTranslation();
+
   const handleChange = (field: string, value: unknown) => {
     onUpdate(reference.id, field, value);
   };
@@ -15,35 +18,35 @@ function ReferenceEntryForm({ reference, onUpdate }: ReferenceEntryFormProps) {
     <FormContainer>
       <FormGrid columns={2}>
         <FormInput
-          label="Referent name"
+          label={t('forms.references.referentName')}
           type="text"
           value={reference.referentName}
           onChange={(e) => handleChange('referentName', e.target.value)}
-          placeholder="John Smith"
+          placeholder={t('forms.references.referentNamePlaceholder')}
         />
         <FormInput
-          label="Referent company"
+          label={t('forms.references.referentCompany')}
           type="text"
           value={reference.referentCompany}
           onChange={(e) => handleChange('referentCompany', e.target.value)}
-          placeholder="Apple Inc."
+          placeholder={t('forms.references.referentCompanyPlaceholder')}
         />
       </FormGrid>
 
       <FormGrid columns={2}>
         <FormInput
-          label="Referent email"
+          label={t('forms.references.referentEmail')}
           type="email"
           value={reference.referentEmail}
           onChange={(e) => handleChange('referentEmail', e.target.value)}
-          placeholder="john@example.com"
+          placeholder={t('forms.references.referentEmailPlaceholder')}
         />
         <FormInput
-          label="Referent phone"
+          label={t('forms.references.referentPhone')}
           type="tel"
           value={reference.referentPhone}
           onChange={(e) => handleChange('referentPhone', e.target.value)}
-          placeholder="999 888 7777"
+          placeholder={t('forms.references.referentPhonePlaceholder')}
         />
       </FormGrid>
     </FormContainer>

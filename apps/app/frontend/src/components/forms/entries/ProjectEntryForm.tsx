@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import useBulletPoints from '../../../hooks/useBulletPoints';
 import { FormInput, FormGrid, FormContainer, FormEntryBullet, FormTextarea, AddEntryButton } from '../shared/FormComponents';
 import type { ProjectItem } from '../../../types/resume';
@@ -9,6 +10,7 @@ interface ProjectEntryFormProps {
 }
 
 function ProjectEntryForm({ project, onUpdate, jobTitle }: ProjectEntryFormProps) {
+  const { t } = useTranslation();
   const { bulletPoints, addBulletPoint, updateBulletPoint, removeBulletPoint } =
     useBulletPoints(project.bulletPoints || []);
 
@@ -34,27 +36,27 @@ function ProjectEntryForm({ project, onUpdate, jobTitle }: ProjectEntryFormProps
   return (
     <FormContainer>
       <FormInput
-        label="Project Name"
+        label={t('forms.projects.name')}
         type="text"
         value={project.name}
         onChange={(e) => handleChange('name', e.target.value)}
-        placeholder="Superawesome App"
+        placeholder={t('forms.projects.namePlaceholder')}
       />
 
       <FormGrid columns={2}>
         <FormInput
-          label="Project URL (optional)"
+          label={t('forms.projects.url')}
           type="url"
           value={project.url}
           onChange={(e) => handleChange('url', e.target.value)}
-          placeholder="https://github.com/username/project"
+          placeholder={t('forms.projects.urlPlaceholder')}
         />
         <FormInput
-          label="Date Range (optional)"
+          label={t('forms.projects.dateRange')}
           type="text"
           value={project.dateRange}
           onChange={(e) => handleChange('dateRange', e.target.value)}
-          placeholder="March 2024 - July 2025"
+          placeholder={t('forms.projects.dateRangePlaceholder')}
         />
       </FormGrid>
 
@@ -62,24 +64,22 @@ function ProjectEntryForm({ project, onUpdate, jobTitle }: ProjectEntryFormProps
         <div key={index} className="border border-gray-300 rounded-lg mt-3">
           <FormEntryBullet
             hint={{
-              title: 'About this field',
+              title: t('forms.projects.detailHint.title'),
               description: (
                 <div>
-                  <p className="mb-4">
-                    This is where you can tell the employer about your responsibilities or achievements for this project.
-                  </p>
-                  <p>Example: Developed Devsboard, a job aggregator web app that scrapes and displays real-time job listings across the U.S.</p>
+                  <p className="mb-4">{t('forms.projects.detailHint.p1')}</p>
+                  <p>{t('forms.projects.detailHint.example')}</p>
                 </div>
               ),
             }}
-            title="Description/Achievement"
+            title={t('forms.projects.detail')}
             onRemove={() => handleRemoveBulletPoint(index)}
           />
           <div className="p-3 sm:p-4">
             <FormTextarea
               value={bullet}
               onChange={(e) => handleUpdateBulletPoint(index, e.target.value)}
-              placeholder="• Developed Devsboard, a job aggregator web app that scrapes and displays real-time job listings across the U.S."
+              placeholder={t('forms.projects.bulletPlaceholder')}
               rows={3}
               aiTransform={{
                 jobTitle,
@@ -91,7 +91,7 @@ function ProjectEntryForm({ project, onUpdate, jobTitle }: ProjectEntryFormProps
           </div>
         </div>
       ))}
-      <AddEntryButton onClick={handleAddBulletPoint} label="Add Bullet Point" />
+      <AddEntryButton onClick={handleAddBulletPoint} label={t('forms.projects.addBullet')} />
     </FormContainer>
   );
 }

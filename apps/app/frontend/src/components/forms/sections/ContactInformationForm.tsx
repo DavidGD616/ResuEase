@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   FormHeader,
   FormDescription,
@@ -13,54 +14,56 @@ interface ContactInformationFormProps {
 }
 
 function ContactInformationForm({ formData, handleInputChange }: ContactInformationFormProps) {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <FormHeader title="Contact information" />
+      <FormHeader title={t('forms.contact.header')} />
 
       <FormDescription>
-        Including your contacts in your resume is crucial so potential employers can easily get in touch with you.
+        {t('forms.contact.description')}
       </FormDescription>
 
       <FormSection>
         <FormGrid columns={2}>
           <FormInput
-            label="Email"
+            label={t('forms.contact.email')}
             type="email"
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            placeholder="john@example.com"
+            placeholder={t('forms.contact.emailPlaceholder')}
           />
           <FormInput
-            label="Phone"
+            label={t('forms.contact.phone')}
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            placeholder="+1 999 888 7777"
+            placeholder={t('forms.contact.phonePlaceholder')}
           />
         </FormGrid>
 
         <FormGrid columns={2}>
           <FormInput
-            label="Location"
+            label={t('forms.contact.location')}
             hint={{
-              title: 'Location (City, State)',
-              description: "We recommend putting the closest big city vs smaller towns that people likely won't recognize.",
+              title: t('forms.contact.locationHint.title'),
+              description: t('forms.contact.locationHint.description'),
             }}
             type="text"
             value={formData.location}
             onChange={(e) => handleInputChange('location', e.target.value)}
-            placeholder="San Diego, CA"
+            placeholder={t('forms.contact.locationPlaceholder')}
           />
           <FormInput
-            label="Porfolio"
+            label={t('forms.contact.portfolio')}
             hint={{
-              title: 'Portfolio Link',
-              description: "We don't recommend linking your LinkedIn because it opens you up to screeners' visual biases and possible discrimination, and the information on your LinkedIn should match your resume anyway – be sure to update your LI though after this process, so when you apply for roles on LinkedIn, it's just as impressive as your resume.",
+              title: t('forms.contact.portfolioHint.title'),
+              description: t('forms.contact.portfolioHint.description'),
             }}
             type="url"
             value={formData.portfolio}
             onChange={(e) => handleInputChange('portfolio', e.target.value)}
-            placeholder="https://davidguerrero.co/"
+            placeholder={t('forms.contact.portfolioPlaceholder')}
           />
         </FormGrid>
       </FormSection>

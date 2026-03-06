@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormHeader, FormDescription, FormSection } from '../shared/FormComponents';
 import FormEntryHeader from '../shared/FormEntryHeader';
 import InternshipEntryForm from '../entries/InternshipEntryForm';
@@ -22,6 +23,7 @@ function InternshipsForm({
   updateSectionItem,
   removeSectionItem,
 }: InternshipsFormProps) {
+  const { t } = useTranslation();
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const deleteModal = useDeleteModal(onDeleteSection);
 
@@ -51,17 +53,17 @@ function InternshipsForm({
 
   return (
     <div>
-      <FormHeader title="Internships" onDelete={deleteModal.openModal} showDelete />
+      <FormHeader title={t('forms.internships.header')} onDelete={deleteModal.openModal} showDelete />
 
       <FormDescription>
-        Include internships and temporary positions that demonstrate your skills and experience. Focus on what you learned and accomplished during these roles.
+        {t('forms.internships.description')}
       </FormDescription>
 
       <FormSection>
         {internships.map((internship) => (
           <div key={internship.id} className="bg-white rounded-md sm:rounded-lg" style={{ border: '1px solid var(--border)' }}>
             <FormEntryHeader
-              title={internship.jobTitle || internship.company || 'Untitled'}
+              title={internship.jobTitle || internship.company || t('common.untitled')}
               isExpanded={expandedItems[internship.id]}
               onToggleExpanded={() => toggleExpanded(internship.id)}
               onRemove={() => removeInternship(internship.id)}
@@ -77,17 +79,13 @@ function InternshipsForm({
           </div>
         ))}
 
-        <AddEntryButton onClick={addInternship} label="Add internship" />
+        <AddEntryButton onClick={addInternship} label={t('forms.internships.addEntry')} />
       </FormSection>
 
       <Modal.Confirmation
         isOpen={deleteModal.isOpen}
         onClose={deleteModal.closeModal}
         onConfirm={deleteModal.confirmDelete}
-        title="Are you sure you want to delete this section?"
-        message="You can't undo this action."
-        confirmText="Delete Section"
-        cancelText="Cancel"
       />
     </div>
   );
