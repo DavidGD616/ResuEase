@@ -1,0 +1,9 @@
+# The lockfile intentionally tracks the newest available releases, including
+# releases newer than pnpm 11's default release-age window.
+minimumReleaseAge: 0
+enableGlobalVirtualStore: false
+strictDepBuilds: true
+allowBuilds:
+  '@google/genai': false
+  esbuild: true
+  protobufjs: false

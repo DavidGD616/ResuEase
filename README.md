@@ -19,8 +19,8 @@ A modern, professional resume builder application built with React and Node.js. 
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
-- pnpm (recommended) or npm
+- Node.js 22.13 or higher
+- pnpm 11.17 or higher (recommended) or npm
 - Git
 
 ### Installation

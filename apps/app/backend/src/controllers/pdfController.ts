@@ -54,7 +54,7 @@ export const convertHtmlToPdf = async (req: Request<{}, {}, HtmlToPdfBody>, res:
     await page.setJavaScriptEnabled(false);
 
     // Cap rendering time to prevent a hanging request from tying up the server.
-    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30_000 });
+    await page.setContent(html, { waitUntil: "load", timeout: 30_000 });
 
     // Default PDF options
     const defaultOptions: PDFOptions = {
@@ -188,7 +188,7 @@ export const generateTestPDF = async (req: Request, res: Response) => {
     `;
 
     // Set the HTML content
-    await page.setContent(testHTML, { waitUntil: "networkidle0" });
+    await page.setContent(testHTML, { waitUntil: "load" });
 
     // Generate PDF
     const pdfBuffer = await page.pdf({
