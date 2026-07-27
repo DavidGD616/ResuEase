@@ -5,3 +5,10 @@ enableGlobalVirtualStore: false
 strictDepBuilds: true
 allowBuilds:
   esbuild: true
+
+# @supabase/auth-ui-react declares React as a direct React 18 dependency.
+# Keep its hooks on the application's React 19 renderer instead of installing
+# a second React runtime, which causes an invalid-hook-call crash at runtime.
+overrides:
+  "@supabase/auth-ui-react>react": 19.2.8
+  "@supabase/auth-ui-react>react-dom": 19.2.8
