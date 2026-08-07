@@ -9,7 +9,7 @@ A modern, professional resume builder application built with React and Node.js. 
 - **Interactive Resume Builder**: Intuitive form-based interface with real-time preview
 - **Professional Templates**: Harvard template with more coming soon
 - **Drag & Drop Sections**: Reorder resume sections with drag-and-drop functionality
-- **PDF Export**: Generate high-quality PDF resumes using Puppeteer
+- **PDF Export**: Generate high-quality PDF resumes locally in the browser
 - **Auto-Save**: Automatic local storage of your work
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **User Authentication**: Secure sign-in with Supabase Auth
@@ -97,11 +97,11 @@ ResuEase/
 - **Tailwind CSS** - Utility-first CSS framework
 - **Lucide React** - Beautiful icons
 - **Vite** - Fast build tool and dev server
+- **React-PDF** - Browser-side PDF generation and preview
 
 ### Backend
 - **Node.js** - JavaScript runtime
 - **Express** - Web application framework
-- **Puppeteer** - PDF generation
 - **CORS** - Cross-origin resource sharing
 
 ### Authentication & Database
@@ -138,10 +138,8 @@ pnpm dev        # Start development server with hot reload
 
 ### PDF Generation
 
-The application uses Puppeteer for PDF generation. The backend automatically handles:
-- HTML to PDF conversion
-- Professional formatting
-- Download functionality
+PDF generation happens locally in the browser. Resume data is rendered directly into a PDF for
+preview and download; it is not sent to the backend for HTML-to-PDF conversion.
 
 ## 🎨 Templates
 
@@ -220,7 +218,7 @@ Have an idea for a new feature? We'd love to hear it! Open an issue with:
 - Built with ❤️ using React and Node.js
 - Icons provided by [Lucide](https://lucide.dev/)
 - Authentication powered by [Supabase](https://supabase.com/)
-- PDF generation using [Puppeteer](https://pptr.dev/)
+- PDF generation and preview using [React-PDF](https://react-pdf.org/)
 
 ---
 
