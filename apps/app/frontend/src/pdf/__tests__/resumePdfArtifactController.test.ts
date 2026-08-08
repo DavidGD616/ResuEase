@@ -175,6 +175,40 @@ describe('useResumePdf', () => {
     expect(download).toHaveBeenCalledWith(downloadBlob, 'Ada_Lovelace_resume.pdf');
   });
 
+  it('discards an in-flight download artifact when a newer form revision arrives', async () => {
+    const outdated = deferred<Blob>();
+    const newest = deferred<Blob>();
+    const generate = vi.fn((document: ResumeDocumentModel) => (
+      document.revision === 'outdated' ? outdated.promise : newest.promise
+    ));
+    const download = vi.fn();
+    const outdatedModel = model('outdated');
+    const newestModel = model('newest');
+
+    const { result, rerender } = renderHook(
+      ({ previewModel, latestModel }) => useResumePdf({ previewModel, latestModel, generate, download }),
+      { initialProps: { previewModel: outdatedModel, latestModel: outdatedModel } },
+    );
+
+    let downloadPromise!: Promise<void>;
+    act(() => {
+      downloadPromise = result.current.downloadLatest();
+    });
+    await waitFor(() => expect(generate).toHaveBeenCalledWith(outdatedModel));
+
+    rerender({ previewModel: outdatedModel, latestModel: newestModel });
+    await act(async () => outdated.resolve(new Blob(['outdated'])));
+    await waitFor(() => expect(generate).toHaveBeenCalledWith(newestModel));
+
+    const newestBlob = new Blob(['newest']);
+    await act(async () => newest.resolve(newestBlob));
+    await act(async () => downloadPromise);
+
+    expect(download).toHaveBeenCalledTimes(1);
+    expect(download).toHaveBeenCalledWith(newestBlob, 'Ada_Lovelace_resume.pdf');
+    expect(result.current.previewBlob).toBe(newestBlob);
+  });
+
   it('retains the prior valid preview and never downloads when generation fails', async () => {
     const firstBlob = new Blob(['first']);
     const generate = vi

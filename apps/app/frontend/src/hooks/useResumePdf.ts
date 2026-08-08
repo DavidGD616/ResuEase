@@ -132,29 +132,40 @@ export function useResumePdf({
     // Invalidate any old preview completion before downloading an immediate
     // (non-debounced) model.
     previewOperationRef.current += 1;
-    const model = latestModelRef.current;
 
     setState((previous) => ({ ...previous, status: 'generating', error: null }));
 
-    try {
-      const blob = await artifacts.getArtifact(model);
+    // A click starts from the immediate model, not the debounced preview. If
+    // the user edits while generation is in flight, discard that now-stale
+    // result and continue with the newest model before downloading anything.
+    for (;;) {
+      const model = latestModelRef.current;
 
-      // If the form was untouched while the artifact was generated, this exact
-      // Blob becomes the preview too. A newer edit is left for its debounce
-      // cycle instead of being overwritten by stale output.
-      if (model.revision === latestModelRef.current.revision) {
+      try {
+        const blob = await artifacts.getArtifact(model);
+
+        if (model.revision !== latestModelRef.current.revision) {
+          continue;
+        }
+
         promote(model, blob);
-      }
+        download(blob, resumeDownloadFilename(model));
+        return;
+      } catch (error) {
+        // A failed generation for an obsolete edit must not block the newest
+        // form from being rendered and downloaded.
+        if (model.revision !== latestModelRef.current.revision) {
+          continue;
+        }
 
-      download(blob, resumeDownloadFilename(model));
-    } catch (error) {
-      const normalizedError = asError(error);
-      setState((previous) => ({
-        ...previous,
-        status: 'error',
-        error: normalizedError,
-      }));
-      throw normalizedError;
+        const normalizedError = asError(error);
+        setState((previous) => ({
+          ...previous,
+          status: 'error',
+          error: normalizedError,
+        }));
+        throw normalizedError;
+      }
     }
   }, [artifacts, download, promote]);
 
