@@ -414,7 +414,7 @@ function buildReferenceItem(value: unknown): ResumeReferenceItem | undefined {
   const referentName = textAt(value, 'referentName');
   const referentCompany = textAt(value, 'referentCompany');
   // position is not created by the current form, but older persisted resumes
-  // can contain it and HarvardTemplate still renders it.
+  // can contain it and it remains part of the PDF data contract.
   const position = textAt(value, 'position');
   const phone = textAt(value, 'referentPhone');
   const email = textAt(value, 'referentEmail');

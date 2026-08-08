@@ -42,7 +42,7 @@ Font.register({
 
 type PdfStyle = NonNullable<ComponentProps<typeof Page>['style']>;
 
-// These values intentionally mirror HarvardTemplate's existing CSS. CSS point
+// These values intentionally mirror the established Harvard design. CSS point
 // measurements stay as points, and CSS pixels are converted at 0.75pt/px.
 const styles = {
   page: {

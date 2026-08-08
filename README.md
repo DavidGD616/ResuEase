@@ -139,7 +139,7 @@ pnpm dev        # Start development server with hot reload
 ### PDF Generation
 
 PDF generation happens locally in the browser. Resume data is rendered directly into a PDF for
-preview and download; it is not sent to the backend for HTML-to-PDF conversion.
+preview and download and never leaves the browser for PDF generation.
 
 ## 🎨 Templates
 
