@@ -48,7 +48,7 @@ const styles = {
   page: {
     fontFamily: FONT_FAMILY,
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
     color: '#000000',
     padding: HARVARD_PAGE_MARGIN,
   },
@@ -61,7 +61,7 @@ const styles = {
   },
   name: {
     fontSize: 16,
-    lineHeight: 19.2,
+    lineHeight: 1.2,
     fontWeight: 700,
     marginBottom: 8,
     textTransform: 'uppercase',
@@ -70,13 +70,13 @@ const styles = {
   },
   jobTitle: {
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
     marginBottom: 4,
     textAlign: 'center',
   },
   contact: {
     fontSize: 10,
-    lineHeight: 12,
+    lineHeight: 1.2,
     color: '#333333',
     textAlign: 'center',
   },
@@ -89,7 +89,7 @@ const styles = {
   },
   sectionTitle: {
     fontSize: 12,
-    lineHeight: 14.4,
+    lineHeight: 1.2,
     fontWeight: 700,
     marginBottom: 8,
     textTransform: 'uppercase',
@@ -113,28 +113,26 @@ const styles = {
     marginBottom: 4,
   },
   itemHeaderText: {
-    flexGrow: 1,
     flexShrink: 1,
-    paddingRight: 8,
   },
   itemTitle: {
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
     fontWeight: 700,
   },
   itemCompany: {
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
     fontStyle: 'italic',
   },
   itemDate: {
     fontSize: 10,
-    lineHeight: 12,
+    lineHeight: 1.2,
     color: '#333333',
   },
   itemDescription: {
     fontSize: 11,
-    lineHeight: 14.3,
+    lineHeight: 1.3,
     marginLeft: 12,
     textAlign: 'justify',
   },
@@ -144,26 +142,27 @@ const styles = {
   },
   bullet: {
     fontSize: 11,
-    lineHeight: 14.3,
+    lineHeight: 1.3,
     marginBottom: 2,
   },
   projectLink: {
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
     fontWeight: 700,
     color: '#000000',
     textDecoration: 'underline',
   },
   inlineList: {
     fontSize: 11,
-    lineHeight: 14.3,
+    lineHeight: 1.3,
   },
   inlineGroup: {
     marginBottom: 8,
   },
   customSubheader: {
     fontSize: 11,
-    lineHeight: 13.2,
+    lineHeight: 1.2,
+    fontWeight: 700,
     fontStyle: 'italic',
   },
   customHeader: {
@@ -195,21 +194,25 @@ function DisplayLink({ value, style }: DisplayLinkProps) {
   return <Link src={target} style={style}>{value.displayText}</Link>;
 }
 
-function ContactValue({ value }: { value: ResumeDisplayLink }) {
+function ContactValue({ value, style }: { value: ResumeDisplayLink; style?: PdfStyle }) {
   const target = safePdfLinkTarget(value.linkTarget);
 
   if (!target) return <>{value.displayText}</>;
-  return <Link src={target} style={styles.contactLink}>{value.displayText}</Link>;
+  return <Link src={target} style={style}>{value.displayText}</Link>;
+}
+
+interface HeaderContactValue {
+  value: string | ResumeDisplayLink;
+  linkStyle?: PdfStyle;
 }
 
 function HeaderSection({ model }: { model: ResumeDocumentModel }) {
   const { header } = model;
-  const contactValues = [
-    header.contact.location,
-    header.contact.phone,
-    header.contact.email,
-    header.contact.portfolio,
-  ].filter((value): value is string | ResumeDisplayLink => Boolean(value));
+  const contactValues: HeaderContactValue[] = [];
+  if (header.contact.location) contactValues.push({ value: header.contact.location });
+  if (header.contact.phone) contactValues.push({ value: header.contact.phone, linkStyle: styles.contact });
+  if (header.contact.email) contactValues.push({ value: header.contact.email, linkStyle: styles.contact });
+  if (header.contact.portfolio) contactValues.push({ value: header.contact.portfolio, linkStyle: styles.contactLink });
 
   return (
     <View style={styles.header}>
@@ -217,10 +220,10 @@ function HeaderSection({ model }: { model: ResumeDocumentModel }) {
       {header.jobTitle && <Text style={styles.jobTitle}>{header.jobTitle}</Text>}
       {contactValues.length > 0 && (
         <Text style={styles.contact}>
-          {contactValues.map((value, index) => (
+          {contactValues.map(({ value, linkStyle }, index) => (
             <Text key={`${typeof value === 'string' ? value : value.displayText}-${index}`}>
               {index > 0 ? ' • ' : ''}
-              {typeof value === 'string' ? value : <ContactValue value={value} />}
+              {typeof value === 'string' ? value : <ContactValue value={value} style={linkStyle} />}
             </Text>
           ))}
         </Text>
@@ -369,9 +372,9 @@ function ReferenceItem({ item }: { item: ResumeReferenceItem }) {
       </Text>
       {(item.phone || item.email) && (
         <Text style={styles.itemDate} orphans={2} widows={2}>
-          {item.phone && <ContactValue value={item.phone} />}
+          {item.phone && <ContactValue value={item.phone} style={styles.itemDate} />}
           {item.phone && item.email && ' • '}
-          {item.email && <ContactValue value={item.email} />}
+          {item.email && <ContactValue value={item.email} style={styles.itemDate} />}
         </Text>
       )}
     </View>
