@@ -51,10 +51,6 @@ function ResumePdfViewer({ blob, currentPage, onPageCountChange }: ResumePdfView
     ]);
   }, [blob, layers, visibleLayerId]);
 
-  const handleLoadSuccess = ({ numPages }: PdfDocumentLoadResult) => {
-    onPageCountChange(numPages);
-  };
-
   return (
     <div style={{ position: 'relative', width: DOC_WIDTH, height: DOC_HEIGHT }}>
       {layers.map((layer) => (
@@ -69,7 +65,14 @@ function ResumePdfViewer({ blob, currentPage, onPageCountChange }: ResumePdfView
         >
           <Document
             file={layer.blob}
-            onLoadSuccess={handleLoadSuccess}
+            onLoadSuccess={({ numPages }: PdfDocumentLoadResult) => {
+              // The old canvas remains visible while the newest Blob loads.
+              // Do not let that old document alter pagination during the
+              // handoff; the latest layer owns the count and clamp behavior.
+              if (layer.id === latestLayerId.current) {
+                onPageCountChange(numPages);
+              }
+            }}
             loading={null}
             error={null}
             noData={null}
