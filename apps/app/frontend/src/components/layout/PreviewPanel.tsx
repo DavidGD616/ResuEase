@@ -2,18 +2,16 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import DocumentPreview from './DocumentPreview';
 import SaveStatus from '../ui/SaveStatus';
-import type { FormData, SidebarItem } from '../../types/resume';
 import { DOC_WIDTH, DOC_HEIGHT } from '../../constants/document';
 
 type SaveStatusValue = 'saving' | 'saved' | 'error';
 
 interface PreviewPanelProps {
-  formData: FormData;
-  sidebarItems?: SidebarItem[];
+  previewBlob: Blob | null;
   saveStatus: SaveStatusValue;
 }
 
-function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelProps) {
+function PreviewPanel({ previewBlob, saveStatus }: PreviewPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.54);
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,8 +82,7 @@ function PreviewPanel({ formData, sidebarItems = [], saveStatus }: PreviewPanelP
             }}
           >
             <DocumentPreview
-              formData={formData}
-              sidebarItems={sidebarItems}
+              previewBlob={previewBlob}
               currentPage={currentPage}
               onPageCountChange={handlePageCountChange}
             />
