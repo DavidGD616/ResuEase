@@ -15,6 +15,7 @@ type MockPageProps = {
   error?: ReactNode;
   loading?: ReactNode;
   noData?: ReactNode;
+  onRenderSuccess?: () => void;
   pageNumber?: number;
   renderAnnotationLayer?: boolean;
   renderTextLayer?: boolean;
@@ -49,13 +50,14 @@ describe('ResumePdfViewer', () => {
     pageMock.mockClear();
   });
 
-  it('renders nothing until a generated PDF Blob is available', () => {
+  it('keeps the A4 geometry empty until a generated PDF Blob is available', () => {
     const onPageCountChange = vi.fn();
     const { container } = render(
       <ResumePdfViewer blob={null} currentPage={1} onPageCountChange={onPageCountChange} />,
     );
 
-    expect(container.firstChild).toBeNull();
+    expect(container.firstChild).toHaveStyle({ width: '794px', height: '1123px' });
+    expect(container.firstChild?.childNodes).toHaveLength(0);
     expect(documentMock).not.toHaveBeenCalled();
     expect(pageMock).not.toHaveBeenCalled();
     expect(onPageCountChange).not.toHaveBeenCalled();
@@ -89,5 +91,34 @@ describe('ResumePdfViewer', () => {
 
   it('configures the PDF.js worker from the viewer module', () => {
     expect(pdfjsMock.GlobalWorkerOptions.workerSrc).toContain('pdf.worker.min.mjs');
+  });
+
+  it('keeps the painted Blob visible until the replacement page renders', async () => {
+    const firstBlob = new Blob(['first'], { type: 'application/pdf' });
+    const nextBlob = new Blob(['next'], { type: 'application/pdf' });
+    const onPageCountChange = vi.fn();
+    const { container, rerender } = render(
+      <ResumePdfViewer blob={firstBlob} currentPage={1} onPageCountChange={onPageCountChange} />,
+    );
+
+    const firstRender = pageMock.mock.calls[0]?.[0] as MockPageProps;
+    firstRender.onRenderSuccess?.();
+
+    rerender(
+      <ResumePdfViewer blob={nextBlob} currentPage={1} onPageCountChange={onPageCountChange} />,
+    );
+
+    await vi.waitFor(() => expect(documentMock).toHaveBeenCalledWith(expect.objectContaining({ file: nextBlob })));
+    const layersBeforePaint = container.querySelectorAll(':scope > div > div');
+    expect(layersBeforePaint).toHaveLength(2);
+    expect((layersBeforePaint[0] as HTMLDivElement).style.opacity).toBe('1');
+    expect((layersBeforePaint[1] as HTMLDivElement).style.opacity).toBe('0');
+
+    const nextRender = pageMock.mock.calls[pageMock.mock.calls.length - 1]?.[0] as MockPageProps;
+    nextRender.onRenderSuccess?.();
+
+    await vi.waitFor(() => expect(container.querySelectorAll(':scope > div > div')).toHaveLength(1));
+    const visibleLayer = container.querySelector(':scope > div > div') as HTMLDivElement;
+    expect(visibleLayer.style.opacity).toBe('1');
   });
 });
