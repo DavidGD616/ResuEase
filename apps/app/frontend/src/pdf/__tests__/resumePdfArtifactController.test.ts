@@ -107,6 +107,10 @@ describe('browser download cleanup', () => {
 
     const document = model('download', 'Ada Byron Lovelace');
     expect(resumeDownloadFilename(document)).toBe('Ada_Byron Lovelace_resume.pdf');
+    expect(resumeDownloadFilename({
+      ...document,
+      header: { ...document.header, firstName: '', lastName: 'Smith' },
+    })).toBe('resume_Smith_resume.pdf');
 
     downloadResumePdfBlob(new Blob(['pdf']), 'Ada_Byron Lovelace_resume.pdf');
     expect(click).toHaveBeenCalledOnce();

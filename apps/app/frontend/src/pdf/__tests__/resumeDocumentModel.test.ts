@@ -57,6 +57,8 @@ describe('buildResumeDocumentModel', () => {
 
     expect(model.locale).toBe('es');
     expect(model.header).toEqual({
+      firstName: 'Ana',
+      lastName: 'Gómez',
       fullName: 'Ana Gómez',
       jobTitle: 'Diseñadora de producto',
       contact: { location: 'Ciudad de México', phone: undefined, email: undefined, portfolio: undefined },

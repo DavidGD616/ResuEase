@@ -218,16 +218,14 @@ function HeaderSection({ model }: { model: ResumeDocumentModel }) {
     <View style={styles.header}>
       <Text style={styles.name}>{header.fullName}</Text>
       {header.jobTitle && <Text style={styles.jobTitle}>{header.jobTitle}</Text>}
-      {contactValues.length > 0 && (
-        <Text style={styles.contact}>
-          {contactValues.map(({ value, linkStyle }, index) => (
-            <Text key={`${typeof value === 'string' ? value : value.displayText}-${index}`}>
-              {index > 0 ? ' • ' : ''}
-              {typeof value === 'string' ? value : <ContactValue value={value} style={linkStyle} />}
-            </Text>
-          ))}
-        </Text>
-      )}
+      <Text style={styles.contact}>
+        {contactValues.map(({ value, linkStyle }, index) => (
+          <Text key={`${typeof value === 'string' ? value : value.displayText}-${index}`}>
+            {index > 0 ? ' • ' : ''}
+            {typeof value === 'string' ? value : <ContactValue value={value} style={linkStyle} />}
+          </Text>
+        ))}
+      </Text>
     </View>
   );
 }

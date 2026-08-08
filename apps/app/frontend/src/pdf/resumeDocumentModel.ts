@@ -50,6 +50,10 @@ export interface ResumeDocumentMetadata {
 }
 
 export interface ResumeDocumentHeader {
+  /** Retained separately so browser downloads preserve the legacy filename. */
+  firstName?: string;
+  /** Retained separately so browser downloads preserve the legacy filename. */
+  lastName?: string;
   fullName: string;
   jobTitle?: string;
   contact: {
@@ -331,6 +335,8 @@ function buildHeader(formData: UnknownRecord): ResumeDocumentHeader {
   const portfolio = textAt(formData, 'portfolio');
 
   return {
+    firstName,
+    lastName,
     fullName: [firstName, lastName].filter(Boolean).join(' '),
     jobTitle: textAt(formData, 'jobTitle') || undefined,
     contact: {

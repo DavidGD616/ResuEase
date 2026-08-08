@@ -71,6 +71,16 @@ export class ResumePdfArtifactController {
 }
 
 export function resumeDownloadFilename(model: ResumeDocumentModel): string {
+  // Models built from persisted form data keep the two name fields separate.
+  // Use them when available so the filename retains the legacy behavior for
+  // partial names (for example, `resume_Smith_resume.pdf`). The full-name
+  // fallback keeps hand-authored/test models backwards compatible.
+  if (model.header.firstName !== undefined || model.header.lastName !== undefined) {
+    const firstName = model.header.firstName || 'resume';
+    const lastName = model.header.lastName || 'document';
+    return `${firstName}_${lastName}_resume.pdf`;
+  }
+
   const [firstName = '', ...lastNameParts] = model.header.fullName.split(' ').filter(Boolean);
   const safeFirstName = firstName || 'resume';
   const safeLastName = lastNameParts.join(' ') || 'document';
