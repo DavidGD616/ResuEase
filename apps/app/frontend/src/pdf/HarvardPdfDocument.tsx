@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react';
 import { Document, Font, Link, Page, Text, View } from '@react-pdf/renderer';
-import liberationSerifBold from '../assets/fonts/liberation-serif/LiberationSerif-Bold.ttf';
-import liberationSerifBoldItalic from '../assets/fonts/liberation-serif/LiberationSerif-BoldItalic.ttf';
-import liberationSerifItalic from '../assets/fonts/liberation-serif/LiberationSerif-Italic.ttf';
-import liberationSerifRegular from '../assets/fonts/liberation-serif/LiberationSerif-Regular.ttf';
+import liberationSerifBoldAsset from '../assets/fonts/liberation-serif/LiberationSerif-Bold.ttf';
+import liberationSerifBoldItalicAsset from '../assets/fonts/liberation-serif/LiberationSerif-BoldItalic.ttf';
+import liberationSerifItalicAsset from '../assets/fonts/liberation-serif/LiberationSerif-Italic.ttf';
+import liberationSerifRegularAsset from '../assets/fonts/liberation-serif/LiberationSerif-Regular.ttf';
 import {
   sanitizeLinkTarget,
   type ResumeCombinedSkillsSection,
@@ -27,6 +27,38 @@ import {
 
 const FONT_FAMILY = 'Liberation Serif';
 export const HARVARD_PAGE_MARGIN = 36;
+
+/**
+ * Browser builds receive Vite's emitted font URL. During server-side or test
+ * module execution, React-PDF uses fontkit directly and therefore needs a
+ * filesystem path rather than the browser's `/src/...` development URL.
+ */
+const sourceModuleUrl = import.meta.url;
+
+function fontAssetUrl(browserUrl: string, relativeSourcePath: string): string {
+  if (import.meta.env.SSR || import.meta.env.MODE === 'test') {
+    return decodeURIComponent(new URL(relativeSourcePath, sourceModuleUrl).pathname);
+  }
+
+  return browserUrl;
+}
+
+const liberationSerifBold = fontAssetUrl(
+  liberationSerifBoldAsset,
+  '../assets/fonts/liberation-serif/LiberationSerif-Bold.ttf',
+);
+const liberationSerifBoldItalic = fontAssetUrl(
+  liberationSerifBoldItalicAsset,
+  '../assets/fonts/liberation-serif/LiberationSerif-BoldItalic.ttf',
+);
+const liberationSerifItalic = fontAssetUrl(
+  liberationSerifItalicAsset,
+  '../assets/fonts/liberation-serif/LiberationSerif-Italic.ttf',
+);
+const liberationSerifRegular = fontAssetUrl(
+  liberationSerifRegularAsset,
+  '../assets/fonts/liberation-serif/LiberationSerif-Regular.ttf',
+);
 
 // Liberation Serif 2.1.5 is metrically compatible with Times. Register every
 // face explicitly so generated PDFs never fall back to a browser font.
