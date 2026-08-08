@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileDown, Menu, Home } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { PdfService } from '../../services/PdfService';
-import type { FormData, SidebarItem } from '../../types/resume';
 
 interface TopNavigationProps {
   onMenuClick: () => void;
-  formData: FormData;
-  sidebarItems: SidebarItem[];
+  onDownload: () => Promise<void>;
 }
 
-function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationProps) {
+function TopNavigation({ onMenuClick, onDownload }: TopNavigationProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -24,15 +21,7 @@ function TopNavigation({ onMenuClick, formData, sidebarItems }: TopNavigationPro
     setIsDownloading(true);
 
     try {
-      const translatedSidebarItems = sidebarItems.map(item => ({
-        ...item,
-        label: item.labelKey ? t(item.labelKey) : item.label,
-      }));
-      const result = await PdfService.downloadResumePDF(formData, translatedSidebarItems, 'harvard');
-
-      if (!result.success) {
-        alert(`PDF generation failed: ${result.error}`);
-      }
+      await onDownload();
     } catch (error) {
       console.error('Download error:', error);
       alert(`Download failed: ${error instanceof Error ? error.message : String(error)}`);

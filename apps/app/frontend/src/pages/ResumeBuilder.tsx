@@ -1,19 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useFormData } from '../hooks/useFormData';
 import { useSidebarStorage } from '../hooks/useSidebarStorage';
 import { useDebounce } from '../hooks/useDebounce';
+import { useResumePdf } from '../hooks/useResumePdf';
 import { SECTION_TYPES } from '../data/sidebarItems';
 import type { SidebarItem } from '../types/resume';
 import type { AdditionalSectionItem } from '../data/sidebarItems';
+import { buildResumeDocumentModel } from '../pdf/resumeDocumentModel';
 import TopNavigation from '../components/layout/TopNavigation';
 import Sidebar from '../components/layout/Sidebar';
 import MainContent from '../components/layout/MainContent';
 import PreviewPanel from '../components/layout/PreviewPanel';
 
 function ResumeBuilder() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const userId = user?.id ?? '';
 
@@ -28,6 +30,15 @@ function ResumeBuilder() {
 
   const { sidebarItems, updateSidebarItems } = useSidebarStorage(userId);
   const debouncedFormData = useDebounce(formData, 300);
+  const previewModel = useMemo(
+    () => buildResumeDocumentModel(debouncedFormData, sidebarItems, i18n.resolvedLanguage ?? i18n.language),
+    [debouncedFormData, i18n.language, i18n.resolvedLanguage, sidebarItems],
+  );
+  const latestModel = useMemo(
+    () => buildResumeDocumentModel(formData, sidebarItems, i18n.resolvedLanguage ?? i18n.language),
+    [formData, i18n.language, i18n.resolvedLanguage, sidebarItems],
+  );
+  const resumePdf = useResumePdf({ previewModel, latestModel });
   const [activeSection, setActiveSection] = useState<string>(SECTION_TYPES.PERSONAL);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
@@ -113,9 +124,8 @@ function ResumeBuilder() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--surface)' }}>
       <TopNavigation
-        formData={formData}
-        sidebarItems={sidebarItems}
         onMenuClick={() => setSidebarOpen((open) => !open)}
+        onDownload={resumePdf.downloadLatest}
       />
 
       <div className="flex lg:hidden sticky top-0 z-10" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
@@ -174,8 +184,7 @@ function ResumeBuilder() {
 
           <div className={activeTab === 'preview' ? 'block w-full' : 'hidden lg:block lg:flex-none'}>
             <PreviewPanel
-              formData={debouncedFormData}
-              sidebarItems={sidebarItems}
+              previewBlob={resumePdf.previewBlob}
               saveStatus={saveStatus}
             />
           </div>

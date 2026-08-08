@@ -21,8 +21,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.6.1",
-    "puppeteer-core": "^25.3.0"
+    "express-rate-limit": "^8.6.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

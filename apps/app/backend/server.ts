@@ -5,9 +5,7 @@ import express, { type Express, Request, Response, NextFunction } from "express"
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { healthCheck, softSkills, technicalSkills, textTransform } from "./src/controllers/aiController.js";
-import { generateTestPDF, convertHtmlToPdf } from "./src/controllers/pdfController.js";
 import { requireAuth } from "./src/middleware/auth.js";
-import { closeBrowser } from "./src/lib/browserManager.js";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -31,14 +29,6 @@ const aiLimiter = rateLimit({
   standardHeaders: "draft-8",
   legacyHeaders: true,
   message: { success: false, message: "Too many AI requests, please try again later." },
-});
-
-const pdfLimiter = rateLimit({
-  windowMs: 60_000,       // 1 minute
-  limit: 10,              // 10 requests per IP per window
-  standardHeaders: "draft-8",
-  legacyHeaders: true,
-  message: { success: false, message: "Too many PDF requests, please try again later." },
 });
 
 // Middleware
@@ -83,12 +73,6 @@ app.post("/api/ai/soft-skills", requireAuth, aiLimiter, softSkills);
 app.post("/api/ai/technical-skills", requireAuth, aiLimiter, technicalSkills);
 app.post("/api/ai/text-transform", requireAuth, aiLimiter, textTransform);
 
-// PDF generation test endpoint (no auth — dev/diagnostic only)
-app.get("/api/generate-test-pdf", generateTestPDF);
-
-// HTML to PDF conversion endpoint (auth + rate-limited)
-app.post("/api/html-to-pdf", requireAuth, pdfLimiter, convertHtmlToPdf);
-
 // Basic error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error("Error:", err.stack);
@@ -118,14 +102,11 @@ const server = app.listen(PORT, () => {
   console.log(`   - Health check: http://localhost:${PORT}/`);
   console.log(`   - Test endpoint: http://localhost:${PORT}/api/test`);
   console.log(`   - Gemini: http://localhost:${PORT}/api/ai/generate`);
-  console.log(`   - Test PDF: http://localhost:${PORT}/api/generate-test-pdf`);
 });
 
-// Graceful shutdown — close the shared browser and stop accepting new connections.
-const shutdown = async () => {
-  server.close();
-  await closeBrowser();
-  process.exit(0);
+// Graceful shutdown — stop accepting new connections.
+const shutdown = () => {
+  server.close(() => process.exit(0));
 };
 
 process.once("SIGTERM", shutdown);

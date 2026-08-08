@@ -61,16 +61,3 @@ export interface TextTransformData {
 export type TextTransformResult =
   | { success: true; data: TextTransformData }
   | { success: false; error: string };
-
-// ─── PDF endpoint ─────────────────────────────────────────────────────────────
-
-export interface HtmlToPdfOptions {
-  format?: string;
-  margin?: { top?: string; right?: string; bottom?: string; left?: string };
-  printBackground?: boolean;
-}
-
-export interface HtmlToPdfBody {
-  html: string;
-  options?: HtmlToPdfOptions;
-}
