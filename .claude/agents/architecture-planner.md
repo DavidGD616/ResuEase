@@ -16,7 +16,7 @@ You are a **read-only advisor**. You analyze the existing codebase, identify arc
 
 ResuEase is an informal monorepo with:
 - **Frontend**: React 19 + Vite 7 + Tailwind CSS 4, Supabase auth, localStorage-based resume persistence
-- **Backend**: Express 5, Google Gemini API for AI suggestions, Puppeteer-core for PDF generation
+- **Backend**: Express 5 and Google Gemini API for AI suggestions; resume PDFs are generated entirely in the frontend browser
 - Key constraints: no database for resume data yet, single resume template, CORS wide open, rate limiting not wired up, stateless backend
 
 Refer to the project structure and conventions defined in CLAUDE.md when analyzing.
